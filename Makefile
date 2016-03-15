@@ -15,4 +15,4 @@ $(EXEC): $(CarpetaFuentes)main.cpp  $(OBJS)
 
 .PHONY: clean
 clean:
-	-rm $(EXEC)
+	-rm -f $(EXEC)
