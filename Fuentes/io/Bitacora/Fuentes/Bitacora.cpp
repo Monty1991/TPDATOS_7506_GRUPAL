@@ -2,27 +2,20 @@
 #include "../../Archivo/ArchivoFactory.h"
 
 #include <stdio.h>
+#include <stdarg.h>
 
 Bitacora::Bitacora()
 {
-	this->archivo = ArchivoFactory_Nuevo("asdf");
-//	this->file = fopen("asdf", "a+");
+	this->archivo = ArchivoFactory_Nuevo("log.txt", eTipoArchivo::eTipoArchivo_Log);
 }
 
 Bitacora::Bitacora(const char *nombre)
 {
-	this->archivo = ArchivoFactory_Nuevo("nombre");
-//	this->file = fopen(file, "a+");
+	this->archivo = ArchivoFactory_Nuevo(nombre, eTipoArchivo::eTipoArchivo_Log);
 }
 
 Bitacora::~Bitacora()
 {
-/*	if (this->file)
-	{
-		fflush(this->file);
-		fclose(this->file);
-	}
-*/
 	this->archivo->Close();
 }
 
@@ -35,25 +28,4 @@ void Bitacora::Log(const char *string)
 {
 	this->archivo->Printf(string);
 	this->archivo->Flush();
-
-//	fprintf(this->file, string);
-//	fflush(this->file);
-}
-
-void Bitacora::Log(long valor)
-{
-	this->archivo->Printf("%i", valor);
-	this->archivo->Flush();
-
-//	fprintf(this->file, "%i", valor);
-//	fflush(this->file);
-}
-
-void Bitacora::Log(double valor)
-{
-	this->archivo->Printf("%f", valor);
-	this->archivo->Flush();
-
-//	fprintf(this->file, "%f", valor);
-//	fflush(this->file);
 }

@@ -1,7 +1,15 @@
 #include "../ArchivoFactory.h"
 #include "../Headers/Archivo.h"
 
-iArchivoPtr ArchivoFactory_Nuevo(const char *nombre)
+const char *TablaTiposArchivos[] = 
 {
-	return new Archivo(nombre);
+	"r+b",	// eTipoArchivo_Binario
+	"r+",	// eTipoArchivo_Texto
+	"a+"	// eTipoArchivo_Log
+};
+
+iArchivoPtr ArchivoFactory_Nuevo(const char *nombre, eTipoArchivo tipoArchivo)
+{
+	
+	return new Archivo(nombre, TablaTiposArchivos[tipoArchivo]);
 }

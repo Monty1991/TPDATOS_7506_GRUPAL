@@ -1,9 +1,9 @@
 #include "../Headers/Archivo.h"
 #include <stdarg.h>
 
-Archivo::Archivo(const char *nombre)
+Archivo::Archivo(const char *nombre, const char *mode)
 {
-	this->file = fopen(nombre, "r+b");
+	this->file = fopen(nombre, mode);
 }
 
 Archivo::~Archivo()
@@ -15,17 +15,17 @@ Archivo::~Archivo()
 	fclose(this->file);
 }
 
-void Archivo::Read(char *buff, int amount)
+void Archivo::Read(char *buff, size_t count)
 {
-	fread(buff, sizeof(char), amount, this->file);
+	fread(buff, sizeof(char), count, this->file);
 }
 
-void Archivo::Write(char *buff, int amount)
+void Archivo::Write(char *buff, size_t count)
 {
-	fwrite(buff, sizeof(char), amount, this->file);
+	fwrite(buff, sizeof(char), count, this->file);
 }
 
-void Archivo::Seek(int position)
+void Archivo::Seek(size_t position)
 {
 	fseek(this->file, position, SEEK_SET);
 }

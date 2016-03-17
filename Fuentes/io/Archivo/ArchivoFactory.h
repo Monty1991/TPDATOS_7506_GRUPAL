@@ -10,7 +10,13 @@
 
 #include "Headers/iArchivo.h"
 
-iArchivoPtr ArchivoFactory_Nuevo(const char *nombre);
+typedef enum eTipoArchivo
+{
+	eTipoArchivo_Binario,
+	eTipoArchivo_Texto,
+	eTipoArchivo_Log
+} eTipoArchivo, *eTipoArchivoPtr;
+
+iArchivoPtr ArchivoFactory_Nuevo(const char *nombre, eTipoArchivo tipoArchivo);
 
 #endif	/* ARCHIVOFACTORY_H */
-

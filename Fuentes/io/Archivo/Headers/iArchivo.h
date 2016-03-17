@@ -8,14 +8,16 @@
 #ifndef IARCHIVO_H
 #define	IARCHIVO_H
 
+#include <stdlib.h>
+
 typedef class iArchivo
 {
 	public:
 
 		// Acceso aleatorio
-		virtual void Read(char *buff, int amount) = 0;
-		virtual void Write(char *buff, int amount) = 0;
-		virtual void Seek(int position) = 0;
+		virtual void Read(char *buff, size_t count) = 0;
+		virtual void Write(char *buff, size_t count) = 0;
+		virtual void Seek(size_t position) = 0;
 
 		// Acceso secuencial
 		virtual int ReadChar() = 0;

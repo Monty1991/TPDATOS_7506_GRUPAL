@@ -17,12 +17,12 @@ typedef class Archivo: public iArchivo
 		FILE *file;
 
 	public:
-		Archivo(const char *nombre);
+		Archivo(const char *nombre, const char *mode);
 		~Archivo();
 
-		void Read(char *buff, int amount);
-		void Write(char *buff, int amount);
-		void Seek(int position);
+		void Read(char *buff, size_t count);
+		void Write(char *buff, size_t amount);
+		void Seek(size_t position);
 
 		int ReadChar();
 		void WriteChar(int c);

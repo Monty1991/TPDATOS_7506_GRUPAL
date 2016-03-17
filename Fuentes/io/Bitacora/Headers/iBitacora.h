@@ -15,8 +15,6 @@ typedef class iBitacora
 		virtual void Close() = 0;
 
 		virtual void Log(const char *string) = 0;
-		virtual void Log(long valor) = 0;
-		virtual void Log(double valor) = 0;
 } *iBitacoraPtr;
 
 #endif	/* ILOGGER_H */

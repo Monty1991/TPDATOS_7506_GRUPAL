@@ -24,8 +24,6 @@ typedef class Bitacora: public iBitacora
 		void Close();
 
 		void Log(const char *string);
-		void Log(long valor);
-		void Log(double valor);
 
 } *BitacoraPtr;
 
