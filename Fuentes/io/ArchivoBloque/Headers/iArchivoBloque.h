@@ -17,4 +17,3 @@ typedef class iArchivoBloque
 } *iArchivoBloquePtr;
 
 #endif	/* IARCHIVOBLOQUE_H */
-

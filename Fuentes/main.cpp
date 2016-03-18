@@ -1,10 +1,24 @@
 #include <stdio.h>
-#include "io/Bitacora/BitacoraFactory.h"
+#include "Utils/RegistroBase/RegistroBaseFactory.h"
+#include "Exceptions/Exception.h"
+#include "Sistema/Sistema.h"
+#include "Utils/StringUtils/Headers/StringUtils.h"
+#include "Aplicacion/Headers/Aplicacion.h"
 
 int main(int argc, char **argv)
 {
-	printf("Hola, mundo\n");
-	printf("Chau, mundo\n");
+	Sistema_Inicializar();
+	
+//	printf("Hola, mundo\n");
+//	printf("Chau, mundo\n");
+	
+	Aplicacion *aplicacion = new Aplicacion();
+	
+	int i = 0;
+	Sistema_EnterFunction(
+		{ i = aplicacion->main(argc, argv);}
+	);
 
-	return 0;
+	Sistema_Finalizar();
+	return i;
 }

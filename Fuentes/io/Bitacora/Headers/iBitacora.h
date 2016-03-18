@@ -1,20 +1,23 @@
 /* 
- * File:   iLogger.h
+ * File:   iBitacora.h
  * Author: Monty
  *
- * Created on 15 de marzo de 2016, 23:49
+ * Created on 17 de marzo de 2016, 21:19
  */
 
-#ifndef ILOGGER_H
-#define	ILOGGER_H
+#ifndef IBITACORA_H
+#define	IBITACORA_H
+
+#include "../../../Exceptions/iException.h"
 
 typedef class iBitacora
 {
 	public:
-
 		virtual void Close() = 0;
+	
+		virtual void Log(const char *format) = 0;
+		virtual void Log(iExceptionPtr exception) = 0;
 
-		virtual void Log(const char *string) = 0;
 } *iBitacoraPtr;
 
-#endif	/* ILOGGER_H */
+#endif	/* IBITACORA_H */

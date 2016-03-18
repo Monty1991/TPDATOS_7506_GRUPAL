@@ -26,7 +26,8 @@ typedef class Archivo: public iArchivo
 
 		int ReadChar();
 		void WriteChar(int c);
-		void Printf(const char *format, ...);
+
+		void Printf(const char *format);
 
 		void Flush();
 		void Close();

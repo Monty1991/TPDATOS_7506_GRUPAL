@@ -40,10 +40,9 @@ void Archivo::WriteChar(int c)
 	putc(c, this->file);
 }
 
-void Archivo::Printf(const char *format, ...)
+void Archivo::Printf(const char *format)
 {
-	va_list ap;
-	fprintf(this->file, format, ap);
+	fprintf(this->file, format);
 }
 
 void Archivo::Flush()

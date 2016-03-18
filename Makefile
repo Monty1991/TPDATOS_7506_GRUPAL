@@ -1,6 +1,11 @@
 CC = g++ 
-CXXFLAGS = -std=c++11
-OBJS = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
+CXXFLAGS = -std=c++14 -g
+ModuloIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
+Utils = RegistroBase.o RegistroBaseFactory.o StringUtils.o
+TDA =
+SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o
+OBJS = $(ModuloIO) $(Utils) $(TDA) $(SYSTEM) Exception.o
+APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/
 EXEC = TPDatosGrupal.exe
 
@@ -16,7 +21,7 @@ Archivo.o: $(CarpetaFuentes)io/Archivo/Fuentes/Archivo.cpp
 ArchivoFactory.o: $(CarpetaFuentes)io/Archivo/Fuentes/ArchivoFactory.cpp Archivo.o
 	$(CC) $(CXXFLAGS) -c $<
 
-Bitacora.o: $(CarpetaFuentes)io/Bitacora/Fuentes/Bitacora.cpp ArchivoFactory.o
+Bitacora.o: $(CarpetaFuentes)io/Bitacora/Fuentes/Bitacora.cpp ArchivoFactory.o StringUtils.o Exception.o
 	$(CC) $(CXXFLAGS) -c $<
 
 BitacoraFactory.o: $(CarpetaFuentes)io/Bitacora/Fuentes/BitacoraFactory.cpp Bitacora.o
@@ -28,9 +33,39 @@ ArchivoBloque.o: $(CarpetaFuentes)io/ArchivoBloque/Fuentes/ArchivoBloque.cpp Arc
 ArchivoBloqueFactory.o: $(CarpetaFuentes)io/ArchivoBloque/Fuentes/ArchivoBloqueFactory.cpp ArchivoBloque.o
 	$(CC) $(CXXFLAGS) -c $<
 
-$(EXEC): $(CarpetaFuentes)main.cpp  $(OBJS)
-	$(CC) $(CXXFLAGS) $(OBJS) $< -o $(EXEC)
+RegistroBase.o: $(CarpetaFuentes)Utils/RegistroBase/Fuentes/RegistroBase.cpp
+	$(CC) $(CXXFLAGS) -c $<
+
+RegistroBaseFactory.o: $(CarpetaFuentes)Utils/RegistroBase/Fuentes/RegistroBaseFactory.cpp RegistroBase.o
+	$(CC) $(CXXFLAGS) -c $<
+
+Exception.o: $(CarpetaFuentes)Exceptions/Exception.cpp StringUtils.o
+	$(CC) $(CXXFLAGS) -c $<
+
+Sistema.o: $(CarpetaFuentes)Sistema/Fuentes/Sistema.cpp Bitacora.o StackTraceFactory.o
+	$(CC) $(CXXFLAGS) -c $<
+
+TraceEntry.o: $(CarpetaFuentes)Sistema/TraceEntry/Fuentes/TraceEntry.cpp StringUtils.o
+	$(CC) $(CXXFLAGS) -c $<
+
+TraceEntryFactory.o: $(CarpetaFuentes)Sistema/TraceEntry/Fuentes/TraceEntryFactory.cpp TraceEntry.o
+	$(CC) $(CXXFLAGS) -c $<
+
+StackTrace.o: $(CarpetaFuentes)Sistema/StackTrace/Fuentes/StackTrace.cpp TraceEntryFactory.o
+	$(CC) $(CXXFLAGS) -c $<
+
+StackTraceFactory.o: $(CarpetaFuentes)Sistema/StackTrace/Fuentes/StackTraceFactory.cpp StackTrace.o
+	$(CC) $(CXXFLAGS) -c $<
+
+StringUtils.o: $(CarpetaFuentes)Utils/StringUtils/Fuentes/StringUtils.cpp
+	$(CC) $(CXXFLAGS) -c $<
+
+Aplicacion.o: $(CarpetaFuentes)Aplicacion/Fuentes/Aplicacion.cpp $(OBJS)
+	$(CC) $(CXXFLAGS) -c $<
+	
+$(EXEC): $(CarpetaFuentes)main.cpp  $(APLICACION)
+	$(CC) $(CXXFLAGS) $(OBJS) $(APLICACION) $< -o $(EXEC)
 
 .PHONY: clean
 clean:
-	-rm -f $(OBJS) $(EXEC)
+	-rm -f $(OBJS) $(APLICACION) $(EXEC)

@@ -22,7 +22,8 @@ typedef class iArchivo
 		// Acceso secuencial
 		virtual int ReadChar() = 0;
 		virtual void WriteChar(int c) = 0;
-		virtual void Printf(const char *format, ...) = 0;
+
+		virtual void Printf(const char *format) = 0;
 
 		virtual void Flush() = 0;
 		virtual void Close() = 0;
