@@ -25,8 +25,8 @@ class Bloque: public iBloque
 		bool FueModificado();
 		void BorrarBitModificacion();
 
-		void LeerBloque(const char *buff);
-		void EscribirBloque(char *buff);
+		void LeerBloque(char *buff);
+		void EscribirBloque(const char *buff);
 
 		void Dispose();
 

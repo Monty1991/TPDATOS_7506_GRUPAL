@@ -1,0 +1,6 @@
+[2016/03/19 - 02:00:20] Excepcion en thread "main" ArgumentOutOfBoundsException: Excede el numero de campos
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:25)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:35)
+[2016/03/19 - 02:04:27] Excepcion en thread "main" ArgumentOutOfBoundsException: Excede el numero de campos
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:25)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:35)

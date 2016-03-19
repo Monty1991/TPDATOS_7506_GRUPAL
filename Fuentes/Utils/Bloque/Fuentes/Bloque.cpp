@@ -12,7 +12,7 @@ Bloque::Bloque(const char *buffer, size_t tamanioBloque)
 {
 	this->tamanioBloque = tamanioBloque;
 	this->buff = new char[this->tamanioBloque];
-	this->LeerBloque(buffer);
+	this->EscribirBloque(buffer);
 
 	this->BorrarBitModificacion();
 }
@@ -36,12 +36,12 @@ void Bloque::BorrarBitModificacion()
 	this->modificado = false;
 }
 
-void Bloque::LeerBloque(const char *buff)
+void Bloque::LeerBloque(char *buff)
 {
-	memcpy(this->buff, buff, this->tamanioBloque);	
+	memcpy(buff, this->buff, this->tamanioBloque);	
 }
 
-void Bloque::EscribirBloque(char *buff)
+void Bloque::EscribirBloque(const char *buff)
 {
 	memcpy(this->buff, buff, this->tamanioBloque);
 	this->modificado = true;

@@ -14,8 +14,8 @@ typedef class iBloque
 		virtual bool FueModificado() = 0;
 		virtual void BorrarBitModificacion() = 0;
 
-		virtual void LeerBloque(const char *buff) = 0;
-		virtual void EscribirBloque(char *buff) = 0;
+		virtual void LeerBloque(char *buff) = 0;
+		virtual void EscribirBloque(const char *buff) = 0;
 
 		virtual void Dispose() = 0;
 

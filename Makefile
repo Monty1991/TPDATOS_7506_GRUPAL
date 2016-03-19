@@ -1,7 +1,7 @@
 CC = g++ 
 CXXFLAGS = -std=c++14 -g
 ModuloIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
-Utils = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o
+Utils = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o MapaDeBits.o MapaDeBitsFactory.o
 TDA =
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
 EXCEPTIONS = Exception.o ExceptionFactory.o
@@ -46,6 +46,12 @@ Bloque.o: $(CarpetaFuentes)Utils/Bloque/Fuentes/Bloque.cpp
 BloqueFactory.o: $(CarpetaFuentes)Utils/Bloque/Fuentes/BloqueFactory.cpp Bloque.o
 	$(CC) $(CXXFLAGS) -c $<
 
+MapaDeBits.o: $(CarpetaFuentes)Utils/MapaDeBits/Fuentes/MapaDeBits.cpp
+	$(CC) $(CXXFLAGS) -c $<
+	
+MapaDeBitsFactory.o: $(CarpetaFuentes)Utils/MapaDeBits/Fuentes/MapaDeBitsFactory.cpp MapaDeBits.o
+	$(CC) $(CXXFLAGS) -c $<
+	
 Exception.o: $(CarpetaFuentes)Exceptions/Fuentes/Exception.cpp StringUtils.o
 	$(CC) $(CXXFLAGS) -c $<
 
