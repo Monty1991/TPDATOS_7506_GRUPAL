@@ -7,7 +7,7 @@
 
 #include "../Headers/Exception.h"
 #include "../../Utils/StringUtils/Headers/StringUtils.h"
-#include "../../Sistema/Sistema.h"
+#include "../../Sistema/Sistema/Headers/Sistema.h"
 #include "../../Sistema/TraceEntry/TraceEntryFactory.h"
 
 Exception::Exception(const char *exceptionType, const char *msg, const char *file, int lineNumber, const char *function)

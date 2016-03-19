@@ -1,4 +1,4 @@
-#include "Sistema/Sistema.h"
+#include "Sistema/Sistema/Headers/Sistema.h"
 #include "Aplicacion/Headers/Aplicacion.h"
 
 int main(int argc, char **argv)

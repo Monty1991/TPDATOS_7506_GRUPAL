@@ -1,7 +1,7 @@
-#include "../Sistema.h"
+#include "../Headers/Sistema.h"
 #include <stddef.h>
 
-#include "../Entorno/EntornoFactory.h"
+#include "../../Entorno/EntornoFactory.h"
 
 iEntornoPtr gEntorno = NULL;
 

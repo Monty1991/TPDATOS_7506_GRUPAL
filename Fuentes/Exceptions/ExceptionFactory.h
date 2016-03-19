@@ -9,7 +9,7 @@
 #define	EXCEPTIONFACTORY_H
 
 #include "Headers/iException.h"
-#include "../Sistema/Sistema.h"
+#include "../Sistema/Sistema/Headers/Sistema.h"
 
 iExceptionPtr ExceptionFactory_Nuevo(const char *exceptionType, const char *msg, const char *fileName, int line, const char *functionName);
 

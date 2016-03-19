@@ -8,9 +8,9 @@
 #ifndef SISTEMA_H
 #define	SISTEMA_H
 
-#include "../io/Bitacora/Headers/iBitacora.h"
-#include "StackTrace/Headers/iStackTrace.h"
-#include "Entorno/Headers/iEntorno.h"
+#include "../../../io/Bitacora/Headers/iBitacora.h"
+#include "../../StackTrace/Headers/iStackTrace.h"
+#include "../../Entorno/Headers/iEntorno.h"
 #include <functional>
 
 void Sistema_Inicializar();

@@ -1,7 +1,7 @@
 CC = g++ 
 CXXFLAGS = -std=c++14 -g
 ModuloIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
-Utils = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o MapaDeBits.o MapaDeBitsFactory.o
+Utils = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o
 TDA =
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
 EXCEPTIONS = Exception.o ExceptionFactory.o
@@ -16,73 +16,22 @@ all: clean build
 .PHONY: build
 build: $(EXEC)
 
-Archivo.o: $(CarpetaFuentes)io/Archivo/Fuentes/Archivo.cpp
+.SECONDEXPANSION:
+$(ModuloIO): $$(join $(CarpetaFuentes)io/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
 	$(CC) $(CXXFLAGS) -c $<
 
-ArchivoFactory.o: $(CarpetaFuentes)io/Archivo/Fuentes/ArchivoFactory.cpp Archivo.o
+.SECONDEXPANSION:
+$(Utils): $$(join $(CarpetaFuentes)Utils/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
 	$(CC) $(CXXFLAGS) -c $<
 
-Bitacora.o: $(CarpetaFuentes)io/Bitacora/Fuentes/Bitacora.cpp ArchivoFactory.o StringUtils.o Exception.o
+.SECONDEXPANSION:
+$(SYSTEM): $$(join $(CarpetaFuentes)Sistema/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
 	$(CC) $(CXXFLAGS) -c $<
 
-BitacoraFactory.o: $(CarpetaFuentes)io/Bitacora/Fuentes/BitacoraFactory.cpp Bitacora.o
-	$(CC) $(CXXFLAGS) -c $<
-
-ArchivoBloque.o: $(CarpetaFuentes)io/ArchivoBloque/Fuentes/ArchivoBloque.cpp ArchivoFactory.o
-	$(CC) $(CXXFLAGS) -c $<
-
-ArchivoBloqueFactory.o: $(CarpetaFuentes)io/ArchivoBloque/Fuentes/ArchivoBloqueFactory.cpp ArchivoBloque.o
-	$(CC) $(CXXFLAGS) -c $<
-
-RegistroBase.o: $(CarpetaFuentes)Utils/RegistroBase/Fuentes/RegistroBase.cpp
-	$(CC) $(CXXFLAGS) -c $<
-
-RegistroBaseFactory.o: $(CarpetaFuentes)Utils/RegistroBase/Fuentes/RegistroBaseFactory.cpp RegistroBase.o
-	$(CC) $(CXXFLAGS) -c $<
-
-Bloque.o: $(CarpetaFuentes)Utils/Bloque/Fuentes/Bloque.cpp
-	$(CC) $(CXXFLAGS) -c $<
-
-BloqueFactory.o: $(CarpetaFuentes)Utils/Bloque/Fuentes/BloqueFactory.cpp Bloque.o
-	$(CC) $(CXXFLAGS) -c $<
-
-MapaDeBits.o: $(CarpetaFuentes)Utils/MapaDeBits/Fuentes/MapaDeBits.cpp
-	$(CC) $(CXXFLAGS) -c $<
-	
-MapaDeBitsFactory.o: $(CarpetaFuentes)Utils/MapaDeBits/Fuentes/MapaDeBitsFactory.cpp MapaDeBits.o
-	$(CC) $(CXXFLAGS) -c $<
-	
-Exception.o: $(CarpetaFuentes)Exceptions/Fuentes/Exception.cpp StringUtils.o
-	$(CC) $(CXXFLAGS) -c $<
-
-ExceptionFactory.o: $(CarpetaFuentes)Exceptions/Fuentes/ExceptionFactory.cpp Exception.o
-	$(CC) $(CXXFLAGS) -c $<
-
-Sistema.o: $(CarpetaFuentes)Sistema/Fuentes/Sistema.cpp Entorno.o
-	$(CC) $(CXXFLAGS) -c $<
-
-TraceEntry.o: $(CarpetaFuentes)Sistema/TraceEntry/Fuentes/TraceEntry.cpp StringUtils.o
-	$(CC) $(CXXFLAGS) -c $<
-
-TraceEntryFactory.o: $(CarpetaFuentes)Sistema/TraceEntry/Fuentes/TraceEntryFactory.cpp TraceEntry.o
-	$(CC) $(CXXFLAGS) -c $<
-
-StackTrace.o: $(CarpetaFuentes)Sistema/StackTrace/Fuentes/StackTrace.cpp TraceEntryFactory.o
-	$(CC) $(CXXFLAGS) -c $<
-
-StackTraceFactory.o: $(CarpetaFuentes)Sistema/StackTrace/Fuentes/StackTraceFactory.cpp StackTrace.o
-	$(CC) $(CXXFLAGS) -c $<
-
-StringUtils.o: $(CarpetaFuentes)Utils/StringUtils/Fuentes/StringUtils.cpp
+$(EXCEPTIONS): %.o: $(CarpetaFuentes)Exceptions/Fuentes/%.cpp
 	$(CC) $(CXXFLAGS) -c $<
 
 Aplicacion.o: $(CarpetaFuentes)Aplicacion/Fuentes/Aplicacion.cpp $(OBJS)
-	$(CC) $(CXXFLAGS) -c $<
-
-Entorno.o: $(CarpetaFuentes)Sistema/Entorno/Fuentes/Entorno.cpp Bitacora.o StackTraceFactory.o
-	$(CC) $(CXXFLAGS) -c $<
-
-EntornoFactory.o: $(CarpetaFuentes)Sistema/Entorno/Fuentes/EntornoFactory.cpp Entorno.o
 	$(CC) $(CXXFLAGS) -c $<
 
 $(EXEC): $(CarpetaFuentes)main.cpp  $(APLICACION)

@@ -5,8 +5,9 @@
  * Created on 18 de marzo de 2016, 03:47
  */
 
-#include "DescriptorRegistro.h"
-#include "../../../Exceptions/Exception.h"
+#include "../Headers/DescriptorRegistro.h"
+#include "../../../Exceptions/ExceptionFactory.h"
+#include "../../StringUtils/Headers/StringUtils.h"
 
 DescriptorRegistro::DescriptorRegistro(eValueType *valores, int cantidad)
 {
@@ -23,7 +24,11 @@ DescriptorRegistro::~DescriptorRegistro()
 eValueType DescriptorRegistro::ObtenerValor(int posicion)
 {
 	if (posicion >= this->cantidad)
-		Throw(Exception, "Se intento acceder a una posicion invalida");
+	{
+		char msg[20];
+		StringUtils_Concatenar(msg,"%d", posicion);
+		Throw("ArrayIndexOutOfBoundsException", msg);
+	}
 
 	return this->valores[posicion];
 }

@@ -9,7 +9,6 @@
 #define	BLOQUE_H
 
 #include "iBloque.h"
-#include <stddef.h>
 
 class Bloque: public iBloque
 {
@@ -22,11 +21,13 @@ class Bloque: public iBloque
 		Bloque(const char *buff, size_t tamanioBloque);
 		~Bloque();
 
+		size_t ObtenerTamanioBloque();
+
 		bool FueModificado();
 		void BorrarBitModificacion();
 
-		void LeerBloque(char *buff);
-		void EscribirBloque(const char *buff);
+		void LeerBloque(char *buff, size_t offset, size_t length);
+		void EscribirBloque(const char *buff, size_t offset, size_t length);
 
 		void Dispose();
 
@@ -35,4 +36,3 @@ class Bloque: public iBloque
 };
 
 #endif	/* BLOQUE_H */
-
