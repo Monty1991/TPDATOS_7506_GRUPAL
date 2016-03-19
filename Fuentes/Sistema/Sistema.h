@@ -11,6 +11,7 @@
 #include "../io/Bitacora/Headers/iBitacora.h"
 #include "StackTrace/Headers/iStackTrace.h"
 #include "Entorno/Headers/iEntorno.h"
+#include <functional>
 
 void Sistema_Inicializar();
 void Sistema_Finalizar();
@@ -19,20 +20,7 @@ const iEntornoPtr Sistema_ObtenerEntorno();
 
 #define Sistema_DebugInfo(x) __FILE__, __LINE__ x, __PRETTY_FUNCTION__
 
-#define Sistema_Execute(closure) {								\
-	auto closedProcedure = [&](){ closure };					\
-	Sistema_ObtenerEntorno()->PushEntry(Sistema_DebugInfo(+1));	\
-	closedProcedure();											\
-	TryCatchBlock(												\
-	{															\
-		closedProcedure();										\
-		Sistema_ObtenerEntorno()->PopEntry();					\
-	},															\
-	[&](auto e){												\
-		Sistema_ObtenerEntorno()->PopEntry();					\
-		throw e;												\
-	})															\
-}
+#define Sistema_Execute(closure) Sistema_ObtenerEntorno()->Execute([&](){ closure }, Sistema_DebugInfo(+1));
 
 #define TryBlock(tryClause) try { tryClause }
 

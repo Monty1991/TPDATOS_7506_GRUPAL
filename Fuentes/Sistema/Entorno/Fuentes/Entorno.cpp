@@ -37,9 +37,19 @@ void Entorno::PopEntry()
 		entry->Dispose();
 }
 
-const void Entorno::Execute()
+const void Entorno::Execute(ClosedProcedure closedProcedure, const char *fileName, int line, const char *functionName)
 {
-	
+	this->PushEntry(fileName, line, functionName);
+	try
+	{
+		closedProcedure();
+		this->PopEntry();
+	}
+	catch(iExceptionPtr e)
+	{
+		this->PopEntry();
+		throw e;
+	}
 }
 
 void Entorno::Dispose()

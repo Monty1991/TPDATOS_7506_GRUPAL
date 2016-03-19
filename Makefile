@@ -4,7 +4,8 @@ ModuloIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque
 Utils = RegistroBase.o RegistroBaseFactory.o StringUtils.o
 TDA =
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
-OBJS = $(ModuloIO) $(Utils) $(TDA) $(SYSTEM) Exception.o
+EXCEPTIONS = Exception.o ExceptionFactory.o
+OBJS = $(ModuloIO) $(Utils) $(TDA) $(SYSTEM) $(EXCEPTIONS)
 APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/
 EXEC = TPDatosGrupal.exe
@@ -39,7 +40,10 @@ RegistroBase.o: $(CarpetaFuentes)Utils/RegistroBase/Fuentes/RegistroBase.cpp
 RegistroBaseFactory.o: $(CarpetaFuentes)Utils/RegistroBase/Fuentes/RegistroBaseFactory.cpp RegistroBase.o
 	$(CC) $(CXXFLAGS) -c $<
 
-Exception.o: $(CarpetaFuentes)Exceptions/Exception.cpp StringUtils.o
+Exception.o: $(CarpetaFuentes)Exceptions/Fuentes/Exception.cpp StringUtils.o
+	$(CC) $(CXXFLAGS) -c $<
+
+ExceptionFactory.o: $(CarpetaFuentes)Exceptions/Fuentes/ExceptionFactory.cpp Exception.o
 	$(CC) $(CXXFLAGS) -c $<
 
 Sistema.o: $(CarpetaFuentes)Sistema/Fuentes/Sistema.cpp Entorno.o

@@ -6,7 +6,7 @@
  */
 
 #include "../Headers/RegistroBase.h"
-#include "../../../Exceptions/Exception.h"
+#include "../../../Exceptions/ExceptionFactory.h"
 
 RegistroBase::RegistroBase(size_t cantidadCampos)
 {
@@ -23,7 +23,7 @@ RegistroBase::~RegistroBase()
 uValue RegistroBase::ObtenerCampo(size_t nroCampo)
 {
 	if (nroCampo >= this->cantidadCampos)
-		Throw(Exception, "Excede el numero de campos");
+		Throw("ArgumentOutOfBoundsException", "Excede el numero de campos");
 
 	return this->campoValores[nroCampo];
 }

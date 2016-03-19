@@ -11,6 +11,10 @@
 #include "../../../io/Bitacora/Headers/iBitacora.h"
 #include "../../StackTrace/Headers/iStackTrace.h"
 
+#include <functional>
+
+typedef std::function<void(void)> ClosedProcedure;
+
 typedef class iEntorno
 {
 	public:
@@ -23,7 +27,7 @@ typedef class iEntorno
 
 		virtual void PopEntry() = 0;
 
-		virtual const void Execute() = 0;
+		virtual const void Execute(ClosedProcedure closedProcedure, const char *fileName, int line, const char *functionName) = 0;
 		
 		virtual void Dispose() = 0;
 

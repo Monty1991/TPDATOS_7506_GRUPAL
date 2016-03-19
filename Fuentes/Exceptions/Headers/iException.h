@@ -11,7 +11,7 @@
 #include <exception>
 using namespace std;
 
-#include "../Sistema/StackTrace/Headers/iStackTrace.h"
+#include "../../Sistema/StackTrace/Headers/iStackTrace.h"
 
 typedef class iException: private exception
 {

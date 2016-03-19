@@ -26,3 +26,8 @@ const iEntornoPtr Sistema_ObtenerEntorno()
 {
 	return gEntorno;
 }
+
+void Sistema_ExecuteSecure(ClosedProcedure closedProcedure)
+{
+	closedProcedure();
+}

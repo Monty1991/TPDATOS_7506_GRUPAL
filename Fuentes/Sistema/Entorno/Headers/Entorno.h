@@ -27,10 +27,9 @@ class Entorno: public iEntorno
 		void PushEntry(const char *fileName, int line, const char *functionName);
 		void PopEntry();
 
-		const void Execute();
+		const void Execute(ClosedProcedure closedProcedure, const char *fileName, int line, const char *functionName);
 		
 		void Dispose();
 };
 
 #endif	/* ENTORNO_H */
-

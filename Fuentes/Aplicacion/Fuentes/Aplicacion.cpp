@@ -1,5 +1,5 @@
 #include "../Headers/Aplicacion.h"
-#include "../../Exceptions/Exception.h"
+#include "../../Exceptions/Headers/iException.h"
 #include "../../Sistema/Sistema.h"
 #include "../../Utils/RegistroBase/RegistroBaseFactory.h"
 

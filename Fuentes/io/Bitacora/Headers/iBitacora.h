@@ -8,7 +8,7 @@
 #ifndef IBITACORA_H
 #define	IBITACORA_H
 
-#include "../../../Exceptions/iException.h"
+#include "../../../Exceptions/Headers/iException.h"
 
 typedef class iBitacora
 {
