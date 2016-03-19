@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++14 -g
 ModuloIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
 Utils = RegistroBase.o RegistroBaseFactory.o StringUtils.o
 TDA =
-SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o
+SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
 OBJS = $(ModuloIO) $(Utils) $(TDA) $(SYSTEM) Exception.o
 APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/
@@ -42,7 +42,7 @@ RegistroBaseFactory.o: $(CarpetaFuentes)Utils/RegistroBase/Fuentes/RegistroBaseF
 Exception.o: $(CarpetaFuentes)Exceptions/Exception.cpp StringUtils.o
 	$(CC) $(CXXFLAGS) -c $<
 
-Sistema.o: $(CarpetaFuentes)Sistema/Fuentes/Sistema.cpp Bitacora.o StackTraceFactory.o
+Sistema.o: $(CarpetaFuentes)Sistema/Fuentes/Sistema.cpp Entorno.o
 	$(CC) $(CXXFLAGS) -c $<
 
 TraceEntry.o: $(CarpetaFuentes)Sistema/TraceEntry/Fuentes/TraceEntry.cpp StringUtils.o
@@ -62,7 +62,13 @@ StringUtils.o: $(CarpetaFuentes)Utils/StringUtils/Fuentes/StringUtils.cpp
 
 Aplicacion.o: $(CarpetaFuentes)Aplicacion/Fuentes/Aplicacion.cpp $(OBJS)
 	$(CC) $(CXXFLAGS) -c $<
-	
+
+Entorno.o: $(CarpetaFuentes)Sistema/Entorno/Fuentes/Entorno.cpp Bitacora.o StackTraceFactory.o
+	$(CC) $(CXXFLAGS) -c $<
+
+EntornoFactory.o: $(CarpetaFuentes)Sistema/Entorno/Fuentes/EntornoFactory.cpp Entorno.o
+	$(CC) $(CXXFLAGS) -c $<
+
 $(EXEC): $(CarpetaFuentes)main.cpp  $(APLICACION)
 	$(CC) $(CXXFLAGS) $(OBJS) $(APLICACION) $< -o $(EXEC)
 

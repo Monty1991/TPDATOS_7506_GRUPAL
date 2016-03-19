@@ -14,7 +14,7 @@ Exception::Exception(const char *msg, const char *file, int lineNumber, const ch
 {
 	this->msg = StringUtils_Clonar(msg);
 	
-	this->stackTrace = Sistema_GetStackTraceCopy();
+	this->stackTrace = Sistema_ObtenerEntorno()->ObtenerStackTrace();
 	this->stackTrace->Push(TraceEntryFactory_Nuevo(file, lineNumber, function));
 }
 

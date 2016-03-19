@@ -10,24 +10,33 @@
 
 #include "../io/Bitacora/Headers/iBitacora.h"
 #include "StackTrace/Headers/iStackTrace.h"
+#include "Entorno/Headers/iEntorno.h"
 
 void Sistema_Inicializar();
-
-const iBitacoraPtr Sistema_ObtenerBitacora();
-
 void Sistema_Finalizar();
 
-iStackTrace *Sistema_GetStackTraceCopy();
-void Sistema_PushEntry(const char *file, int line, const char *functionName);
-void Sistema_PopEntry();
+const iEntornoPtr Sistema_ObtenerEntorno();
 
 #define Sistema_DebugInfo(x) __FILE__, __LINE__ x, __PRETTY_FUNCTION__
-#define Sistema_EnterFunction(stmt) {Sistema_PushEntry(Sistema_DebugInfo(+1)); \
-																			{stmt}}
+
+#define Sistema_Execute(closure) {								\
+	auto closedProcedure = [&](){ closure };					\
+	Sistema_ObtenerEntorno()->PushEntry(Sistema_DebugInfo(+1));	\
+	closedProcedure();											\
+	TryCatchBlock(												\
+	{															\
+		closedProcedure();										\
+		Sistema_ObtenerEntorno()->PopEntry();					\
+	},															\
+	[&](auto e){												\
+		Sistema_ObtenerEntorno()->PopEntry();					\
+		throw e;												\
+	})															\
+}
 
 #define TryBlock(tryClause) try { tryClause }
 
-#define CatchBlock(catchClause) catch (Exception *e) { catchClause(e); }
+#define CatchBlock(catchClause) catch (iExceptionPtr e) { catchClause(e); }
 
 #define FinallyBlock(finallyClause) { finallyClause }
 
