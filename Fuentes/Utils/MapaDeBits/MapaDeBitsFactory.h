@@ -10,7 +10,6 @@
 
 #include "Headers/iMapaDeBits.h"
 
-iMapaDeBitsPtr MapaDeBitsFactory_Nuevo(const char *buff, size_t tamanioMapa);
+iMapaDeBitsPtr MapaDeBitsFactory_Nuevo(iBloquePtr bloque);
 
 #endif	/* MAPADEBITSFACTORY_H */
-

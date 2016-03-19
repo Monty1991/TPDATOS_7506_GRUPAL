@@ -69,6 +69,11 @@ void Bloque::EscribirBloque(const char *buff, size_t offset, size_t length)
 	this->modificado = true;
 }
 
+iBloquePtr Bloque::Clone()
+{
+	return new Bloque(this->buff, this->tamanioBloque);
+}
+
 void Bloque::Dispose()
 {
 	delete this;

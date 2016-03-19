@@ -8,20 +8,19 @@
 #ifndef MAPADEBITS_H
 #define	MAPADEBITS_H
 
+#include "../../Bloque/Headers/iBloque.h"
 #include "iMapaDeBits.h"
 
 class MapaDeBits: public iMapaDeBits
 {
 	private:
-		char *buff;
-		size_t tamanioMapa;
+		iBloquePtr bloque;
 		
 	public:
-		MapaDeBits(const char *buff, size_t tamanioMapa);
+		MapaDeBits(const iBloquePtr bloque);
 		~MapaDeBits();
 
-		void Leer(char *buff);
-		void Escribir(const char *buff);
+		const iBloquePtr Leer();
 
 		size_t ObtenerTamanio();
 
@@ -29,8 +28,9 @@ class MapaDeBits: public iMapaDeBits
 		void SetearBit(size_t posicion, bool valor);
 
 		void Dispose();
-	private:
 
+	private:
+		char ObtenerOffsetCorrimiento(size_t posicion);
 };
 
 #endif	/* MAPADEBITS_H */

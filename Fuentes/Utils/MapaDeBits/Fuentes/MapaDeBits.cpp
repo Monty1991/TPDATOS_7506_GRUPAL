@@ -8,51 +8,60 @@
 #include "../Headers/MapaDeBits.h"
 #include <string.h>
 
-MapaDeBits::MapaDeBits(const char *buff, size_t tamanioMapa)
+MapaDeBits::MapaDeBits(const iBloquePtr bloque)
 {
-	this->tamanioMapa = tamanioMapa;
-	this->buff = new char[this->tamanioMapa];
-	this->Escribir(buff);
+	this->bloque = bloque->Clone();
 }
 
 MapaDeBits::~MapaDeBits()
 {
-	if (this->buff)
+	if (this->bloque)
 	{
-		delete this->buff;
-		this->buff = NULL;
+		this->bloque->Dispose();
+		this->bloque = NULL;
 	}
 }
 
-void MapaDeBits::Leer(char *buff)
+const iBloquePtr MapaDeBits::Leer()
 {
-	memcpy(buff, this->buff, this->tamanioMapa);
-}
-
-void MapaDeBits::Escribir(const char *buff)
-{
-	memcpy(this->buff, buff, this->tamanioMapa);	
+	return this->bloque;
 }
 
 size_t MapaDeBits::ObtenerTamanio()
 {
-	return this->tamanioMapa;
+	return this->bloque->ObtenerTamanioBloque();
 }
 
 bool MapaDeBits::ObtenerBit(size_t posicion)
 {
-	return ((this->buff[(posicion - 1 ) / 8]) >> ((posicion - 1) % 8)) & 1;
+	char x;
+	this->bloque->LeerBloque(&x, posicion / 8, 1);
+	return (x >> this->ObtenerOffsetCorrimiento(posicion)) & 1;
 }
 
 void MapaDeBits::SetearBit(size_t posicion, bool valor)
 {
+	char x;
+	char offset = this->ObtenerOffsetCorrimiento(posicion);
+	this->bloque->LeerBloque(&x, posicion / 8, 1);
+
+	if (((x >> offset) & 1) == valor)	// si el bit ya tiene ese valor
+		return;
+	
 	if (valor)
-		this->buff[(posicion - 1) / 8] |= (1 << ((posicion - 1) % 8));
+		x |= (1 << offset);
 	else
-		this->buff[(posicion - 1) / 8] &= ~(1 << ((posicion - 1) % 8));
+		x &= ~ (1 << offset);
+
+	this->bloque->EscribirBloque(&x, posicion / 8, 1);
 }
 
 void MapaDeBits::Dispose()
 {
 	delete this;
+}
+
+char MapaDeBits::ObtenerOffsetCorrimiento(size_t posicion)
+{
+	return (7 - (posicion % 8));
 }

@@ -29,6 +29,7 @@ class Bloque: public iBloque
 		void LeerBloque(char *buff, size_t offset, size_t length);
 		void EscribirBloque(const char *buff, size_t offset, size_t length);
 
+		iBloquePtr Clone();
 		void Dispose();
 
 	private:

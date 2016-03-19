@@ -8,16 +8,16 @@
 #ifndef IMAPADEBITS_H
 #define	IMAPADEBITS_H
 
-#include <stddef.h>
+#include "../../Bloque/Headers/iBloque.h"
 
 typedef class iMapaDeBits
 {
 	public:
-		virtual void Leer(char *buff) = 0;
-		virtual void Escribir(const char *buff) = 0;
+		virtual const iBloquePtr Leer() = 0;
 
 		virtual size_t ObtenerTamanio() = 0;
 
+		// pueden tirar excepcion
 		virtual bool ObtenerBit(size_t posicion) = 0;
 		virtual void SetearBit(size_t posicion, bool valor) = 0;
 

@@ -1,7 +1,7 @@
 #include "../MapaDeBitsFactory.h"
 #include "../Headers/MapaDeBits.h"
 
-iMapaDeBitsPtr MapaDeBitsFactory_Nuevo(const char *buff, size_t tamanioMapa)
+iMapaDeBitsPtr MapaDeBitsFactory_Nuevo(iBloquePtr bloque)
 {
-	return new MapaDeBits(buff, tamanioMapa);
+	return new MapaDeBits(bloque);
 }

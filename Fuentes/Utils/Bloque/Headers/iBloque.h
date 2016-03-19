@@ -22,6 +22,7 @@ typedef class iBloque
 		virtual void LeerBloque(char *buff, size_t offset, size_t length) = 0;
 		virtual void EscribirBloque(const char *buff, size_t offset, size_t length) = 0;
 
+		virtual iBloque *Clone() = 0;
 		virtual void Dispose() = 0;
 
 } *iBloquePtr;

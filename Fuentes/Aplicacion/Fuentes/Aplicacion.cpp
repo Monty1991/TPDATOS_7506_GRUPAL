@@ -3,6 +3,7 @@
 #include "../../Sistema/Sistema/Headers/Sistema.h"
 #include "../../Utils/RegistroBase/RegistroBaseFactory.h"
 #include "../../io/ArchivoBloque/ArchivoBloqueFactory.h"
+#include "../../Utils/MapaDeBits/MapaDeBitsFactory.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -25,16 +26,19 @@ int Aplicacion::main(int argc, char **argv)
 		
 		iArchivoBloquePtr archivoBloque = ArchivoBloqueFactory_Nuevo("asdf.dat", 2048);
 
-			iBloquePtr bloque = archivoBloque->LeerBloque(0);			// cargamos el mapa de bits
-			char buff[2049];
-			memset(buff, 0, 2048);										// lo inicializamos en 0
+			iBloquePtr bloque = archivoBloque->LeerBloque(0);					// cargamos el mapa de bits
+			char buff[2048] = {0};
+			iMapaDeBitsPtr mapaDeBits = MapaDeBitsFactory_Nuevo(bloque);
+			bloque->Dispose();
+
 			try
 			{
-				Sistema_Execute( bloque->EscribirBloque(buff, 0, 2048););	// actualizamos el bloque
-				archivoBloque->EscribirBloque(0, bloque);					// actualizamos el mapa de bits
-				buff[0] = 1;												// seteamos el bit 0 del mapa
-				Sistema_Execute( bloque->EscribirBloque(buff, 0, 1););		// actualizamos el bloque
-				archivoBloque->EscribirBloque(0, bloque);					// actualizamos el archivo
+				Sistema_Execute( mapaDeBits->SetearBit(0, true););
+				Sistema_Execute( mapaDeBits->SetearBit(0, false););				// forzamos al mapa de bits a modificarse
+
+				Sistema_Execute( archivoBloque->EscribirBloque(0, mapaDeBits->Leer());); // volcamos el mapa de bits al archivo
+				Sistema_Execute( mapaDeBits->SetearBit(5, true););				// volvemos a modificar el mapa
+				Sistema_Execute( archivoBloque->EscribirBloque(0, mapaDeBits->Leer()););	// actualizamos el archivo
 			}
 			catch (iExceptionPtr e)
 			{
@@ -42,8 +46,8 @@ int Aplicacion::main(int argc, char **argv)
 				e->Dispose();
 			}
 
-			bloque->Dispose();									// no lo necesitamos mas
-	
+			mapaDeBits->Dispose();
+			
 		archivoBloque->Close();									// cerramos el archivo
 
 		iRegistroBasePtr reg = RegistroBaseFactory_Nuevo(4);
