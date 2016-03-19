@@ -21,6 +21,8 @@ class ArchivoBloque: public iArchivoBloque
 		ArchivoBloque(const char *nombre, size_t tamanioBloque);
 		~ArchivoBloque();
 
+		size_t ObtenerTamanioBloque();
+
 		void LeerBloque(char *buff, size_t nroBloque);
 		void EscribirBloque(char *buff, size_t nroBloque);
 		

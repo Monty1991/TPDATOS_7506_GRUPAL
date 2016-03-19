@@ -18,6 +18,11 @@ ArchivoBloque::~ArchivoBloque()
 	this->archivo->Close();
 }
 
+size_t ArchivoBloque::ObtenerTamanioBloque()
+{
+	return this->tamanioBloque;
+}
+
 void ArchivoBloque::LeerBloque(char *buff, size_t nroBloque)
 {
 	this->archivo->Seek(nroBloque * this->tamanioBloque);

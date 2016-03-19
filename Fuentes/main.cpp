@@ -7,7 +7,8 @@ int main(int argc, char **argv)
 	
 	Aplicacion *aplicacion = new Aplicacion();
 	
-	int i = aplicacion->main(argc, argv);
+	int i = 0;
+	i = aplicacion->main(argc, argv);
 
 	Sistema_Finalizar();
 	return i;

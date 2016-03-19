@@ -11,6 +11,7 @@
 typedef class iArchivoBloque
 {
 	public:
+		virtual size_t ObtenerTamanioBloque() = 0;
 		
 		virtual void LeerBloque(char *buff, size_t nroBloque) = 0;
 		virtual void EscribirBloque(char *buff, size_t nroBloque) = 0;
