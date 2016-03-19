@@ -13,15 +13,15 @@
 class DescriptorRegistro: public iDescriptorRegistro
 {
 	private:
-		eValueType *valores;
-		int cantidad;
+		eTipoCampo *valores;
+		size_t cantidad;
 
 	public:
-		DescriptorRegistro(eValueType *valores, int cantidad);
+		DescriptorRegistro(eTipoCampo *valores, size_t cantidad);
 		~DescriptorRegistro();
 
-		eValueType ObtenerValor(int posicion);
-		int ObtenerCantidadCampos();
+		eTipoCampo ObtenerTipoCampo(size_t nroCampo);
+		size_t ObtenerCantidadCampos();
 
 		void Dispose();
 

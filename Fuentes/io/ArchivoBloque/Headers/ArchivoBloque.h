@@ -23,9 +23,10 @@ class ArchivoBloque: public iArchivoBloque
 
 		size_t ObtenerTamanioBloque();
 
-		void LeerBloque(char *buff, size_t nroBloque);
-		void EscribirBloque(char *buff, size_t nroBloque);
+		iBloquePtr LeerBloque(size_t nroBloque);
+		void EscribirBloque(size_t nroBloque, iBloquePtr bloque);
 		
+		void Close();
 	private:
 
 };

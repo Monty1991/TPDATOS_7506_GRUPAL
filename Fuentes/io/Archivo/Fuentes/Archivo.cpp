@@ -3,7 +3,8 @@
 
 Archivo::Archivo(const char *nombre, const char *mode)
 {
-	this->file = fopen(nombre, mode);
+	this->file = fopen(nombre, "a+");
+	freopen(nombre, mode, this->file);
 }
 
 Archivo::~Archivo()

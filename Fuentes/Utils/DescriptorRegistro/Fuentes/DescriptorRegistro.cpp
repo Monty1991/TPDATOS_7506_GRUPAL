@@ -9,7 +9,7 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../StringUtils/Headers/StringUtils.h"
 
-DescriptorRegistro::DescriptorRegistro(eValueType *valores, int cantidad)
+DescriptorRegistro::DescriptorRegistro(eTipoCampo *valores, size_t cantidad)
 {
 	this->valores = valores;
 	this->cantidad = cantidad;
@@ -21,7 +21,7 @@ DescriptorRegistro::~DescriptorRegistro()
 		delete this;
 }
 
-eValueType DescriptorRegistro::ObtenerValor(int posicion)
+eTipoCampo DescriptorRegistro::ObtenerTipoCampo(size_t posicion)
 {
 	if (posicion >= this->cantidad)
 	{
@@ -33,7 +33,7 @@ eValueType DescriptorRegistro::ObtenerValor(int posicion)
 	return this->valores[posicion];
 }
 
-int DescriptorRegistro::ObtenerCantidadCampos()
+size_t DescriptorRegistro::ObtenerCantidadCampos()
 {
 	return this->cantidad;
 }

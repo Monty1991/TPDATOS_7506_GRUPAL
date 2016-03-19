@@ -6,6 +6,7 @@
  */
 
 #include "../Headers/ArchivoBloque.h"
+#include "../../../Utils/Bloque/BloqueFactory.h"
 
 ArchivoBloque::ArchivoBloque(const char *nombre, size_t tamanioBloque)
 {
@@ -23,15 +24,31 @@ size_t ArchivoBloque::ObtenerTamanioBloque()
 	return this->tamanioBloque;
 }
 
-void ArchivoBloque::LeerBloque(char *buff, size_t nroBloque)
+iBloquePtr ArchivoBloque::LeerBloque(size_t nroBloque)
 {
 	this->archivo->Seek(nroBloque * this->tamanioBloque);
+
+	char buff[this->tamanioBloque];
 	this->archivo->Read(buff, this->tamanioBloque);
+	return BloqueFactory_Nuevo(buff, this->tamanioBloque);
 }
 
-void ArchivoBloque::EscribirBloque(char *buff, size_t nroBloque)
+void ArchivoBloque::EscribirBloque(size_t nroBloque, iBloquePtr bloque)
 {
+	if (!bloque->FueModificado())	// si no se modifico, no hay necesidad de guardarlo en el disco
+		return;
+
 	this->archivo->Seek(nroBloque * this->tamanioBloque);
+
+	char buff[this->tamanioBloque];
+	bloque->LeerBloque(buff, 0, this->tamanioBloque);
 	this->archivo->Write(buff, this->tamanioBloque);
 	this->archivo->Flush();
+	
+	bloque->BorrarBitModificacion();	// el disco tiene ahora el mismo contenido, por lo tanto, esta actualizado
+}
+
+void ArchivoBloque::Close()
+{
+	delete this;
 }
