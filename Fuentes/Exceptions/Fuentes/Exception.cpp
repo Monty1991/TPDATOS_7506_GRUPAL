@@ -39,7 +39,7 @@ Exception::~Exception()
 	}
 }
 
-const char *Exception::Header()
+const char *Exception::what()
 {
 	return this->header;
 }

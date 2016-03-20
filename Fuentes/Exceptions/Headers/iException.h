@@ -13,10 +13,10 @@ using namespace std;
 
 #include "../../Sistema/StackTrace/Headers/iStackTrace.h"
 
-typedef class iException: private exception
+typedef class iException: public exception
 {
 	public:
-		virtual const char *Header() = 0;
+		virtual const char *what() = 0;
 		virtual const char *Msg() = 0;
 
 		virtual iStackTracePtr ObtenerStackTrace() = 0;

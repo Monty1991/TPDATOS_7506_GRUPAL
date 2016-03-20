@@ -21,7 +21,7 @@ typedef class Exception: public iException
 		Exception(const char *exceptionType, const char *msg, const char *file, int lineNumber, const char *function);
 		~Exception();
 
-		const char *Header();
+		const char *what();
 		const char *Msg();
 
 		iStackTracePtr ObtenerStackTrace();

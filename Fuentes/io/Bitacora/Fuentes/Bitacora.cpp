@@ -36,7 +36,7 @@ void Bitacora::Log(iExceptionPtr exception)
 {
 	this->LogTimeStamp();
 	char cadena[1000];
-	StringUtils_Concatenar(cadena, "Excepcion en thread \"main\" %s: %s\n", exception->Header(), exception->Msg());
+	StringUtils_Concatenar(cadena, "Excepcion en thread \"main\" %s: %s\n", exception->what(), exception->Msg());
 	this->archivo->Printf(cadena);
 
 	iStackTracePtr stackTrace = exception->ObtenerStackTrace();
