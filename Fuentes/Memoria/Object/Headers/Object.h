@@ -8,23 +8,20 @@
 #ifndef OBJECT_H
 #define	OBJECT_H
 
-#include <stddef.h>
+#include "iObject.h"
 
-class Object
+typedef class Object: public iObject
 {
 	private:
-		size_t refCount;
-		
-	public:
-		Object(): refCount(1) {}
-		Object(const Object &) {}
-		~Object() {}
 
-		void Attach();
-		void Dettach();
-		Object *UnAlias();
+	public:
+		virtual ~Object() {}
+
+		virtual iObject *Clone() = 0;
+		virtual void Dispose() = 0;
 
 	private:
-};
+
+} *ObjectPtr;
 
 #endif	/* OBJECT_H */

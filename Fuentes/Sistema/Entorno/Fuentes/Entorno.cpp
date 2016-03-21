@@ -33,7 +33,8 @@ void Entorno::PushEntry(const char *fileName, int line, const char *functionName
 void Entorno::PopEntry()
 {
 	iTraceEntryPtr entry = this->stackTrace->Pop();
-	if (entry);
+
+	if (entry)
 		entry->Dispose();
 }
 

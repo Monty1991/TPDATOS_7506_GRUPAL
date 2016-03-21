@@ -9,55 +9,52 @@
 #include <stdlib.h>
 #include "../../TraceEntry/TraceEntryFactory.h"
 #include "../../../Utils/StringUtils/Headers/StringUtils.h"
+#include "../../../TDA/LinkedList/LinkedListFactory.h"
 
 StackTrace::StackTrace()
 {
-	this->size = 16;
-	this->count = 0;
-	this->stack = new iTraceEntryPtr[this->size];
+	this->stack = NULL;
 }
 
 StackTrace::~StackTrace()
 {
-	for(int i = 0; i < this->count; i++)
-		this->stack[i]->Dispose();
-
-	delete this->stack;
+	while (this->stack)
+		delete this->Pop();
 }
 
 void StackTrace::Push(iTraceEntryPtr traceEntry)
 {
-	this->stack[this->count++] = traceEntry;
-	if (this->count >= this->size)
-		this->Resize(this->size * 2);
+	this->stack = LinkedListFactory_Nuevo(traceEntry, this->stack);
 }
 
 iTraceEntryPtr StackTrace::Pop()
 {
-	if (!this->count)
+	if (!this->stack)
 		return NULL;
 
-	iTraceEntryPtr traceEntry = this->stack[--this->count];
-	this->stack[this->count] = 0;
-	
-	if (this->count * 4 <= this->size)
-		this->Resize(this->size / 2);
+	iTraceEntryPtr traceEntry = (iTraceEntryPtr)this->stack->Value();
+
+	iLinkedListPtr listItem = this->stack;
+	this->stack = listItem->Next();
+	listItem->Dispose();
 
 	return traceEntry;
 }
 
 char *StackTrace::GetAsString()
 {
-	char *cadena = new char[this->count * 500 + 1];
+	char *cadena = new char[this->Count() * 500 + 1];
 	cadena[0] = '\0';
 	int pos = 0;
 
-	for (int i = this->count - 1;  i >= 0; i--)
+	iLinkedListPtr list = this->stack;
+	while (list)
 	{
-		iTraceEntryPtr entry = this->stack[i];
+		iTraceEntryPtr entry = (iTraceEntryPtr)list->Value();
 		char *cadenaEntry = entry->ObtenerAsString();
-		pos = StringUtils_Concatenar(cadena + pos, "\t\t\t\t\t\t\t\t%s\n", entry->ObtenerAsString());
+		pos = StringUtils_Concatenar(cadena + pos, "\t\t\t\t\t\t\t\t%s\n", cadenaEntry);
 		delete cadenaEntry;
+		list = list->Next();
 	}
 
 	char *cadenaFinal = StringUtils_Clonar(cadena);
@@ -70,12 +67,9 @@ StackTrace *StackTrace::Clone()
 {
 	StackTrace *clone = new StackTrace();
 
-	for (int i = 0; i < this->count; i++)
-	{
-		iTraceEntryPtr entry = this->stack[i];
-		clone->Push(entry->Clone());
-	}
-	
+	// Toda clase es friend consigo misma.
+	clone->stack = this->stack->Clone();
+
 	return clone;
 }
 
@@ -84,16 +78,15 @@ void StackTrace::Dispose()
 	delete this;
 }
 
-void StackTrace::Resize(int newSize)
+size_t StackTrace::Count()
 {
-	iTraceEntryPtr *newStack = new iTraceEntryPtr[newSize];
-	
-	for (int i = 0; i < this->count; i++)
-		newStack[i] = this->stack[i];
-	
-	iTraceEntryPtr *oldStack = this->stack;
-	this->stack = newStack;
-	this->size = newSize;
+	size_t count = 0;
+	iLinkedListPtr list = this->stack;
+	while (list)
+	{
+		list = list->Next();
+		count++;
+	}
 
-	delete oldStack;
+	return count;
 }

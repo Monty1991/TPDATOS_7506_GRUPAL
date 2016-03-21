@@ -8,7 +8,9 @@
 #ifndef ITRACEENTRY_H
 #define	ITRACEENTRY_H
 
-typedef class iTraceEntry
+#include "../../../Memoria/Object/Headers/iObject.h"
+
+typedef class iTraceEntry: public iObject
 {
 	public:
 		virtual const char *ObtenerNombreArchivo() = 0;

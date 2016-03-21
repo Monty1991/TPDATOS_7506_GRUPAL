@@ -8,15 +8,14 @@
 #ifndef STACKSTRACE_H
 #define	STACKSTRACE_H
 
-#include "../../TraceEntry/Headers/iTraceEntry.h"
 #include "iStackTrace.h"
+#include "../../../TDA/LinkedList/Headers/iLinkedList.h"
+#include <stddef.h>
 
 class StackTrace: public iStackTrace
 {
 	private:
-		iTraceEntryPtr *stack;
-		int count;
-		int size;
+		iLinkedListPtr stack;
 
 	public:
 		StackTrace();
@@ -31,7 +30,8 @@ class StackTrace: public iStackTrace
 		void Dispose();
 	
 	private:
-		void Resize(int newSize);
+		size_t Count();
+
 };
 
 #endif	/* STACKSTRACE_H */

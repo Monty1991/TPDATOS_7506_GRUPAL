@@ -22,8 +22,6 @@ int Aplicacion::main(int argc, char **argv)
 {
 	TryCatchBlock(
 	{
-		printf("Hola, mundo\n");
-		
 		iArchivoBloquePtr archivoBloque = ArchivoBloqueFactory_Nuevo("asdf.dat", 2048);
 
 			iBloquePtr bloque = archivoBloque->LeerBloque(0);					// cargamos el mapa de bits

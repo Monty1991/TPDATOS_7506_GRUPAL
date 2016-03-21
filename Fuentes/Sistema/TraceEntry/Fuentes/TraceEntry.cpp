@@ -20,6 +20,9 @@ TraceEntry::~TraceEntry()
 {
 	if (this->filename)
 		delete this->filename;
+
+	if (this->functionName)
+		delete this->functionName;
 }
 
 const char *TraceEntry::ObtenerNombreArchivo()

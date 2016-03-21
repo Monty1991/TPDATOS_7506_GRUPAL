@@ -19,7 +19,7 @@ class TraceEntry: public iTraceEntry
 
 	public:
 		TraceEntry(const char *filename, int numeroLinea, const char *nombreMetodo);
-		~TraceEntry();
+		virtual ~TraceEntry();
 
 		const char *ObtenerNombreArchivo();
 		int ObtenerNumeroLinea();
@@ -27,8 +27,8 @@ class TraceEntry: public iTraceEntry
 
 		char *ObtenerAsString();
 
-		TraceEntry *Clone();
-		void Dispose();
+		virtual TraceEntry *Clone();
+		virtual void Dispose();
 		
 	private:
 

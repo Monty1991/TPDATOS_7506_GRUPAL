@@ -10,6 +10,5 @@ const char *TablaTiposArchivos[] =
 
 iArchivoPtr ArchivoFactory_Nuevo(const char *nombre, eTipoArchivo tipoArchivo)
 {
-	
 	return new Archivo(nombre, TablaTiposArchivos[tipoArchivo]);
 }
