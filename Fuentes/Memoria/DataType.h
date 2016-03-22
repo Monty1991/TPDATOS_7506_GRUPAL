@@ -9,7 +9,7 @@
 #define	DATATYPE_H
 
 #include <stddef.h>
-#include "Registro/Headers/iRegistro.h"
+#include "Object/Headers/iObject.h"
 
 typedef enum eValueType
 {
@@ -89,7 +89,7 @@ union uPrimitive
 union uValue
 {
 	uPrimitive primitivo;
-	iRegistroPtr registro;
+	iObjectPtr registro;
 };
 
 #endif	/* DATATYPE_H */

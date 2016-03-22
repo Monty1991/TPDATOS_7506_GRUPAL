@@ -30,7 +30,7 @@ typedef class iFeature
 		virtual sCadenaANSI AsCadenaANSI() = 0;
 		virtual sCadenaUNICODE AsCadenaUNICODE() = 0;
 
-		virtual iRegistroPtr AsRegistro() = 0;
+		virtual iObjectPtr AsRegistro() = 0;
 
 		virtual void Dispose() = 0;
 

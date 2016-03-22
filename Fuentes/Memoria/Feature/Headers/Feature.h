@@ -36,7 +36,7 @@ class Feature: public iFeature
 		sCadenaANSI AsCadenaANSI();
 		sCadenaUNICODE AsCadenaUNICODE();
 
-		iRegistroPtr AsRegistro();
+		iObjectPtr AsRegistro();
 
 		virtual void Dispose();
 

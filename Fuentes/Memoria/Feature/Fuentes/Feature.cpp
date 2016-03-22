@@ -101,7 +101,7 @@ sCadenaUNICODE Feature::AsCadenaUNICODE()
 	return this->AsCadena().unicode;	
 }
 
-iRegistroPtr Feature::AsRegistro()
+iObjectPtr Feature::AsRegistro()
 {
 	return this->contenido.registro;
 }
