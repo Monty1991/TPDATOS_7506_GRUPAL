@@ -25,9 +25,10 @@ int Aplicacion::main(int argc, char **argv)
 		iArchivoBloquePtr archivoBloque = ArchivoBloqueFactory_Nuevo("asdf.dat", 2048);
 
 			iBloquePtr bloque = archivoBloque->LeerBloque(0);					// cargamos el mapa de bits
-			char buff[2048];
+			char *buff = new char[2048];
 			memset(buff, 0, 2048);
 			iMapaDeBitsPtr mapaDeBits = MapaDeBitsFactory_Nuevo(bloque);
+			delete buff;
 			bloque->Dispose();
 
 			try
@@ -55,8 +56,8 @@ int Aplicacion::main(int argc, char **argv)
 
 		return 0;
 	},
-	[&](auto e){
-		Sistema_ObtenerEntorno()->ObtenerBitacora()->Log(e);
+	[&](iExceptionPtr e){
+		Sistema_Log(e);
 		e->Dispose();
 		return 1;
 	})

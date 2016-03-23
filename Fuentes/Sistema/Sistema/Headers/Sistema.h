@@ -21,6 +21,8 @@ const iEntornoPtr Sistema_ObtenerEntorno();
 
 #define Sistema_Execute(closure) Sistema_ObtenerEntorno()->Execute([&](){ closure }, Sistema_DebugInfo(+1));
 
+#define Sistema_Log(msg) Sistema_ObtenerEntorno()->ObtenerBitacora()->Log(msg);
+
 #define TryBlock(tryClause) try { tryClause }
 
 #define CatchBlock(catchClause) catch (iExceptionPtr e) { catchClause(e); }
