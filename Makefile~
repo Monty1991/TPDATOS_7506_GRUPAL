@@ -10,7 +10,7 @@ OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SYSTEM) $(EXCEPTIONS)
 APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/
 OBJDIR = Objects
-EXEC = TPDatosGrupal
+EXEC = TPDatosGrupal.exe
 
 .PHONY: all
 all: clean build

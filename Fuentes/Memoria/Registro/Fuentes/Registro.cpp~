@@ -50,7 +50,7 @@ void Registro::SetFeature(size_t posicion, iFeaturePtr feature)
 	if (posicion >= this->size)
 	{
 		char msg[20];
-		StringUtils_Concatenar(msg, "%lu", posicion);
+		StringUtils_Concatenar(msg, "%u", posicion);
 		Throw("ArrayIndexOutOfBoundsException", msg);
 	}
 	
