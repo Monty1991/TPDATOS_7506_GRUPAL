@@ -18,7 +18,7 @@ typedef class Archivo: public iArchivo
 
 	public:
 		Archivo(const char *nombre, const char *mode);
-		virtual ~Archivo();
+		~Archivo();
 
 		void Read(char *buff, size_t count);
 		void Write(char *buff, size_t amount);

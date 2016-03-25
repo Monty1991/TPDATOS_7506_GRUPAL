@@ -26,7 +26,7 @@ eTipoCampo DescriptorRegistro::ObtenerTipoCampo(size_t posicion)
 	if (posicion >= this->cantidad)
 	{
 		char msg[20];
-		StringUtils_Concatenar(msg,"%lu", posicion);
+		StringUtils_Concatenar(msg,"%d", posicion);
 		Throw("ArrayIndexOutOfBoundsException", msg);
 	}
 

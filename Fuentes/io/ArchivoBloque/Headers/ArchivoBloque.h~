@@ -19,7 +19,7 @@ class ArchivoBloque: public iArchivoBloque
 
 	public:
 		ArchivoBloque(const char *nombre, size_t tamanioBloque);
-		virtual ~ArchivoBloque();
+		~ArchivoBloque();
 
 		size_t ObtenerTamanioBloque();
 

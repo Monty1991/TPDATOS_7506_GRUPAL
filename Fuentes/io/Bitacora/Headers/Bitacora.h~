@@ -19,7 +19,7 @@ typedef class Bitacora: public iBitacora
 	public:
 		Bitacora();
 		Bitacora(const char *nombre);
-		virtual ~Bitacora();
+		~Bitacora();
 
 		void Close();
 

@@ -26,7 +26,7 @@ uValue RegistroBase::ObtenerCampo(size_t nroCampo)
 	if (nroCampo >= this->cantidadCampos)
 	{
 		char msg[20];
-		StringUtils_Concatenar(msg,"%lu", nroCampo);
+		StringUtils_Concatenar(msg,"%u", nroCampo);
 		Throw("ArrayIndexOutOfBoundsException", msg);
 	}
 
