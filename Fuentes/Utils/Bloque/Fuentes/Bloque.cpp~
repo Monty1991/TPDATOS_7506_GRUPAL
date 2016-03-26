@@ -49,7 +49,7 @@ void Bloque::LeerBloque(char *buff, size_t offset, size_t length)
 	if (this->tamanioBloque < (offset + length) )
 	{
 		char msg[20];
-		StringUtils_Concatenar(msg,"%d + %d > %d", offset, length, this->tamanioBloque);
+		StringUtils_Concatenar(msg,"%lu + %lu > %lu", offset, length, this->tamanioBloque);
 		Throw("ArrayIndexOutOfBoundsException", msg);
 	}
 
@@ -61,7 +61,7 @@ void Bloque::EscribirBloque(const char *buff, size_t offset, size_t length)
 	if (this->tamanioBloque < (offset + length) )
 	{
 		char msg[20];
-		StringUtils_Concatenar(msg,"%d + %d > %d", offset, length, this->tamanioBloque);
+		StringUtils_Concatenar(msg,"%lu + %lu > %lu", offset, length, this->tamanioBloque);
 		Throw("ArrayIndexOutOfBoundsException", msg);
 	}
 	

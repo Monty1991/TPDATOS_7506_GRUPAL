@@ -58,7 +58,7 @@ char *StackTrace::GetAsString()
 	}
 
 	char *cadenaFinal = StringUtils_Clonar(cadena);
-	delete[] cadena;
+	delete cadena;
 
 	return cadenaFinal;
 }

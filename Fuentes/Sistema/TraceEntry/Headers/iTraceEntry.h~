@@ -9,7 +9,6 @@
 #define	ITRACEENTRY_H
 
 #include "../../../Memoria/Object/Headers/iObject.h"
-#include <stddef.h>
 
 typedef class iTraceEntry: public iObject
 {

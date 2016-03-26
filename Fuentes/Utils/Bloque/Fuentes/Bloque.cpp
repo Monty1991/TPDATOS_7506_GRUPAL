@@ -24,7 +24,7 @@ Bloque::~Bloque()
 {
 	if (this->buff)
 	{
-		delete this->buff;
+		delete[] this->buff;
 		this->buff = NULL;
 	}
 }

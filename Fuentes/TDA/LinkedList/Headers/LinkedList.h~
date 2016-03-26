@@ -25,7 +25,7 @@ typedef class LinkedList: public iLinkedList
 
 		iLinkedList *Clone();
 
-		virtual void Dispose();
+		void Dispose();
 
 	private:
 

@@ -22,7 +22,7 @@ class TraceEntry: public iTraceEntry
 		virtual ~TraceEntry();
 
 		const char *ObtenerNombreArchivo();
-		size_t ObtenerNumeroLinea();
+		int ObtenerNumeroLinea();
 		const char *ObtenerNombreMetodo();
 
 		char *ObtenerAsString();

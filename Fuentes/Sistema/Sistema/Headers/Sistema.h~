@@ -16,7 +16,7 @@ void Sistema_Inicializar();
 void Sistema_Finalizar();
 
 const iEntornoPtr Sistema_ObtenerEntorno();
-void Sistema_ExecuteSecure(ClosedProcedure closedProcedure, const char *fileName, size_t line, const char *functionName);
+void Sistema_ExecuteSecure(ClosedProcedure closedProcedure, const char fileName, size_t line, const char *functionName);
 
 #define Sistema_DebugInfo(x) __FILE__, __LINE__ x, __PRETTY_FUNCTION__
 

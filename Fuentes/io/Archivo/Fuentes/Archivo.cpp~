@@ -43,7 +43,7 @@ void Archivo::WriteChar(int c)
 
 void Archivo::Printf(const char *format)
 {
-	fprintf(this->file, "%s", format);
+	fprintf(this->file, format);
 }
 
 void Archivo::Flush()

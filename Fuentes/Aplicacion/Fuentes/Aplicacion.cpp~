@@ -50,6 +50,10 @@ int Aplicacion::main(int argc, char **argv)
 			
 		archivoBloque->Close();									// cerramos el archivo
 
+		iRegistroBasePtr reg = RegistroBaseFactory_Nuevo(4);
+		Sistema_Execute( reg->ObtenerCampo(5); );
+		reg->Disponer();
+
 		return 0;
 	},
 	[&](iExceptionPtr e){

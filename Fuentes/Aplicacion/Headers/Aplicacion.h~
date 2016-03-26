@@ -14,7 +14,7 @@ class Aplicacion: public iAplicacion
 {
 	public:
 		Aplicacion();
-		virtual ~Aplicacion();
+		~Aplicacion();
 		
 		int main(int argc, char **argv);
 

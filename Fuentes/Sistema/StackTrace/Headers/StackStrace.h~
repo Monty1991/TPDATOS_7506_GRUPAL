@@ -27,7 +27,7 @@ class StackTrace: public iStackTrace
 		char *GetAsString();
 
 		StackTrace *Clone();
-		virtual void Dispose();
+		void Dispose();
 	
 	private:
 		size_t Count();

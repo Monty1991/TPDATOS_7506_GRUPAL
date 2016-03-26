@@ -27,7 +27,7 @@ const iEntornoPtr Sistema_ObtenerEntorno()
 	return gEntorno;
 }
 
-void Sistema_ExecuteSecure(ClosedProcedure closedProcedure, const char *fileName, size_t line, const char *functionName)
+void Sistema_ExecuteSecure(ClosedProcedure closedProcedure, const char fileName, size_t line, const char *functionName)
 {
 	gEntorno->Execute(closedProcedure, fileName, line, functionName);
 }

@@ -22,13 +22,13 @@ Exception::~Exception()
 {
 	if (this->header)
 	{
-		delete[] this->header;
+		delete this->header;
 		this->header = NULL;
 	}
 
 	if (this->msg)
 	{
-		delete[] this->msg;
+		delete this->msg;
 		this->msg = NULL;
 	}
 	

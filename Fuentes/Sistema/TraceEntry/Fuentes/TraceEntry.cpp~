@@ -43,7 +43,7 @@ const char *TraceEntry::ObtenerNombreMetodo()
 char *TraceEntry::ObtenerAsString()
 {
 	char x[1000];
-	StringUtils_Concatenar(x, "at [%s] on (%s:%lu)", this->ObtenerNombreMetodo(), this->ObtenerNombreArchivo(), this->ObtenerNumeroLinea());
+	StringUtils_Concatenar(x, "at [%s] on (%s:%d)", this->ObtenerNombreMetodo(), this->ObtenerNombreArchivo(), this->ObtenerNumeroLinea());
 	return StringUtils_Clonar(x);
 }
 

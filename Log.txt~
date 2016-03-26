@@ -1,0 +1,24 @@
+[2016/03/25 - 23:38:49] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)
+[2016/03/25 - 23:38:59] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)
+[2016/03/25 - 23:39:09] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)
+[2016/03/25 - 23:42:35] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)
+[2016/03/25 - 23:45:42] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)
+[2016/03/25 - 23:46:58] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)
+[2016/03/25 - 23:51:17] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)
+[2016/03/25 - 23:54:36] Excepcion en thread "main" ArrayIndexOutOfBoundsException: 5
+								at [virtual uValue RegistroBase::ObtenerCampo(size_t)] on (Fuentes/Utils/RegistroBase/Fuentes/RegistroBase.cpp:29)
+								at [virtual int Aplicacion::main(int, char**)] on (Fuentes/Aplicacion/Fuentes/Aplicacion.cpp:64)

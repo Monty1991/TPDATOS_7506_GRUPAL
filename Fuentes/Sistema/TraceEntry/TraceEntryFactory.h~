@@ -10,6 +10,6 @@
 
 #include "Headers/iTraceEntry.h"
 
-iTraceEntryPtr TraceEntryFactory_Nuevo(const char *filename, size_t line, const char *functionName);
+iTraceEntryPtr TraceEntryFactory_Nuevo(const char *filename, int line, const char *functionName);
 
 #endif	/* TRACEENTRYFACTORY_H */
