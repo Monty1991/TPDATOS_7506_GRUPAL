@@ -1,9 +1,9 @@
 CC = g++
 CXXFLAGS = -std=c++11 -g
 MODULOIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
-UTILS = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o
+UTILS = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o
 MEMORY = Object.o Pointer.o Feature.o Registro.o
-TDA = LinkedList.o LinkedListFactory.o Arbol.o
+TDA = LinkedList.o LinkedListFactory.o Arbol.o Fecha.o FechaFactory.o
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
 EXCEPTIONS = Exception.o ExceptionFactory.o
 OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SYSTEM) $(EXCEPTIONS)
