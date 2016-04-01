@@ -9,8 +9,9 @@
 #define	IREGISTRO_H
 
 #include "../../Feature/Headers/iFeature.h"
+#include "../../Object/Headers/iObject.h"
 
-typedef class iRegistro
+typedef class iRegistro: public iObject
 {
 	public:
 		virtual size_t GetSize() = 0;
