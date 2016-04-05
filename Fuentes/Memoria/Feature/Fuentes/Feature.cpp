@@ -13,31 +13,14 @@ Feature::Feature(uValue valor, eValueType tipo): contenido(valor), tipo(tipo)
 
 Feature::~Feature()
 {
-	switch(this->tipo)
+	if (this->tipo & Mascara_Registro)
+		delete this->AsRegistro();
+	else if (this->tipo ^ Mascara_Numero)
 	{
-		case eValueType_I1:	//	Entero 1 byte con signo
-		case eValueType_U1:	//	Entero 1 byte sin signo
-		case eValueType_I2:	//	Entero 2 bytes sin signo
-		case eValueType_U2:	//	Entero 2 bytes sin signo
-		case eValueType_I4:	//	Entero 4 bytes sin signo
-		case eValueType_U4:	//	Entero 4 bytes sin signo
-		case eValueType_I8:	//	Entero 8 bytes sin signo
-		case eValueType_U8:	//	Entero 8 bytes sin signo
-		case eValueType_F32:	//	Flotante IEEE754 32 bits
-		case eValueType_F64:	//	Flotante IEEE754 64 bits
-			break;
-
-		case eValueType_CA:	//	Cadena ANSI
-			delete this->AsCadenaANSI().cadena;
-			break;
-
-		case eValueType_CU:	//	Cadena UNICODE
+		if (this->tipo & Mascara_Unicode)
 			delete this->AsCadenaUNICODE().cadena;
-			break;
-
-		case eValueType_R:	//	Registro
-			delete this->AsRegistro();
-			break;
+		else
+			delete this->AsCadenaANSI().cadena;
 	}
 }
 
