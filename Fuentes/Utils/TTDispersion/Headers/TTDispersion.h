@@ -11,28 +11,35 @@
 #include <string>
 #include <vector>
 #include "iTTDispersion.h"
-#include "../../../Exceptions/ExceptionFactory.h"
 
 using namespace std;
 
 class TTDispersion: public iTTDispersion {
 
 private:
-	vector<unsigned> elementos;
-	unsigned lastAccessedElemIndex;
+
+	vector<int> elementos;
+	unsigned res_fn_disp;
+
+	unsigned modulo(unsigned long _key) {
+		return res_fn_disp = (_key % getTamanio());
+	}
 
 public:
-	TTDispersion(unsigned _elem);
+
+	TTDispersion(unsigned _tamanio);
 
 	virtual ~TTDispersion() {
 	}
+
+	iTTDispersion& operator=(const iTTDispersion& _tabla);
 
 	unsigned getTamanio() const {
 		return elementos.size();
 	}
 
-	unsigned remember() const {
-		return lastAccessedElemIndex;
+	unsigned getResFnDispersion() const {
+		return res_fn_disp;
 	}
 
 	void duplicar();
@@ -41,13 +48,12 @@ public:
 
 	void truncar();
 
-	void replaceElement(unsigned _pos, unsigned _elem);
+	void setElement(unsigned _pos, int _elem);
 
-	unsigned getElement(unsigned _pos);
+	int getElement(unsigned _pos) const;
 
-	unsigned dispersar(unsigned long _key) {
-
-		return getElement(_key % getTamanio());
+	int getElementFromKey(unsigned long _key) {
+		return getElement(modulo(_key));
 	}
 
 };

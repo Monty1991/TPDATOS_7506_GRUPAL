@@ -6,12 +6,26 @@
  */
 
 #include "../Headers/TTDispersion.h"
+#include "../../../Exceptions/ExceptionFactory.h"
 
-TTDispersion::TTDispersion(unsigned _elem) {
+TTDispersion::TTDispersion(unsigned _tamanio) {
 
+	res_fn_disp = 0;
 	elementos.clear();
-	elementos.push_back(_elem);
-	lastAccessedElemIndex = 0;
+
+	for (unsigned i = 0; i < _tamanio; i++)
+		elementos.push_back(-1);
+}
+
+iTTDispersion& TTDispersion::operator =(const iTTDispersion& _tabla) {
+
+	res_fn_disp = ((TTDispersion&) _tabla).res_fn_disp;
+	elementos.clear();
+
+	for (unsigned i = 0; i < _tabla.getTamanio(); i++)
+		elementos.push_back(((TTDispersion&) _tabla).elementos[i]);
+
+	return *this;
 }
 
 void TTDispersion::duplicar() {
@@ -25,11 +39,13 @@ void TTDispersion::duplicar() {
 bool TTDispersion::duplicada() const {
 
 	unsigned tamanio = elementos.size();
-	if (tamanio == 1)
+
+	if ((tamanio % 2) != 0)
 		return false;
 
 	unsigned i = 0;
 	unsigned j = tamanio / 2;
+
 	while (j < tamanio)
 		if (elementos[i++] != elementos[j++])
 			return false;
@@ -40,28 +56,27 @@ bool TTDispersion::duplicada() const {
 void TTDispersion::truncar() {
 
 	unsigned tamAntes = elementos.size();
-	if (tamAntes == 1)
-		Throw(" ", "ElementoUnico");
+
+	if ((tamAntes % 2) != 0)
+		Throw(" ", "TablaDeTamanioImpar");
 
 	for (unsigned i = 0; i < (tamAntes / 2); i++)
 		elementos.pop_back();
 }
 
-void TTDispersion::replaceElement(unsigned _pos, unsigned _elem) {
+void TTDispersion::setElement(unsigned _pos, int _elem) {
 
 	if (_pos >= elementos.size())
 		Throw(" ", "PosicionInvalida");
 
 	elementos[_pos] = _elem;
-	lastAccessedElemIndex = _pos;
 }
 
-unsigned TTDispersion::getElement(unsigned _pos) {
+int TTDispersion::getElement(unsigned _pos) const {
 
 	if (_pos >= elementos.size())
 		Throw(" ", "PosicionInvalida");
 
-	lastAccessedElemIndex = _pos;
 	return elementos[_pos];
 }
 

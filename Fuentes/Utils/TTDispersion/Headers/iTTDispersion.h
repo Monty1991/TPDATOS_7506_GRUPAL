@@ -11,16 +11,16 @@
 typedef class iTTDispersion {
 
 public:
-	iTTDispersion() {
-	}
 
 	virtual ~iTTDispersion() {
 	}
 
+	virtual iTTDispersion& operator=(const iTTDispersion& _tabla) = 0;
+
 	virtual unsigned getTamanio() const = 0;
 
-	//Recuerda la última posición accedida.
-	virtual unsigned remember() const = 0;
+	//pre: invocar primero al método getElementFromKey(_key)
+	virtual unsigned getResFnDispersion() const = 0;
 
 	virtual void duplicar() = 0;
 
@@ -28,12 +28,11 @@ public:
 
 	virtual void truncar() = 0;
 
-	virtual void replaceElement(unsigned _pos, unsigned _elem) = 0;
+	virtual void setElement(unsigned _pos, int _elem) = 0;
 
-	virtual unsigned getElement(unsigned _pos) = 0;
+	virtual int getElement(unsigned _pos) const = 0;
 
-	//Retorna un elemento y no una posición.
-	virtual unsigned dispersar(unsigned long _key) = 0;
+	virtual int getElementFromKey(unsigned long _key) = 0;
 
 }*iTTDispersionPtr;
 

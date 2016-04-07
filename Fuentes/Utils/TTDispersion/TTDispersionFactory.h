@@ -9,8 +9,7 @@
 #define TTDISPERSIONFACTORY_H_
 
 #include "Headers/iTTDispersion.h"
-#include "Headers/TTDispersion.h"
 
-iTTDispersionPtr TTDispersionFactory_Nuevo(unsigned _elem);
+iTTDispersionPtr TTDispersionFactory_Nuevo(unsigned _tamanio);
 
 #endif /* TTDISPERSIONFACTORY_H_ */

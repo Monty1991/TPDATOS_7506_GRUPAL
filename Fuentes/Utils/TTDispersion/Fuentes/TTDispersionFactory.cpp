@@ -6,9 +6,10 @@
  */
 
 #include "../TTDispersionFactory.h"
+#include "../Headers/TTDispersion.h"
 
-iTTDispersionPtr TTDispersionFactory_Nuevo(unsigned _elem){
-	return new TTDispersion(_elem);
+iTTDispersionPtr TTDispersionFactory_Nuevo(unsigned _tamanio){
+	return new TTDispersion(_tamanio);
 }
 
 
