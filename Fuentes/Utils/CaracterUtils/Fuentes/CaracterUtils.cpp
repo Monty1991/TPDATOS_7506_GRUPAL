@@ -1,8 +1,16 @@
 #include "../Headers/CaracterUtils.h"
 
+bool big_endian() {
+
+	int entero = 1;
+	char* p = (char*) &entero;
+	return p[0] == 0x00;
+}
+
 bool isDigit(const char& _c) {
 
 	switch (_c) {
+
 	case '0':
 	case '1':
 	case '2':
@@ -17,14 +25,13 @@ bool isDigit(const char& _c) {
 
 	default:
 		return false;
-
 	}
-
 }
 
 unsigned char getDigit(const char& _c) {
 
 	switch (_c) {
+
 	case '0':
 		return 0;
 	case '1':
@@ -46,6 +53,5 @@ unsigned char getDigit(const char& _c) {
 	case '9':
 		return 9;
 	}
-
 }
 
