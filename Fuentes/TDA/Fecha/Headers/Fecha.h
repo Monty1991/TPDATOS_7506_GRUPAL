@@ -16,6 +16,7 @@ using namespace std;
 class Fecha: public iFecha {
 
 private:
+
 	unsigned char dia;
 	unsigned char mes;
 	unsigned int anio;
@@ -24,6 +25,7 @@ private:
 	unsigned char segundo;
 
 public:
+
 	Fecha(unsigned char _dia, unsigned char _mes, unsigned int _anio,
 			unsigned char _hora, unsigned char _minuto, unsigned char _segundo) :
 			dia(_dia), mes(_mes), anio(_anio), hora(_hora), minuto(_minuto), segundo(
@@ -36,6 +38,7 @@ public:
 	bool isValid() const;
 
 	bool operator<(const Fecha& _f) const;
+
 	bool operator==(const Fecha& _f) const;
 
 	int compare(const iFecha& _f) const;

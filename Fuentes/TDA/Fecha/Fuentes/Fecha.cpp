@@ -13,10 +13,12 @@ bool Fecha::isValid() const {
 		return false;
 
 	bool bisiesto = false;
+
 	if ((anio % 4 == 0) && ((anio % 100 != 0) || (anio % 400 == 0)))
 		bisiesto = true;
 
 	switch (mes) {
+
 	case 1:
 		return dia <= 31;
 	case 2:
@@ -44,9 +46,7 @@ bool Fecha::isValid() const {
 
 	default:
 		return false;
-
 	}
-
 }
 
 bool Fecha::operator<(const Fecha& _f) const {
@@ -75,7 +75,6 @@ bool Fecha::operator<(const Fecha& _f) const {
 		return true;
 	else
 		return false;
-
 }
 
 bool Fecha::operator==(const Fecha& _f) const {
@@ -86,16 +85,14 @@ bool Fecha::operator==(const Fecha& _f) const {
 		return true;
 	else
 		return false;
-
 }
 
 int Fecha::compare(const iFecha& _f) const {
 
-	if (*this < (Fecha&)_f)
+	if (*this < (Fecha&) _f)
 		return -1;
-	else if (*this == (Fecha&)_f)
+	else if (*this == (Fecha&) _f)
 		return 0;
 	else
 		return 1;
-
 }
