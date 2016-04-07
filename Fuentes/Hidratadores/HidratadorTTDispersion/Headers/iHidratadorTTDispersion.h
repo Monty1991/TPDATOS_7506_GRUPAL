@@ -8,7 +8,7 @@
 #ifndef IHIDRATADORTTDISPERSION_H_
 #define IHIDRATADORTTDISPERSION_H_
 
-#include "../../TTDispersion/Headers/iTTDispersion.h"
+#include "../../../Utils/TTDispersion/Headers/iTTDispersion.h"
 
 typedef class iHidratadorTTDispersion {
 

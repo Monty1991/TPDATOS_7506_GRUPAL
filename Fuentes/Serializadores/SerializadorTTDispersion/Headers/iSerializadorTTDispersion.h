@@ -8,7 +8,7 @@
 #ifndef ISERIALIZADORTTDISPERSION_H_
 #define ISERIALIZADORTTDISPERSION_H_
 
-#include "../../TTDispersion/Headers/iTTDispersion.h"
+#include "../../../Utils/TTDispersion/Headers/iTTDispersion.h"
 
 typedef class iSerializadorTTDispersion {
 

@@ -1,6 +1,6 @@
 #include "../Headers/SerializadorNumerico.h"
 #include "../../../Exceptions/ExceptionFactory.h"
-#include "../../StringUtils/Headers/StringUtils.h"
+#include "../../../Utils/StringUtils/Headers/StringUtils.h"
 
 SerializadorNumerico::SerializadorNumerico()
 {

@@ -7,7 +7,7 @@
 
 #include <cstring>
 #include "../Headers/SerializadorTTDispersion.h"
-#include "../../CaracterUtils/Headers/CaracterUtils.h"
+#include "../../../Utils/CaracterUtils/Headers/CaracterUtils.h"
 
 unsigned SerializadorTTDispersion::calcularEspacio(
 		const iTTDispersionPtr _tabla) {

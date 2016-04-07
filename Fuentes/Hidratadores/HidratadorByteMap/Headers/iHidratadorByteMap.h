@@ -8,7 +8,7 @@
 #ifndef IHIDRATADORBYTEMAP_H_
 #define IHIDRATADORBYTEMAP_H_
 
-#include "../../ByteMap/Headers/iByteMap.h"
+#include "../../../Utils/ByteMap/Headers/iByteMap.h"
 
 typedef class iHidratadorByteMap {
 

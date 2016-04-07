@@ -7,7 +7,7 @@
 
 #include <cstring>
 #include "../Headers/SerializadorByteMap.h"
-#include "../../CaracterUtils/Headers/CaracterUtils.h"
+#include "../../../Utils/CaracterUtils/Headers/CaracterUtils.h"
 
 unsigned SerializadorByteMap::calcularEspacio(const iByteMapPtr _mapa) {
 

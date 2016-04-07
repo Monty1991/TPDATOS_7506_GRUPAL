@@ -7,7 +7,7 @@
 
 #include <cstring>
 #include "../Headers/HidratadorByteMap.h"
-#include "../../CaracterUtils/Headers/CaracterUtils.h"
+#include "../../../Utils/CaracterUtils/Headers/CaracterUtils.h"
 
 unsigned HidratadorByteMap::hidratar(iByteMapPtr _mapa, const char* _buffer) {
 

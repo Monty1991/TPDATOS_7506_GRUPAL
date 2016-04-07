@@ -7,8 +7,8 @@
 
 #include <cstring>
 #include "../Headers/HidratadorTTDispersion.h"
-#include "../../CaracterUtils/Headers/CaracterUtils.h"
-#include "../../TTDispersion/TTDispersionFactory.h"
+#include "../../../Utils/CaracterUtils/Headers/CaracterUtils.h"
+#include "../../../Utils/TTDispersion/TTDispersionFactory.h"
 
 unsigned HidratadorTTDispersion::hidratar(iTTDispersionPtr _tabla,
 		const char* _buffer) {

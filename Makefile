@@ -1,12 +1,14 @@
 CC = g++
 CXXFLAGS = -std=c++11 -g
 MODULOIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
-UTILS = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o SerializadorNumerico.o SerializadorNumericoFactory.o HidratadorNumerico.o HidratadorNumericoFactory.o SerializadorTTDispersion.o SerializadorTTDispersionFactory.o HidratadorTTDispersion.o HidratadorTTDispersionFactory.o SerializadorByteMap.o SerializadorByteMapFactory.o HidratadorByteMap.o HidratadorByteMapFactory.o  
+UTILS = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o
 MEMORY = Object.o Pointer.o Feature.o Registro.o
 TDA = LinkedList.o LinkedListFactory.o Arbol.o ArbolFactory.o Fecha.o FechaFactory.o
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
 EXCEPTIONS = Exception.o ExceptionFactory.o
-OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SYSTEM) $(EXCEPTIONS)
+SERIALIZADORES = SerializadorNumerico.o SerializadorNumericoFactory.o SerializadorCadenaSinPrefijo.o SerializadorCadenaSinPrefijoFactory.o SerializadorByteMap.o SerializadorByteMapFactory.o SerializadorTTDispersion.o SerializadorTTDispersionFactory.o
+HIDRATADORES = HidratadorNumerico.o HidratadorNumericoFactory.o HidratadorCadenaSinPrefijo.o HidratadorCadenaSinPrefijoFactory.o HidratadorTTDispersion.o HidratadorTTDispersionFactory.o HidratadorByteMap.o HidratadorByteMapFactory.o
+OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SERIALIZADORES) $(HIDRATADORES) $(SYSTEM) $(EXCEPTIONS)
 APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/
 OBJDIR = Objects
@@ -35,6 +37,14 @@ $(TDA): $$(join $(CarpetaFuentes)TDA/, $$(subst Factory,,$$(subst .o,, $$@))/Fue
 
 .SECONDEXPANSION:
 $(UTILS): $$(join $(CarpetaFuentes)Utils/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
+	$(CC) $(CXXFLAGS) -c $< -o $(OBJDIR)/$@
+
+.SECONDEXPANSION:
+$(SERIALIZADORES): $$(join $(CarpetaFuentes)Serializadores/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
+	$(CC) $(CXXFLAGS) -c $< -o $(OBJDIR)/$@
+
+.SECONDEXPANSION:
+$(HIDRATADORES): $$(join $(CarpetaFuentes)Hidratadores/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
 	$(CC) $(CXXFLAGS) -c $< -o $(OBJDIR)/$@
 
 .SECONDEXPANSION:
