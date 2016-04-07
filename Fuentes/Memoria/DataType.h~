@@ -91,18 +91,18 @@ union uCadena
 
 union uEnteroSinSigno
 {
-	unsigned INT8 entero8SinSigno;
-	unsigned INT16 entero16SinSigno;
-	unsigned INT32 entero32SinSigno;
-	unsigned INT64 entero64SinSigno;
+	unsigned __int8 entero8SinSigno;
+	unsigned __int16 entero16SinSigno;
+	unsigned __int32 entero32SinSigno;
+	unsigned __int64 entero64SinSigno;
 };
 
 union uEnteroConSigno
 {
-	INT8 entero8ConSigno;
-	INT16 entero16ConSigno;
-	INT32 entero32ConSigno;
-	INT64 entero64ConSigno;	
+	__int8 entero8ConSigno;
+	__int16 entero16ConSigno;
+	__int32 entero32ConSigno;
+	__int64 entero64ConSigno;	
 };
 
 union uEntero

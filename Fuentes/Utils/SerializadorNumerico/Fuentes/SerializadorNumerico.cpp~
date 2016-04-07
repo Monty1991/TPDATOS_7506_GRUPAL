@@ -108,7 +108,7 @@ size_t SerializadorNumerico::Serializar(char *buff, uNumber numero, eValueType t
 			}
 			else
 			{
-				unsigned INT64 value = numero.entero.enteroSinSigno.entero64SinSigno;
+				unsigned __int64 value = numero.entero.enteroSinSigno.entero64SinSigno;
 				*buff++ = value >> 56;
 				*buff++ = value >> 48;
 				*buff++ = value >> 40;
