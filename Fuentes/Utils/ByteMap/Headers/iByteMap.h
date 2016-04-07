@@ -15,28 +15,39 @@ enum eConfiguracion {
 typedef class iByteMap {
 
 public:
-	iByteMap() {
-	}
 
 	virtual ~iByteMap() {
 	}
+
+	virtual iByteMap* clone() const = 0;
 
 	virtual eConfiguracion getConfiguracion() const = 0;
 
 	virtual unsigned getTamanio() const = 0;
 
-	virtual void addGap(unsigned long _ref, unsigned _cantBytes)=0;
+	virtual void remove() = 0; /*Elimina la última referencia del mapa*/
+
+	/**
+	 * Este método debe ser invocado en las siguientes situaciones:
+	 * 1)_cuando se agrega un bloque nuevo a un archivo de bloques
+	 * 2)_cuando se borra un registro en un archivo de rrlv
+	 */
+	virtual void add(unsigned long _referencia, unsigned _cantBytesLibres)=0;
 
 	/*
-	 * _cantBytes es la cantidad de bytes escritos o borrados en el archivo.
-	 * _cantBytes debe ser positivo cuando se trate de bytes escritos.
-	 * _cantBytes debe ser negativo cuando se trate de bytes borrados.
+	 * Este método debe ser invocado en las siguientes situaciones:
+	 * 1)_alta de registro en un archivo de bloques
+	 * 2)_baja de registro en un archivo de bloques
+	 * 3)_alta de registro en un archivo de rrlv reutilizando espacio libre
+	 *
+	 * _cantBytesModificados debe ser positivo cuando se trate de bytes escritos
+	 * _cantBytesModificados debe ser negativo cuando se trate de bytes borrados
 	 */
-	virtual void upDateGap(unsigned long _ref, int _cantBytes)=0;
+	virtual void upDate(unsigned long _referencia, int _cantBytesModificados)=0;
 
-	virtual long getCantBytes(unsigned long ref)=0;
+	virtual unsigned getCantBytesLibres(unsigned long _referencia)=0;
 
-	virtual long getGap(unsigned _cantBytes) const=0; /**Devuelve -1 si no tiene éxito.**/
+	virtual long getReferencia(unsigned _cantBytesNecesarios) const=0; /**Devuelve -1 si no tiene éxito.**/
 
 }*iByteMapPtr;
 

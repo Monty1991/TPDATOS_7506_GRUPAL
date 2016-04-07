@@ -6,6 +6,7 @@
  */
 
 #include "../ByteMapFactory.h"
+#include "../Headers/ByteMap.h"
 
 iByteMapPtr ByteMapFactory_Nuevo(eConfiguracion _config){
 	return new ByteMap(_config);

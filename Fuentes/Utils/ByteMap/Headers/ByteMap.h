@@ -11,16 +11,16 @@
 #include <vector>
 #include <string>
 #include "iByteMap.h"
-#include "../../../Exceptions/ExceptionFactory.h"
 
 using namespace std;
 
 class ByteMap: public iByteMap {
 
 private:
+
 	struct Gap {
-		unsigned long ref; /**Representa un nro de block ó un offset según sea la config.**/
-		unsigned cantBytes;/**Representa la cant de bytes libres en la locación.**/
+		unsigned long ref;
+		unsigned cantBytes;
 	};
 
 	eConfiguracion config;
@@ -28,23 +28,22 @@ private:
 
 	void insert(unsigned _pos, const Gap& _g);
 	bool existe(unsigned long _ref, unsigned& _pos) const;
-	int insertOrdenado(const Gap& _g) {
-		unsigned pos;
-		if (existe(_g.ref, pos))
-			return -1;
-		else {
-			insert(pos, _g);
-			return pos;
-		}
-	}
+	int insertOrdenado(const Gap& _g);
 
 public:
+
 	ByteMap(eConfiguracion _config) :
 			config(_config) {
 		listGaps.clear();
 	}
 
+	ByteMap(const ByteMap& _byteMap);
+
 	virtual ~ByteMap() {
+	}
+
+	iByteMap* clone() const {
+		return new ByteMap(*this);
 	}
 
 	eConfiguracion getConfiguracion() const {
@@ -55,13 +54,15 @@ public:
 		return listGaps.size();
 	}
 
-	void addGap(unsigned long _ref, unsigned _cantBytes);
+	void remove();
 
-	void upDateGap(unsigned long _ref, int _cantBytes);
+	void add(unsigned long _referencia, unsigned _cantBytesLibres);
 
-	long getCantBytes(unsigned long ref);
+	void upDate(unsigned long _referencia, int _cantBytesModificados);
 
-	long getGap(unsigned _cantBytes) const;
+	unsigned getCantBytesLibres(unsigned long _referencia);
+
+	long getReferencia(unsigned _cantBytesNecesarios) const;
 
 };
 

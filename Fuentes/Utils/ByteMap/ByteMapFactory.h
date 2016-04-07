@@ -9,7 +9,6 @@
 #define BYTEMAPFACTORY_H_
 
 #include "Headers/iByteMap.h"
-#include "Headers/ByteMap.h"
 
 iByteMapPtr ByteMapFactory_Nuevo(eConfiguracion _config);
 

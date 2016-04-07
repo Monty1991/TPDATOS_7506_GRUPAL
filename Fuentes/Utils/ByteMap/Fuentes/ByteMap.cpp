@@ -6,14 +6,37 @@
  */
 
 #include "../Headers/ByteMap.h"
+#include "../../../Exceptions/ExceptionFactory.h"
+
+int ByteMap::insertOrdenado(const Gap& _g) {
+
+	unsigned pos;
+
+	if (existe(_g.ref, pos))
+		return -1;
+	else {
+
+		insert(pos, _g);
+		return pos;
+	}
+}
+
+ByteMap::ByteMap(const ByteMap& _byteMap) {
+
+	config = _byteMap.config;
+	listGaps.clear();
+
+	for (unsigned i = 0; i < _byteMap.listGaps.size(); i++)
+		listGaps.push_back(_byteMap.listGaps[i]);
+}
 
 void ByteMap::insert(unsigned _pos, const Gap& _g) {
 
 	if (_pos == listGaps.size())
 		listGaps.push_back(_g);
 	else {
-		unsigned last = listGaps.size() - 1;
 
+		unsigned last = listGaps.size() - 1;
 		listGaps.push_back(listGaps[last]);
 
 		for (unsigned i = last; i > _pos; i--)
@@ -32,6 +55,7 @@ bool ByteMap::existe(unsigned long _ref, unsigned& _pos) const {
 		if (listGaps[i].ref > _ref)
 			break;
 		else if (listGaps[i].ref == _ref) {
+
 			encontrado = true;
 			break;
 		}
@@ -40,32 +64,42 @@ bool ByteMap::existe(unsigned long _ref, unsigned& _pos) const {
 	return encontrado;
 }
 
-void ByteMap::addGap(unsigned long _ref, unsigned _cantBytes) {
+void ByteMap::add(unsigned long _referencia, unsigned _cantBytesLibres) {
 
 	Gap g;
 	int pos;
-
-	g.ref = _ref;
-	g.cantBytes = _cantBytes;
+	g.ref = _referencia;
+	g.cantBytes = _cantBytesLibres;
 
 	if (((pos = insertOrdenado(g)) < 0))
 		Throw(" ", "BytesLibresConReferenciasMultiples");
 
 	if (config == eConfiguracion_file_rrlv) {
+
 		if ((unsigned) pos != (listGaps.size() - 1)) {
-			if (listGaps[pos + 1].ref < (_ref + _cantBytes)) {
+
+			if (listGaps[pos + 1].ref < (_referencia + _cantBytesLibres)) {
+
 				Throw(" ", "BytesLibresConReferenciasMultiples");
-			} else if (listGaps[pos + 1].ref == (_ref + _cantBytes)) {
+
+			} else if (listGaps[pos + 1].ref
+					== (_referencia + _cantBytesLibres)) {
+
 				listGaps[pos].cantBytes += listGaps[pos + 1].cantBytes;
 				listGaps.erase(listGaps.begin() + pos + 1);
 			}
 		}
 
 		if (pos != 0) {
-			if ((listGaps[pos - 1].ref + listGaps[pos - 1].cantBytes) > _ref) {
+
+			if ((listGaps[pos - 1].ref + listGaps[pos - 1].cantBytes)
+					> _referencia) {
+
 				Throw(" ", "BytesLibresConReferenciasMultiples");
+
 			} else if ((listGaps[pos - 1].ref + listGaps[pos - 1].cantBytes)
-					== _ref) {
+					== _referencia) {
+
 				listGaps[pos - 1].cantBytes += listGaps[pos].cantBytes;
 				listGaps.erase(listGaps.begin() + pos);
 			}
@@ -73,39 +107,46 @@ void ByteMap::addGap(unsigned long _ref, unsigned _cantBytes) {
 	}
 }
 
-void ByteMap::upDateGap(unsigned long _ref, int _cantBytes) {
+void ByteMap::upDate(unsigned long _referencia, int _cantBytesModificados) {
 
 	unsigned pos;
 
-	if (!existe(_ref, pos))
+	if (!existe(_referencia, pos))
 		Throw(" ", "ReferenciaInexistente");
 
-	if ((int) listGaps[pos].cantBytes < _cantBytes)
+	if ((int) listGaps[pos].cantBytes < _cantBytesModificados)
 		Throw(" ", "CantBytesMalEspecificada");
 
-	listGaps[pos].cantBytes -= _cantBytes;
+	listGaps[pos].cantBytes -= _cantBytesModificados;
 
 	if (config == eConfiguracion_file_rrlv) {
+
 		if (listGaps[pos].cantBytes == 0)
 			listGaps.erase(listGaps.begin() + pos);
 		else
-			listGaps[pos].ref += _cantBytes;
+			listGaps[pos].ref += _cantBytesModificados;
 	}
 }
 
-long ByteMap::getCantBytes(unsigned long ref) {
+void ByteMap::remove() {
 
-	for (unsigned i = 0; i < listGaps.size(); i++)
-		if (listGaps[i].ref == ref)
-			return listGaps[i].cantBytes;
-
-	return -1;
+	if (listGaps.size() != 0)
+		listGaps.pop_back();
 }
 
-long ByteMap::getGap(unsigned _cantBytes) const {
+unsigned ByteMap::getCantBytesLibres(unsigned long _referencia) {
 
 	for (unsigned i = 0; i < listGaps.size(); i++)
-		if (listGaps[i].cantBytes >= _cantBytes)
+		if (listGaps[i].ref == _referencia)
+			return listGaps[i].cantBytes;
+
+	Throw(" ", "ReferenciaInexistente");
+}
+
+long ByteMap::getReferencia(unsigned _cantBytesNecesarios) const {
+
+	for (unsigned i = 0; i < listGaps.size(); i++)
+		if (listGaps[i].cantBytes >= _cantBytesNecesarios)
 			return listGaps[i].ref;
 
 	return -1;
