@@ -22,7 +22,7 @@ class HidratadorCadenaANSI: public iHidratadorCadenaANSI
 		HidratadorCadenaANSI();
 		virtual ~HidratadorCadenaANSI();
 		
-		virtual size_t Hidratar(char *buf, sCadenaANSI **cadena);
+		virtual size_t Hidratar(char *buff, sCadenaANSI **cadena);
 
 		virtual void Dispose();		
 };

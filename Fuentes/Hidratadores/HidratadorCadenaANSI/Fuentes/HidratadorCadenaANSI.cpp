@@ -20,7 +20,7 @@ HidratadorCadenaANSI::~HidratadorCadenaANSI()
 size_t HidratadorCadenaANSI::Hidratar(char *buff, sCadenaANSI **cadena)
 {
 	uNumber largo;
-	size_t largoPrefijo = this->hidratadorNumerico->Hidratar(buff, &largo, eValueType::eValueType_U8);
+	size_t largoPrefijo = this->hidratadorNumerico->Hidratar(buff, &largo, eValueType::eValueType_U1);
 	buff += largoPrefijo;
 
 	size_t largoCadena = largo.entero.enteroSinSigno.entero8SinSigno;
