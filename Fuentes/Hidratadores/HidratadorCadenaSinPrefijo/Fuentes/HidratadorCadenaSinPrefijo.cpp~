@@ -1,6 +1,6 @@
 #include "../Headers/HidratadorCadenaSinPrefijo.h"
 
-#include <string.h>
+#include <string>
 
 HidratadorCadenaSinPrefijo::HidratadorCadenaSinPrefijo()
 {

@@ -1,5 +1,5 @@
 #include "../Headers/SerializadorCadenaSinPrefijo.h"
-#include <string.h>
+#include <string>
 
 SerializadorCadenaSinPrefijo::SerializadorCadenaSinPrefijo()
 {
