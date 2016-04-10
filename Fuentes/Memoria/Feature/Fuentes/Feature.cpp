@@ -24,42 +24,42 @@ Feature::~Feature()
 	}
 }
 
-unsigned char Feature::AsEntero8SinSigno()
+unsigned INT8 Feature::AsEntero8SinSigno()
 {
 	return this->AsEnteroSinSigno().entero8SinSigno;
 }
 
-unsigned short Feature::AsEntero16SinSigno()
+unsigned INT16 Feature::AsEntero16SinSigno()
 {
 	return this->AsEnteroSinSigno().entero16SinSigno;
 }
 
-unsigned int Feature::AsEntero32SinSigno()
+unsigned INT32 Feature::AsEntero32SinSigno()
 {
 	return this->AsEnteroSinSigno().entero32SinSigno;
 }
 
-unsigned long long int Feature::AsEntero64SinSigno()
+unsigned INT64 Feature::AsEntero64SinSigno()
 {
 	return this->AsEnteroSinSigno().entero64SinSigno;
 }
 
-char Feature::AsEntero8ConSigno()
+INT8 Feature::AsEntero8ConSigno()
 {
 	return this->AsEnteroConSigno().entero8ConSigno;
 }
 
-short Feature::AsEntero16ConSigno()
+INT16 Feature::AsEntero16ConSigno()
 {
 	return this->AsEnteroConSigno().entero16ConSigno;
 }
 
-int Feature::AsEntero32ConSigno()
+INT32 Feature::AsEntero32ConSigno()
 {
 	return this->AsEnteroConSigno().entero32ConSigno;
 }
 
-long long int Feature::AsEntero64ConSigno()
+INT64 Feature::AsEntero64ConSigno()
 {
 	return this->AsEnteroConSigno().entero64ConSigno;
 }

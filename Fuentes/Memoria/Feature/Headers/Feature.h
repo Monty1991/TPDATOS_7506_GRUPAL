@@ -20,15 +20,15 @@ class Feature: public iFeature
 		Feature(uValue valor, eValueType tipo);
 		virtual ~Feature();
 
-		unsigned char AsEntero8SinSigno();
-		unsigned short AsEntero16SinSigno();
-		unsigned int AsEntero32SinSigno();
-		unsigned long long int AsEntero64SinSigno();
+		unsigned INT8 AsEntero8SinSigno();
+		unsigned INT16 AsEntero16SinSigno();
+		unsigned INT32 AsEntero32SinSigno();
+		unsigned INT64 AsEntero64SinSigno();
 		
-		char AsEntero8ConSigno();
-		short AsEntero16ConSigno();
-		int AsEntero32ConSigno();
-		long long int AsEntero64ConSigno();
+		INT8 AsEntero8ConSigno();
+		INT16 AsEntero16ConSigno();
+		INT32 AsEntero32ConSigno();
+		INT64 AsEntero64ConSigno();
 
 		float AsFlotante32();
 		double AsFlotante64();
