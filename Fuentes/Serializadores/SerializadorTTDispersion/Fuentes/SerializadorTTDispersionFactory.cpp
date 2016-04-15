@@ -8,7 +8,7 @@
 #include "../SerializadorTTDispersionFactory.h"
 #include "../Headers/SerializadorTTDispersion.h"
 
-iSerializadorTTDispersionPtr SerializadorTTDispersionFactory::SerializadorTTDispersionFactory_Nuevo() {
+iSerializadorTTDispersionPtr SerializadorTTDispersionFactory_Nuevo() {
 	return new SerializadorTTDispersion();
 }
 

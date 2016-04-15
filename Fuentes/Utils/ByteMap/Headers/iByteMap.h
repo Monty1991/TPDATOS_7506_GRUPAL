@@ -25,14 +25,15 @@ public:
 
 	virtual unsigned getTamanio() const = 0;
 
-	virtual void remove() = 0; /*Elimina la última referencia del mapa*/
+	virtual void reduce() = 0; /*Elimina la última referencia del mapa*/
 
 	/**
 	 * Este método debe ser invocado en las siguientes situaciones:
 	 * 1)_cuando se agrega un bloque nuevo a un archivo de bloques
 	 * 2)_cuando se borra un registro en un archivo de rrlv
 	 */
-	virtual void add(unsigned long _referencia, unsigned _cantBytesLibres)=0;
+	virtual void enlarge(unsigned long _referencia,
+			unsigned _cantBytesLibres)=0;
 
 	/*
 	 * Este método debe ser invocado en las siguientes situaciones:

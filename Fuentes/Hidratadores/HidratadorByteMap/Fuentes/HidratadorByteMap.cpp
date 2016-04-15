@@ -33,10 +33,10 @@ unsigned HidratadorByteMap::hidratar(iByteMapPtr _mapa, const char* _buffer) {
 
 	if (_mapa->getConfiguracion() == eConfiguracion_file_blocks)
 
-		for (unsigned i = 0; usefulChars != 0; i++) {
+		while (usefulChars != 0) {
 
 			memcpy(cantBytesPtr, _buffer, 2);
-			_mapa->add(i, cantBytes);
+			_mapa->enlarge((usefulChars / 2) - 1, cantBytes);
 			_buffer += 2;
 			usefulChars -= 2;
 		}
@@ -50,7 +50,7 @@ unsigned HidratadorByteMap::hidratar(iByteMapPtr _mapa, const char* _buffer) {
 			memcpy(offsetPtr, _buffer, 4);
 			_buffer += 4;
 			usefulChars -= 6;
-			_mapa->add(offset, cantBytes);
+			_mapa->enlarge(offset, cantBytes);
 		}
 
 	return copyUsefulChars;

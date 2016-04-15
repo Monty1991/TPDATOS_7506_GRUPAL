@@ -8,7 +8,7 @@
 #include "../HidratadorByteMapFactory.h"
 #include "../Headers/HidratadorByteMap.h"
 
-iHidratadorByteMapPtr HidratadorByteMapFactory::HidratadorByteMapFactory_Nuevo() {
+iHidratadorByteMapPtr HidratadorByteMapFactory_Nuevo() {
 	return new HidratadorByteMap();
 }
 

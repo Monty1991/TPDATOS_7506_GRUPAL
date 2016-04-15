@@ -10,7 +10,6 @@
 
 TTDispersion::TTDispersion(unsigned _tamanio) {
 
-	res_fn_disp = 0;
 	elementos.clear();
 
 	for (unsigned i = 0; i < _tamanio; i++)
@@ -19,7 +18,6 @@ TTDispersion::TTDispersion(unsigned _tamanio) {
 
 iTTDispersion& TTDispersion::operator =(const iTTDispersion& _tabla) {
 
-	res_fn_disp = ((TTDispersion&) _tabla).res_fn_disp;
 	elementos.clear();
 
 	for (unsigned i = 0; i < _tabla.getTamanio(); i++)

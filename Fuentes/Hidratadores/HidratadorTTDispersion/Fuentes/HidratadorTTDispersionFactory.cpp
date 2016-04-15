@@ -8,6 +8,6 @@
 #include "../HidratadorTTDispersionFactory.h"
 #include "../Headers/HidratadorTTDispersion.h"
 
-iHidratadorTTDispersionPtr HidratadorTTDispersionFactory::HidratadorTTDispersionFactory_Nuevo() {
+iHidratadorTTDispersionPtr HidratadorTTDispersionFactory_Nuevo() {
 	return new HidratadorTTDispersion();
 }

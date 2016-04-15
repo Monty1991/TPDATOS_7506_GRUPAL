@@ -10,11 +10,6 @@
 
 #include "Headers/iSerializadorTTDispersion.h"
 
-class SerializadorTTDispersionFactory {
-
-public:
-
-	iSerializadorTTDispersionPtr SerializadorTTDispersionFactory_Nuevo();
-};
+iSerializadorTTDispersionPtr SerializadorTTDispersionFactory_Nuevo();
 
 #endif /* SERIALIZADORTTDISPERSIONFACTORY_H_ */

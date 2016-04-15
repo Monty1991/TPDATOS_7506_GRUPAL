@@ -10,11 +10,6 @@
 
 #include "./Headers/iSerializadorByteMap.h"
 
-class SerializadorByteMapFactory {
-
-public:
-
-	iSerializadorByteMapPtr SerializadorByteMapFactory_Nuevo();
-};
+iSerializadorByteMapPtr SerializadorByteMapFactory_Nuevo();
 
 #endif /* SERIALIZADORBYTEMAPFACTORY_H_ */

@@ -8,7 +8,7 @@
 #include "../SerializadorByteMapFactory.h"
 #include "../Headers/SerializadorByteMap.h"
 
-iSerializadorByteMapPtr SerializadorByteMapFactory::SerializadorByteMapFactory_Nuevo() {
+iSerializadorByteMapPtr SerializadorByteMapFactory_Nuevo() {
 	return new SerializadorByteMap();
 }
 

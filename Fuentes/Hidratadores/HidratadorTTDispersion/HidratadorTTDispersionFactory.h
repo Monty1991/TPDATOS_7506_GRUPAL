@@ -10,16 +10,6 @@
 
 #include "Headers/iHidratadorTTDispersion.h"
 
-class HidratadorTTDispersionFactory {
-
-public:
-
-	virtual ~HidratadorTTDispersionFactory() {
-
-	}
-
-	iHidratadorTTDispersionPtr HidratadorTTDispersionFactory_Nuevo();
-
-};
+iHidratadorTTDispersionPtr HidratadorTTDispersionFactory_Nuevo();
 
 #endif /* HIDRATADORTTDISPERSIONFACTORY_H_ */

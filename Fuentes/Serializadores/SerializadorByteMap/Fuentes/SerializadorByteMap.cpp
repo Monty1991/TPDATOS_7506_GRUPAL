@@ -37,19 +37,20 @@ unsigned SerializadorByteMap::serializar(const iByteMapPtr _mapa,
 	usefulChars = calcularEspacio(_mapa);
 	memcpy(_buffer, usefulCharsPtr, 2);
 	_buffer += 2;
+	iByteMapPtr _copiaMapa = _mapa->clone();
 
-	if (_mapa->getConfiguracion() == eConfiguracion_file_blocks)
+	if (_copiaMapa->getConfiguracion() == eConfiguracion_file_blocks)
 
-		for (unsigned i = 0; i < _mapa->getTamanio(); i++) {
+		while (_copiaMapa->getTamanio() != 0) {
 
-			cantBytes = _mapa->getCantBytesLibres(i);
+			cantBytes = _copiaMapa->getCantBytesLibres(
+					_copiaMapa->getTamanio() - 1);
+			_copiaMapa->reduce();
 			memcpy(_buffer, cantBytesPtr, 2);
 			_buffer += 2;
 		}
 
-	else {
-
-		iByteMapPtr _copiaMapa = _mapa->clone();
+	else
 
 		while (_copiaMapa->getTamanio() != 0) {
 
@@ -62,9 +63,7 @@ unsigned SerializadorByteMap::serializar(const iByteMapPtr _mapa,
 			_buffer += 4;
 		}
 
-		delete _copiaMapa;
-	}
-
+	delete _copiaMapa;
 	return usefulChars;
 }
 

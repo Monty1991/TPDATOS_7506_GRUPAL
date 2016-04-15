@@ -54,9 +54,9 @@ public:
 		return listGaps.size();
 	}
 
-	void remove();
+	void reduce();
 
-	void add(unsigned long _referencia, unsigned _cantBytesLibres);
+	void enlarge(unsigned long _referencia, unsigned _cantBytesLibres);
 
 	void upDate(unsigned long _referencia, int _cantBytesModificados);
 

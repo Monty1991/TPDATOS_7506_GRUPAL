@@ -19,9 +19,6 @@ public:
 
 	virtual unsigned getTamanio() const = 0;
 
-	//pre: invocar primero al método getElementFromKey(_key)
-	virtual unsigned getResFnDispersion() const = 0;
-
 	virtual void duplicar() = 0;
 
 	virtual bool duplicada() const = 0;
@@ -31,8 +28,6 @@ public:
 	virtual void setElement(unsigned _pos, int _elem) = 0;
 
 	virtual int getElement(unsigned _pos) const = 0;
-
-	virtual int getElementFromKey(unsigned long _key) = 0;
 
 }*iTTDispersionPtr;
 

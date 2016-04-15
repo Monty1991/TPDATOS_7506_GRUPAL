@@ -10,16 +10,6 @@
 
 #include "Headers/iHidratadorByteMap.h"
 
-class HidratadorByteMapFactory {
-
-public:
-
-	virtual ~HidratadorByteMapFactory() {
-
-	}
-
-	iHidratadorByteMapPtr HidratadorByteMapFactory_Nuevo();
-
-};
+iHidratadorByteMapPtr HidratadorByteMapFactory_Nuevo();
 
 #endif /* HIDRATADORBYTEMAPFACTORY_H_ */

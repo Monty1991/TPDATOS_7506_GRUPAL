@@ -19,11 +19,6 @@ class TTDispersion: public iTTDispersion {
 private:
 
 	vector<int> elementos;
-	unsigned res_fn_disp;
-
-	unsigned modulo(unsigned long _key) {
-		return res_fn_disp = (_key % getTamanio());
-	}
 
 public:
 
@@ -38,10 +33,6 @@ public:
 		return elementos.size();
 	}
 
-	unsigned getResFnDispersion() const {
-		return res_fn_disp;
-	}
-
 	void duplicar();
 
 	bool duplicada() const;
@@ -51,10 +42,6 @@ public:
 	void setElement(unsigned _pos, int _elem);
 
 	int getElement(unsigned _pos) const;
-
-	int getElementFromKey(unsigned long _key) {
-		return getElement(modulo(_key));
-	}
 
 };
 

@@ -64,7 +64,7 @@ bool ByteMap::existe(unsigned long _ref, unsigned& _pos) const {
 	return encontrado;
 }
 
-void ByteMap::add(unsigned long _referencia, unsigned _cantBytesLibres) {
+void ByteMap::enlarge(unsigned long _referencia, unsigned _cantBytesLibres) {
 
 	Gap g;
 	int pos;
@@ -128,7 +128,7 @@ void ByteMap::upDate(unsigned long _referencia, int _cantBytesModificados) {
 	}
 }
 
-void ByteMap::remove() {
+void ByteMap::reduce() {
 
 	if (listGaps.size() != 0)
 		listGaps.pop_back();
