@@ -1,7 +1,7 @@
 CC = g++
 CXXFLAGS = -std=c++11 -g
-MODULOIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o
-UTILS = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o
+MODULOIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o ArchivoArbol.o ArchivoArbolFactory.o
+UTILS = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o Nodo.o NodoFactory.o
 MEMORY = Object.o Pointer.o Feature.o Registro.o
 TDA = LinkedList.o LinkedListFactory.o Arbol.o ArbolFactory.o Fecha.o FechaFactory.o Heap.o HeapFactory.o
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
@@ -15,7 +15,7 @@ OBJDIR = Objects
 EXEC = TPDatosGrupal
 
 .PHONY: all
-all: clean build
+all: build
 
 .PHONY: build
 build: | $(OBJDIR) $(EXEC)
@@ -62,4 +62,4 @@ $(EXEC): $(CarpetaFuentes)main.cpp $(APLICACION)
 
 .PHONY: clean
 clean:
-	-rm -f Objects/*.o $(EXEC)
+	-rm -f $(OBJDIR)/*.o $(EXEC)

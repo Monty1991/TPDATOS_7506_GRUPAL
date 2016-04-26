@@ -7,10 +7,13 @@ Heap::Heap(tComparador func): tamanio(16), func(func), cantidadElementos(0)
 
 Heap::~Heap()
 {
-	for(size_t i = 0; i < this->cantidadElementos; i++)
+	for (size_t i = 0; i < this->cantidadElementos; i++)
 	{
-		delete this->tabla[i];
-		this->tabla[i] = NULL;
+		if (this->tabla[i])
+		{	
+			delete this->tabla[i];
+			this->tabla[i] = NULL;
+		}
 	}
 
 	delete [] this->tabla;
