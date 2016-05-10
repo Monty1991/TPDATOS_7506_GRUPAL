@@ -9,24 +9,26 @@
 #define	LINKEDLIST_H
 
 #include "iLinkedList.h"
+#include "../../../Memoria/Object/Headers/Object.h"
 
-typedef class LinkedList: public iLinkedList
+typedef class LinkedList: public iLinkedList, public Object
 {
 	private:
 		iObjectPtr obj;
 		iLinkedList *next;
 	
-	public:
-		LinkedList(iObjectPtr obj, iLinkedList *next);
 		virtual ~LinkedList();
+	public:
+		LinkedList(iObjectPtr obj, iLinkedListPtr next);
 
-		iLinkedList *Next();
-		iObjectPtr Value();
+		virtual iLinkedListPtr Copiar();
+		virtual iLinkedListPtr Clone();
 
-		iLinkedList *Clone();
+		virtual iLinkedListPtr Next();
+		virtual iObjectPtr Value();
 
 		virtual void Dispose();
-
+		
 	private:
 
 } *LinkedListPtr;

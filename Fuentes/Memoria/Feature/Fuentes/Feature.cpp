@@ -5,10 +5,33 @@
  * Created on 21 de marzo de 2016, 05:21
  */
 
+#include <string.h>
+#include <wchar.h>
+
 #include "../Headers/Feature.h"
 
-Feature::Feature(uValue valor, eValueType tipo): contenido(valor), tipo(tipo)
+Feature::Feature(uValue valor, eValueType tipo): Object(), contenido(valor), tipo(tipo)
 {
+	if (this->tipo & Mascara_Numero)
+		this->contenido.primitivo.numero = valor.primitivo.numero;
+	else if (this->tipo & Mascara_Unicode)
+	{
+		size_t largo = valor.primitivo.cadena.unicode.largo;
+		wchar_t *cadena = new wchar_t[largo];
+		memcpy(cadena, valor.primitivo.cadena.unicode.cadena, largo * sizeof(wchar_t));
+		
+		this->contenido.primitivo.cadena.unicode.largo = largo;
+		this->contenido.primitivo.cadena.unicode.cadena = cadena;
+	}
+	else
+	{
+		size_t largo = valor.primitivo.cadena.ansi.largo;
+		char *cadena = new char[largo];
+		memcpy(cadena, valor.primitivo.cadena.ansi.cadena, largo);
+		
+		this->contenido.primitivo.cadena.ansi.largo = largo;
+		this->contenido.primitivo.cadena.ansi.cadena = cadena;
+	}
 }
 
 Feature::~Feature()
@@ -18,70 +41,41 @@ Feature::~Feature()
 	else if (this->tipo ^ Mascara_Numero)
 	{
 		if (this->tipo & Mascara_Unicode)
-			delete this->AsCadenaUNICODE().cadena;
+			delete [] this->contenido.primitivo.cadena.unicode.cadena;
 		else
-			delete this->AsCadenaANSI().cadena;
+			delete [] this->contenido.primitivo.cadena.ansi.cadena;
 	}
 }
 
-unsigned INT8 Feature::AsEntero8SinSigno()
+iFeaturePtr Feature::Copiar()
 {
-	return this->AsEnteroSinSigno().entero8SinSigno;
+	Object::IncrementarContador();
+	return this;
 }
 
-unsigned INT16 Feature::AsEntero16SinSigno()
+iFeaturePtr Feature::Clone()
 {
-	return this->AsEnteroSinSigno().entero16SinSigno;
+	return new Feature(this->contenido, this->tipo);
 }
 
-unsigned INT32 Feature::AsEntero32SinSigno()
+eValueType Feature::ObtenerTipo()
 {
-	return this->AsEnteroSinSigno().entero32SinSigno;
+	return this->tipo;
 }
 
-unsigned INT64 Feature::AsEntero64SinSigno()
+uNumber Feature::AsNumber()
 {
-	return this->AsEnteroSinSigno().entero64SinSigno;
+	return this->contenido.primitivo.numero;
 }
 
-INT8 Feature::AsEntero8ConSigno()
+sCadenaANSI *Feature::AsCadenaANSI()
 {
-	return this->AsEnteroConSigno().entero8ConSigno;
+	return &(this->contenido.primitivo.cadena.ansi);
 }
 
-INT16 Feature::AsEntero16ConSigno()
+sCadenaUNICODE *Feature::AsCadenaUNICODE()
 {
-	return this->AsEnteroConSigno().entero16ConSigno;
-}
-
-INT32 Feature::AsEntero32ConSigno()
-{
-	return this->AsEnteroConSigno().entero32ConSigno;
-}
-
-INT64 Feature::AsEntero64ConSigno()
-{
-	return this->AsEnteroConSigno().entero64ConSigno;
-}
-
-float Feature::AsFlotante32()
-{
-	return this->AsFlotante().flotante32;
-}
-
-double Feature::AsFlotante64()
-{
-	return this->AsFlotante().flotante64;	
-}
-
-sCadenaANSI Feature::AsCadenaANSI()
-{
-	return this->AsCadena().ansi;
-}
-
-sCadenaUNICODE Feature::AsCadenaUNICODE()
-{
-	return this->AsCadena().unicode;	
+	return &(this->contenido.primitivo.cadena.unicode);
 }
 
 iObjectPtr Feature::AsRegistro()
@@ -91,40 +85,5 @@ iObjectPtr Feature::AsRegistro()
 
 void Feature::Dispose()
 {
-	delete this;
-}
-
-uPrimitive Feature::AsPrimitive()
-{
-	return this->contenido.primitivo;
-}
-
-uCadena Feature::AsCadena()
-{
-	return this->AsPrimitive().cadena;
-}
-
-uNumber Feature::AsNumber()
-{
-	return this->AsPrimitive().numero;
-}
-
-uFlotante Feature::AsFlotante()
-{
-	return this->AsNumber().flotante;
-}
-
-uEntero Feature::AsEntero()
-{
-	return this->AsNumber().entero;
-}
-
-uEnteroSinSigno Feature::AsEnteroSinSigno()
-{
-	return this->AsEntero().enteroSinSigno;
-}
-
-uEnteroConSigno Feature::AsEnteroConSigno()
-{
-	return this->AsEntero().enteroConSigno;
+	Object::Dispose();
 }

@@ -17,20 +17,19 @@ HidratadorCadenaANSI::~HidratadorCadenaANSI()
 		this->hidratadorCadenaSinPrefijo->Dispose();
 }
 		
-size_t HidratadorCadenaANSI::Hidratar(char *buff, sCadenaANSI **cadena)
+size_t HidratadorCadenaANSI::Hidratar(char *buff, sCadenaANSI *cadena)
 {
 	uNumber largo;
-	size_t largoPrefijo = this->hidratadorNumerico->Hidratar(buff, &largo, eValueType::eValueType_U1);
+	size_t largoPrefijo = this->hidratadorNumerico->Hidratar(buff, &largo, eValueType::eValueType_U2);
 	buff += largoPrefijo;
 
-	size_t largoCadena = largo.entero.enteroSinSigno.entero8SinSigno;
+	size_t largoCadena = largo.entero.enteroSinSigno.entero16SinSigno;
 
-	*cadena = new sCadenaANSI();
-	(*cadena)->cadena = new char[largoCadena];
-	(*cadena)->largo = largoCadena;
+	cadena->cadena = new char[largoCadena];
+	cadena->largo = largoCadena;
 
-	size_t largoCadenaLeido = this->hidratadorCadenaSinPrefijo->Hidratar(buff, (*cadena)->cadena, largoCadena);
-	
+	size_t largoCadenaLeido = this->hidratadorCadenaSinPrefijo->Hidratar(buff, cadena->cadena, largoCadena);
+
 	return largoPrefijo + largoCadenaLeido;
 }
 

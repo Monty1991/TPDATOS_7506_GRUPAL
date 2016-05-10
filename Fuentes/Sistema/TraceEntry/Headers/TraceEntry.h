@@ -9,17 +9,21 @@
 #define	TRACEENTRY_H
 
 #include "iTraceEntry.h"
+#include "../../../Memoria/Object/Headers/Object.h"
 
-class TraceEntry: public iTraceEntry
+class TraceEntry: public iTraceEntry, public Object
 {
 	private:
 		char *filename;
 		size_t numeroLinea;
 		char *functionName;
 
+		virtual ~TraceEntry();
 	public:
 		TraceEntry(const char *filename, size_t numeroLinea, const char *nombreMetodo);
-		virtual ~TraceEntry();
+
+		virtual iTraceEntryPtr Copiar();
+		virtual iTraceEntryPtr Clone();
 
 		const char *ObtenerNombreArchivo();
 		size_t ObtenerNumeroLinea();
@@ -27,7 +31,6 @@ class TraceEntry: public iTraceEntry
 
 		char *ObtenerAsString();
 
-		virtual TraceEntry *Clone();
 		virtual void Dispose();
 		
 	private:

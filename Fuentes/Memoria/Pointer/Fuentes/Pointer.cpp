@@ -55,7 +55,7 @@ void Pointer::Attach(const Pointer &ptr)
 void Pointer::Release()
 {
 	if (this->prev == this)
-		delete this->obj;
+		this->obj->Dispose();
 	else
 	{
 		this->prev->next = this->next;

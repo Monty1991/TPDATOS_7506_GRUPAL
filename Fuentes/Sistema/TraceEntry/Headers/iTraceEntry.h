@@ -14,13 +14,15 @@
 typedef class iTraceEntry: public iObject
 {
 	public:
+		virtual iTraceEntry *Copiar() = 0;
+		virtual iTraceEntry *Clone() = 0;
+
 		virtual const char *ObtenerNombreArchivo() = 0;
 		virtual size_t ObtenerNumeroLinea() = 0;
 		virtual const char *ObtenerNombreMetodo() = 0;
 		
 		virtual char *ObtenerAsString() = 0;
 		
-		virtual iTraceEntry *Clone() = 0;
 		virtual void Dispose() = 0;
 
 } *iTraceEntryPtr;

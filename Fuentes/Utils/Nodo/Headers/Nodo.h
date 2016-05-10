@@ -13,19 +13,19 @@
 class Nodo: public iNodo
 {
 	private:
-		size_t altura;
+		eTipoNodo tipo;
 		size_t tamanio;
 		size_t cantidad;
 		iRegistroPtr *tablaRegistros;
 		
 	public:
-		Nodo(size_t altura, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
+		Nodo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 		virtual ~Nodo();
 
 		virtual void Dispose();
 
-		virtual size_t ObtenerAltura();
-		virtual void CambiarAltura(size_t altura);
+		virtual eTipoNodo ObtenerTipoNodo();
+		virtual void CambiarTipoNodo(eTipoNodo nuevoTipo);
 
 		virtual size_t ObtenerCantidadRegistros();
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);

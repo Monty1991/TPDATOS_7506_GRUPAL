@@ -13,8 +13,7 @@
 typedef class iHidratadorCadenaUNICODE
 {
 	public:
-		
-		size_t Hidratar(char *buff, sCadenaUNICODE **cadena);
+		virtual size_t Hidratar(char *buff, sCadenaUNICODE *cadena) = 0;
 
 		virtual void Dispose() = 0;
 } *iHidratadorCadenaUNICODEPtr;

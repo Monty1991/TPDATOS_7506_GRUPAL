@@ -13,21 +13,20 @@
 class DescriptorRegistro: public iDescriptorRegistro
 {
 	private:
-		eTipoCampo *valores;
-		size_t cantidad;
+		eValueType *tablaValores;
+		size_t cantidadCampos;
 
+		virtual ~DescriptorRegistro();
 	public:
-		DescriptorRegistro(eTipoCampo *valores, size_t cantidad);
-		~DescriptorRegistro();
+		DescriptorRegistro(eValueType *valores, size_t cantidadCampos);
 
-		eTipoCampo ObtenerTipoCampo(size_t nroCampo);
-		size_t ObtenerCantidadCampos();
+		virtual eValueType ObtenerTipoCampo(size_t nroCampo);
+		virtual size_t ObtenerCantidadCampos();
 
-		void Dispose();
+		virtual void Dispose();
 
 	private:
 
 };
 
 #endif	/* DESCRIPTORREGISTRO_H */
-

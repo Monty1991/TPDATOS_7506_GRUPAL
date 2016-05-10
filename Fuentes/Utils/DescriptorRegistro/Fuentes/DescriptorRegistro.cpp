@@ -9,33 +9,36 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../StringUtils/Headers/StringUtils.h"
 
-DescriptorRegistro::DescriptorRegistro(eTipoCampo *valores, size_t cantidad)
+DescriptorRegistro::DescriptorRegistro(eValueType *valores, size_t cantidadCampos)
 {
-	this->valores = valores;
-	this->cantidad = cantidad;
+	this->cantidadCampos = cantidadCampos;
+	this->tablaValores = new eValueType[cantidadCampos];
+
+	for (size_t i = 0; i < cantidadCampos; i++)
+		this->tablaValores[i] = valores[i];
 }
 
 DescriptorRegistro::~DescriptorRegistro()
 {
-	if (this->valores)
-		delete this;
+	if (this->tablaValores)
+		delete [] this->tablaValores;
 }
 
-eTipoCampo DescriptorRegistro::ObtenerTipoCampo(size_t posicion)
+eValueType DescriptorRegistro::ObtenerTipoCampo(size_t posicion)
 {
-	if (posicion >= this->cantidad)
+	if (posicion >= this->cantidadCampos)
 	{
 		char msg[20];
 		StringUtils_Concatenar(msg,"%lu", posicion);
-		Throw("ArrayIndexOutOfBoundsException", msg);
+		Throw(ExceptionType_ArrayIndexOutOfBounds, msg);
 	}
 
-	return this->valores[posicion];
+	return this->tablaValores[posicion];
 }
 
 size_t DescriptorRegistro::ObtenerCantidadCampos()
 {
-	return this->cantidad;
+	return this->cantidadCampos;
 }
 
 void DescriptorRegistro::Dispose()

@@ -16,21 +16,21 @@ class MapaDeBits: public iMapaDeBits
 	private:
 		iBloquePtr bloque;
 		
+		virtual ~MapaDeBits();
 	public:
 		MapaDeBits(const iBloquePtr bloque);
-		~MapaDeBits();
 
-		const iBloquePtr Leer();
+		virtual const iBloquePtr Leer();
 
-		size_t ObtenerTamanio();
+		virtual size_t ObtenerTamanio();
 
-		bool ObtenerBit(size_t posicion);
-		void SetearBit(size_t posicion, bool valor);
+		virtual bool ObtenerBit(size_t posicion);
+		virtual void SetearBit(size_t posicion, bool valor);
 
-		void Dispose();
+		virtual void Dispose();
 
 	private:
-		char ObtenerOffsetCorrimiento(size_t posicion);
+		virtual char ObtenerOffsetCorrimiento(size_t posicion);
 };
 
 #endif	/* MAPADEBITS_H */

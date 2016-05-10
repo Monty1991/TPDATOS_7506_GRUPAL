@@ -13,14 +13,17 @@
 typedef class Object: public iObject
 {
 	private:
+		int refCount;
 
 	public:
-		virtual ~Object() {}
+		Object();
 
 		virtual iObject *Clone() = 0;
-		virtual void Dispose() = 0;
+		virtual void Dispose();
 
-	private:
+	protected:
+		virtual ~Object();
+		virtual void IncrementarContador();
 
 } *ObjectPtr;
 

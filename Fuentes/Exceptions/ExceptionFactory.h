@@ -11,6 +11,9 @@
 #include "Headers/iException.h"
 #include "../Sistema/Sistema/Headers/Sistema.h"
 
+#define ExceptionType_InvalidArg "Invalid arg"
+#define ExceptionType_ArrayIndexOutOfBounds "ArrayIndexOutOfBoundsException"
+
 iExceptionPtr ExceptionFactory_Nuevo(const char *exceptionType, const char *msg, const char *fileName, int line, const char *functionName);
 
 #define Throw(exception, msg) throw ExceptionFactory_Nuevo(exception, msg, Sistema_DebugInfo(-1));

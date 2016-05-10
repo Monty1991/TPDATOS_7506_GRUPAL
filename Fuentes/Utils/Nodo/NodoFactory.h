@@ -10,6 +10,6 @@
 
 #include "Headers/iNodo.h"
 
-iNodoPtr NodoFactory_Nuevo(size_t altura, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
+iNodoPtr NodoFactory_Nuevo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
 #endif	/* NODOFACTORY_H */

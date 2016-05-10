@@ -1,6 +1,6 @@
 #include "../Headers/Nodo.h"
 
-Nodo::Nodo(size_t altura, iRegistroPtr *listaRegistros, size_t cantidadRegistros): altura(altura)
+Nodo::Nodo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros): tipo(tipo)
 {
 	this->tamanio = 16;
 	// con esto nos aseguramos de que la tabla sea potencia de 2
@@ -12,7 +12,7 @@ Nodo::Nodo(size_t altura, iRegistroPtr *listaRegistros, size_t cantidadRegistros
 	this->tablaRegistros = new iRegistroPtr[this->cantidad];
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		this->tablaRegistros[i] = listaRegistros[i];
+		this->tablaRegistros[i] = listaRegistros[i]->Copiar();
 }
 
 Nodo::~Nodo()
@@ -38,14 +38,14 @@ void Nodo::Dispose()
 	delete this;
 }
 
-size_t Nodo::ObtenerAltura()
+eTipoNodo Nodo::ObtenerTipoNodo()
 {
-	return this->altura;
+	return this->tipo;
 }
 
-void Nodo::CambiarAltura(size_t altura)
+void Nodo::CambiarTipoNodo(eTipoNodo nuevoTipo)
 {
-	this->altura = altura;
+	this->tipo = nuevoTipo;
 }
 
 size_t Nodo::ObtenerCantidadRegistros()

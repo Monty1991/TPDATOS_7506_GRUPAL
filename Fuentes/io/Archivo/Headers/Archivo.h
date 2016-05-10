@@ -21,7 +21,7 @@ typedef class Archivo: public iArchivo
 		virtual ~Archivo();
 
 		void Read(char *buff, size_t count);
-		void Write(char *buff, size_t amount);
+		void Write(const char *buff, size_t amount);
 		void Seek(size_t position);
 
 		int ReadChar();

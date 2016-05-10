@@ -11,8 +11,11 @@
 typedef class iObject
 {
 	public:
+		virtual iObject *Copiar() = 0;
 		virtual iObject *Clone() = 0;
+		
 		virtual void Dispose() = 0;
+
 } *iObjectPtr;
 
 #endif	/* IOBJECT_H */

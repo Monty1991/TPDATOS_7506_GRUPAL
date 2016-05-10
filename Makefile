@@ -1,13 +1,13 @@
 CC = g++
 CXXFLAGS = -std=c++11 -g
 MODULOIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o ArchivoArbol.o ArchivoArbolFactory.o
-UTILS = RegistroBase.o RegistroBaseFactory.o StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o Nodo.o NodoFactory.o
-MEMORY = Object.o Pointer.o Feature.o Registro.o
-TDA = LinkedList.o LinkedListFactory.o Arbol.o ArbolFactory.o Fecha.o FechaFactory.o Heap.o HeapFactory.o
+UTILS = StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o Nodo.o NodoFactory.o
+MEMORY = Object.o Pointer.o Feature.o FeatureFactory.o Registro.o RegistroFactory.o
+TDA = LinkedList.o LinkedListFactory.o Arbol.o ArbolFactory.o Fecha.o FechaFactory.o
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
 EXCEPTIONS = Exception.o ExceptionFactory.o
-SERIALIZADORES = SerializadorNumerico.o SerializadorNumericoFactory.o SerializadorCadenaSinPrefijo.o SerializadorCadenaSinPrefijoFactory.o SerializadorByteMap.o SerializadorByteMapFactory.o SerializadorTTDispersion.o SerializadorTTDispersionFactory.o SerializadorCadenaANSI.o SerializadorCadenaANSIFactory.o SerializadorCadenaUNICODE.o SerializadorCadenaUNICODEFactory.o
-HIDRATADORES = HidratadorNumerico.o HidratadorNumericoFactory.o HidratadorCadenaSinPrefijo.o HidratadorCadenaSinPrefijoFactory.o HidratadorTTDispersion.o HidratadorTTDispersionFactory.o HidratadorByteMap.o HidratadorByteMapFactory.o HidratadorCadenaANSI.o HidratadorCadenaANSIFactory.o HidratadorCadenaUNICODE.o HidratadorCadenaUNICODEFactory.o
+SERIALIZADORES = SerializadorNumerico.o SerializadorNumericoFactory.o SerializadorCadenaSinPrefijo.o SerializadorCadenaSinPrefijoFactory.o SerializadorByteMap.o SerializadorByteMapFactory.o SerializadorTTDispersion.o SerializadorTTDispersionFactory.o SerializadorCadenaANSI.o SerializadorCadenaANSIFactory.o SerializadorCadenaUNICODE.o SerializadorCadenaUNICODEFactory.o SerializadorFeature.o SerializadorFeatureFactory.o SerializadorRegistro.o SerializadorRegistroFactory.o
+HIDRATADORES = HidratadorNumerico.o HidratadorNumericoFactory.o HidratadorCadenaSinPrefijo.o HidratadorCadenaSinPrefijoFactory.o HidratadorTTDispersion.o HidratadorTTDispersionFactory.o HidratadorByteMap.o HidratadorByteMapFactory.o HidratadorCadenaANSI.o HidratadorCadenaANSIFactory.o HidratadorCadenaUNICODE.o HidratadorCadenaUNICODEFactory.o HidratadorFeature.o HidratadorFeatureFactory.o HidratadorRegistro.o HidratadorRegistroFactory.o
 OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SERIALIZADORES) $(HIDRATADORES) $(SYSTEM) $(EXCEPTIONS)
 APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/
@@ -28,7 +28,7 @@ $(MODULOIO): $$(join $(CarpetaFuentes)io/, $$(subst Factory,,$$(subst .o,, $$@))
 	$(CC) $(CXXFLAGS) -c $< -o $(OBJDIR)/$@
 
 .SECONDEXPANSION:
-$(MEMORY): $$(join $(CarpetaFuentes)Memoria/, $$(subst .o,, $$@)/Fuentes/$$(subst .o,,$$@).cpp)
+$(MEMORY): $$(join $(CarpetaFuentes)Memoria/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
 	$(CC) $(CXXFLAGS) -c $< -o $(OBJDIR)/$@
 
 .SECONDEXPANSION:

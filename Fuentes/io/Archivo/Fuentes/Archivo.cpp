@@ -21,7 +21,7 @@ void Archivo::Read(char *buff, size_t count)
 	fread(buff, sizeof(char), count, this->file);
 }
 
-void Archivo::Write(char *buff, size_t count)
+void Archivo::Write(const char *buff, size_t count)
 {
 	fwrite(buff, sizeof(char), count, this->file);
 }

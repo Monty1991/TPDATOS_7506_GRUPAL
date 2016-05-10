@@ -10,7 +10,7 @@
 
 #include "Headers/iDescriptorRegistro.h"
 
-iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(eTipoCampo *valores, size_t cantidad);
+iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(eValueType *valores, size_t cantidad);
 
 #endif	/* DESCRIPTORREGISTROFACTORY_H */
 

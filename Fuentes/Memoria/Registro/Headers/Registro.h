@@ -9,25 +9,29 @@
 #define	REGISTRO_H
 
 #include "iRegistro.h"
+#include "../../Object/Headers/Object.h"
 
-class Registro: public iRegistro
+class Registro: public iRegistro, public Object
 {
 	private:
-		size_t size;
+		size_t cantidadCampos;
 		iFeaturePtr *tabla;
 	
-	public:
-		Registro(size_t size);
 		virtual ~Registro();
+	public:
+		Registro(size_t cantidadCampos);
 
-		size_t GetSize();
+		virtual iRegistroPtr Copiar();
+		virtual iRegistroPtr Clone();
+
+		virtual size_t ObtenerCantidadCampos();
 		
-		iFeaturePtr GetFeature(size_t posicion);
-		void SetFeature(size_t posicion, iFeaturePtr feature);
+		virtual iFeaturePtr GetFeature(size_t posicion);
+		virtual void SetFeature(size_t posicion, iFeaturePtr feature);
 
+		virtual void Dispose();
 	private:
 
 };
 
 #endif	/* REGISTRO_H */
-

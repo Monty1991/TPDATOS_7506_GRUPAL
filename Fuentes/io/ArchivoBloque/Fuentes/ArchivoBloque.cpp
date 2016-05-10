@@ -40,9 +40,7 @@ void ArchivoBloque::EscribirBloque(size_t nroBloque, iBloquePtr bloque)
 
 	this->archivo->Seek(nroBloque * this->tamanioBloque);
 
-	char buff[this->tamanioBloque];
-	bloque->LeerBloque(buff, 0, this->tamanioBloque);
-	this->archivo->Write(buff, this->tamanioBloque);
+	this->archivo->Write(bloque->ObtenerContenido(), this->tamanioBloque);
 	this->archivo->Flush();
 	
 	bloque->BorrarBitModificacion();	// el disco tiene ahora el mismo contenido, por lo tanto, esta actualizado

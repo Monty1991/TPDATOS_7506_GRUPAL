@@ -2,7 +2,7 @@
 #include "../Headers/Nodo.h"
 #include <stdlib.h>
 
-iNodoPtr NodoFactory_Nuevo(size_t altura, iRegistroPtr *listaRegistros, size_t cantidadRegistros)
+iNodoPtr NodoFactory_Nuevo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros)
 {
-	return new Nodo(altura, listaRegistros, cantidadRegistros);
+	return new Nodo(tipo, listaRegistros, cantidadRegistros);
 }

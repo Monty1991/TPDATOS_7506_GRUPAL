@@ -16,7 +16,7 @@ typedef class iArchivo
 
 		// Acceso aleatorio
 		virtual void Read(char *buff, size_t count) = 0;
-		virtual void Write(char *buff, size_t count) = 0;
+		virtual void Write(const char *buff, size_t count) = 0;
 		virtual void Seek(size_t position) = 0;
 
 		// Acceso secuencial

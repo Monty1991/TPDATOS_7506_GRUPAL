@@ -25,6 +25,17 @@ TraceEntry::~TraceEntry()
 		delete[] this->functionName;
 }
 
+iTraceEntryPtr TraceEntry::Copiar()
+{
+	Object::IncrementarContador();
+	return this;
+}
+
+iTraceEntryPtr TraceEntry::Clone()
+{
+	return new TraceEntry(this->ObtenerNombreArchivo(), this->ObtenerNumeroLinea(), this->ObtenerNombreMetodo());
+}
+
 const char *TraceEntry::ObtenerNombreArchivo()
 {
 	return this->filename;
@@ -47,12 +58,7 @@ char *TraceEntry::ObtenerAsString()
 	return StringUtils_Clonar(x);
 }
 
-TraceEntry *TraceEntry::Clone()
-{
-	return new TraceEntry(this->ObtenerNombreArchivo(), this->ObtenerNumeroLinea(), this->ObtenerNombreMetodo());
-}
-
 void TraceEntry::Dispose()
 {
-	delete this;
+	Object::Dispose();
 }

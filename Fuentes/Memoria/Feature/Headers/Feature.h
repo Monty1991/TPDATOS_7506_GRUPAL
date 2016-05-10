@@ -9,47 +9,31 @@
 #define	FEATURE_H
 
 #include "iFeature.h"
+#include "../../Object/Headers/Object.h"
 
-class Feature: public iFeature
+class Feature: public iFeature, public Object
 {
 	private:
 		uValue contenido;
 		eValueType tipo;
 		
+		virtual ~Feature();
 	public:
 		Feature(uValue valor, eValueType tipo);
-		virtual ~Feature();
 
-		unsigned INT8 AsEntero8SinSigno();
-		unsigned INT16 AsEntero16SinSigno();
-		unsigned INT32 AsEntero32SinSigno();
-		unsigned INT64 AsEntero64SinSigno();
-		
-		INT8 AsEntero8ConSigno();
-		INT16 AsEntero16ConSigno();
-		INT32 AsEntero32ConSigno();
-		INT64 AsEntero64ConSigno();
+		virtual iFeaturePtr Copiar();
+		virtual iFeaturePtr Clone();
 
-		float AsFlotante32();
-		double AsFlotante64();
+		virtual eValueType ObtenerTipo();
 
-		sCadenaANSI AsCadenaANSI();
-		sCadenaUNICODE AsCadenaUNICODE();
-
-		iObjectPtr AsRegistro();
+		virtual uNumber AsNumber();
+		virtual sCadenaANSI *AsCadenaANSI();
+		virtual sCadenaUNICODE *AsCadenaUNICODE();
+		virtual iObjectPtr AsRegistro();
 
 		virtual void Dispose();
 
 	private:
-		uPrimitive AsPrimitive();
-		uCadena AsCadena();
-		uNumber AsNumber();
-		uFlotante AsFlotante();
-		uEntero AsEntero();
-		uEnteroSinSigno AsEnteroSinSigno();
-		uEnteroConSigno AsEnteroConSigno();
-
 };
 
 #endif	/* FEATURE_H */
-

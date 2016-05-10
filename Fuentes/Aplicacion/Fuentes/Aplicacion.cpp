@@ -1,7 +1,6 @@
 #include "../Headers/Aplicacion.h"
 #include "../../Exceptions/Headers/iException.h"
 #include "../../Sistema/Sistema/Headers/Sistema.h"
-#include "../../Utils/RegistroBase/RegistroBaseFactory.h"
 #include "../../io/ArchivoBloque/ArchivoBloqueFactory.h"
 #include "../../Utils/MapaDeBits/MapaDeBitsFactory.h"
 

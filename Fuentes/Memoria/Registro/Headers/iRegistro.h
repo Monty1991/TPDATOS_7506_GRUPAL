@@ -14,8 +14,10 @@
 typedef class iRegistro: public iObject
 {
 	public:
-		virtual size_t GetSize() = 0;
-		
+		virtual iRegistro *Copiar() = 0;
+
+		virtual size_t ObtenerCantidadCampos() = 0;
+
 		virtual iFeaturePtr GetFeature(size_t posicion) = 0;
 		virtual void SetFeature(size_t posicion, iFeaturePtr feature) = 0;
 

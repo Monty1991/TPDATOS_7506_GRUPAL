@@ -22,7 +22,7 @@ class HidratadorCadenaUNICODE: public iHidratadorCadenaUNICODE
 		HidratadorCadenaUNICODE();
 		virtual ~HidratadorCadenaUNICODE();
 
-		virtual size_t Hidratar(char *buff, sCadenaUNICODE **cadena);
+		virtual size_t Hidratar(char *buff, sCadenaUNICODE *cadena);
 		
 		virtual void Dispose();
 };

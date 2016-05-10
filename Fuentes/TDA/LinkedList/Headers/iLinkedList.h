@@ -10,16 +10,16 @@
 
 #include "../../../Memoria/Object/Headers/iObject.h"
 
-// La tarea de "limpiar" los objetos se aplaza al usuario
 typedef class iLinkedList: public iObject
 {
 	public:
-		virtual iLinkedList *Next() = 0;
-		virtual iObjectPtr Value() = 0;
-
+		virtual iLinkedList *Copiar() = 0;
 		virtual iLinkedList *Clone() = 0;
 
+		virtual iLinkedList *Next() = 0;
+		virtual iObjectPtr Value() = 0;
 		virtual void Dispose() = 0;
+
 	private:
 
 } *iLinkedListPtr;

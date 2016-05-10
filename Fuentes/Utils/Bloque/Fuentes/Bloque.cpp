@@ -10,7 +10,7 @@
 #include "../../StringUtils/Headers/StringUtils.h"
 #include "../../../Exceptions/ExceptionFactory.h"
 
-Bloque::Bloque(const char *buffer, size_t tamanioBloque)
+Bloque::Bloque(const char *buffer, size_t tamanioBloque): Object()
 {
 	this->tamanioBloque = tamanioBloque;
 	this->buff = new char[this->tamanioBloque];
@@ -29,6 +29,17 @@ Bloque::~Bloque()
 	}
 }
 
+iBloquePtr Bloque::Copiar()
+{
+	Object::IncrementarContador();
+	return this;
+}
+
+iBloquePtr Bloque::Clone()
+{
+	return new Bloque(this->buff, this->tamanioBloque);
+}
+
 size_t Bloque::ObtenerTamanioBloque()
 {
 	return this->tamanioBloque;
@@ -44,13 +55,18 @@ void Bloque::BorrarBitModificacion()
 	this->modificado = false;
 }
 
+const char *Bloque::ObtenerContenido()
+{
+	return this->buff;
+}
+
 void Bloque::LeerBloque(char *buff, size_t offset, size_t length)
 {
 	if (this->tamanioBloque < (offset + length) )
 	{
 		char msg[20];
 		StringUtils_Concatenar(msg,"%lu + %lu > %lu", offset, length, this->tamanioBloque);
-		Throw("ArrayIndexOutOfBoundsException", msg);
+		Throw(ExceptionType_ArrayIndexOutOfBounds, msg);
 	}
 
 	memcpy(buff, this->buff + offset, length);
@@ -62,19 +78,14 @@ void Bloque::EscribirBloque(const char *buff, size_t offset, size_t length)
 	{
 		char msg[20];
 		StringUtils_Concatenar(msg,"%lu + %lu > %lu", offset, length, this->tamanioBloque);
-		Throw("ArrayIndexOutOfBoundsException", msg);
+		Throw(ExceptionType_ArrayIndexOutOfBounds, msg);
 	}
 	
 	memcpy(this->buff + offset, buff, length);
 	this->modificado = true;
 }
 
-iBloquePtr Bloque::Clone()
-{
-	return new Bloque(this->buff, this->tamanioBloque);
-}
-
 void Bloque::Dispose()
 {
-	delete this;
+	Object::Dispose();
 }
