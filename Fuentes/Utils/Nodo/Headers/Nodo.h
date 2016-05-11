@@ -15,7 +15,7 @@ class Nodo: public iNodo
 	private:
 		eTipoNodo tipo;
 		size_t tamanio;
-		size_t cantidad;
+		size_t cantidadRegistros;
 		iRegistroPtr *tablaRegistros;
 		
 	public:
@@ -31,7 +31,10 @@ class Nodo: public iNodo
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);
 
 		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg);
-		virtual iRegistroPtr QuitarRegistro(size_t pos);
+		virtual iRegistroPtr QuitarRegistro(size_t clave);
+
+	private:
+		void RedimensionarTabla(size_t nuevoTamanio);
 };
 
 #endif	/* NODO_H */

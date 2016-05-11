@@ -27,8 +27,6 @@ enum eTipoNodo
 typedef class iNodo
 {
 	public:
-		virtual void Dispose() = 0;
-
 		virtual eTipoNodo ObtenerTipoNodo() = 0;
 		virtual void CambiarTipoNodo(eTipoNodo nuevoTipo) = 0;
 
@@ -41,7 +39,9 @@ typedef class iNodo
 		virtual iRegistroPtr ObtenerRegistro(size_t pos) = 0;
 
 		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg) = 0;
-		virtual iRegistroPtr QuitarRegistro(size_t pos) = 0;
+		virtual iRegistroPtr QuitarRegistro(size_t clave) = 0;
+
+		virtual void Dispose() = 0;
 } *iNodoPtr;
 
 #endif	/* INODO_H */

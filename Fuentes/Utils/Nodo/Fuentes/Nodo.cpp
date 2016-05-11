@@ -1,4 +1,6 @@
 #include "../Headers/Nodo.h"
+#include "../../StringUtils/Headers/StringUtils.h"
+#include "../../../Exceptions/ExceptionFactory.h"
 
 Nodo::Nodo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros): tipo(tipo)
 {
@@ -7,9 +9,9 @@ Nodo::Nodo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistro
 	while (this->tamanio < cantidadRegistros)
 		this->tamanio *= 2;
 
-	this->cantidad = cantidadRegistros;
-	
-	this->tablaRegistros = new iRegistroPtr[this->cantidad];
+	this->cantidadRegistros = cantidadRegistros;
+
+	this->tablaRegistros = new iRegistroPtr[this->tamanio];
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
 		this->tablaRegistros[i] = listaRegistros[i]->Copiar();
@@ -19,7 +21,7 @@ Nodo::~Nodo()
 {
 	if (this->tablaRegistros)
 	{
-		for (size_t i = 0; i < this->cantidad; i++)
+		for (size_t i = 0; i < this->cantidadRegistros; i++)
 		{
 			if (this->tablaRegistros[i])
 			{
@@ -50,37 +52,59 @@ void Nodo::CambiarTipoNodo(eTipoNodo nuevoTipo)
 
 size_t Nodo::ObtenerCantidadRegistros()
 {
-	return this->cantidad;
+	return this->cantidadRegistros;
 }
 
 iRegistroPtr Nodo::ObtenerRegistro(size_t pos)
 {
-	if (pos < this->cantidad)
-		return this->tablaRegistros[pos];
+	if (pos >= this->cantidadRegistros)
+	{
+		char msg[20];
+		StringUtils_Concatenar(msg, "%lu", pos);
+		Throw(ExceptionType_ArrayIndexOutOfBounds, msg);
+	}
 
-	// TODO: lanzar excepcion
-	return NULL;
+	return this->tablaRegistros[pos];
 }
 
 iRegistroPtr Nodo::AgregarRegistro(iRegistroPtr reg)
 {
-	// TODO: Que busque primero si ya esta el registro
-	this->tablaRegistros[this->cantidad++] = reg;
-	if (this->cantidad >= this->tamanio)
-		int x = 0; //TODO: Agregar metodo ResizeTable
+	iRegistroPtr old = this->QuitarRegistro(reg->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno);
 
-	return NULL;
+	this->tablaRegistros[this->cantidadRegistros++] = reg;
+	if (this->cantidadRegistros >= this->tamanio)
+		this->RedimensionarTabla(this->tamanio * 2);
+
+	return old;
 }
 
-iRegistroPtr Nodo::QuitarRegistro(size_t pos)
+iRegistroPtr Nodo::QuitarRegistro(size_t clave)
 {
-	if (pos >= this->cantidad)
+	iRegistroPtr reg = NULL;
+	size_t pos;
+	for (pos = 0; pos < this->cantidadRegistros; pos++)
+		if (this->tablaRegistros[pos]->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno == clave)
+			break;
+
+	if (pos >= this->cantidadRegistros)
 		return NULL;
 
-	iRegistroPtr reg = this->tablaRegistros[pos];
-	this->tablaRegistros[pos] = this->tablaRegistros[--this->cantidad];
-	if (this->cantidad <= this->tamanio * 4)
-		int x = 0;	//TODO: metodo ResizeTable
+	reg = this->tablaRegistros[pos];
+	this->tablaRegistros[pos] = this->tablaRegistros[--this->cantidadRegistros];
+	if (this->cantidadRegistros <= this->tamanio * 4)
+		this->RedimensionarTabla(this->tamanio / 2);
 
 	return reg;
+}
+
+void Nodo::RedimensionarTabla(size_t nuevoTamanio)
+{
+	iRegistroPtr *nuevaTabla = new iRegistroPtr[nuevoTamanio];
+
+	for (size_t i = 0; i < this->cantidadRegistros; i++)
+		nuevaTabla[i] = this->tablaRegistros[i];
+
+	delete [] this->tablaRegistros;
+	this->tablaRegistros = nuevaTabla;
+	this->tamanio = nuevoTamanio;
 }
