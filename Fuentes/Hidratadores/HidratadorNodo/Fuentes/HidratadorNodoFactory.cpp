@@ -1,7 +1,15 @@
 #include "../HidratadorNodoFactory.h"
 #include "../Headers/HidratadorNodo.h"
 
-iHidratadorNodoPtr HidratadorNodoFactory_Nuevo()
+iHidratadorNodoPtr HidratadorNodoFactory_Nuevo(eHidratadorNodo tipoNodo)
 {
-	return new HidratadorNodo();
+	switch(tipoNodo)
+	{
+		case eHidratadorNodo_ArbolPuntoOptimo:
+			return new HidratadorNodo();
+	}
+
+	// TODO: lanzar excepcion?
+	
+	return NULL;
 }

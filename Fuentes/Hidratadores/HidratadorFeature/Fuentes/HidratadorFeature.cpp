@@ -23,18 +23,24 @@ HidratadorFeature::~HidratadorFeature()
 		this->hidratadorCadenaUNICODE->Dispose();
 }
 
-size_t HidratadorFeature::Hidratar(char *buff, iFeaturePtr *feature, eValueType tipo)
+size_t HidratadorFeature::Hidratar(char *buff, iFeaturePtr *feature)
 {
+	uNumber number;
+	size_t leido = this->hidratadorNumerico->Hidratar(buff, &number, eValueType_U1);
+
+	eValueType tipo = (eValueType) number.entero.enteroSinSigno.entero8SinSigno;
 	uValue valor;
 
 	if (tipo & Mascara_Numero)
-		this->hidratadorNumerico->Hidratar(buff, &(valor.primitivo.numero), tipo);
+		leido += this->hidratadorNumerico->Hidratar(buff, &(valor.primitivo.numero), tipo);
 	else if (tipo & Mascara_Unicode)
-		this->hidratadorCadenaUNICODE->Hidratar(buff, &(valor.primitivo.cadena.unicode));
+		leido += this->hidratadorCadenaUNICODE->Hidratar(buff, &(valor.primitivo.cadena.unicode));
 	else
-		this->hidratadorCadenaANSI->Hidratar(buff, &(valor.primitivo.cadena.ansi));
+		leido += this->hidratadorCadenaANSI->Hidratar(buff, &(valor.primitivo.cadena.ansi));
 
 	*feature = FeatureFactory_Nuevo(valor, tipo);
+
+	return leido;
 }
 
 void HidratadorFeature::Dispose()

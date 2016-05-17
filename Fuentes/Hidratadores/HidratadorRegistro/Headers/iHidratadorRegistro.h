@@ -9,12 +9,11 @@
 #define IHIDRATADORREGISTRO_H
 
 #include "../../../Memoria/Registro/Headers/iRegistro.h"
-#include "../../../Utils/DescriptorRegistro/Headers/iDescriptorRegistro.h"
 
 typedef class iHidratadorRegistro
 {
 	public:
-		virtual size_t Hidratar(char *buff, iRegistroPtr *registro, iDescriptorRegistroPtr descriptorRegistro) = 0;
+		virtual size_t Hidratar(char *buff, iRegistroPtr *registro) = 0;
 		
 		virtual void Dispose() = 0;
 } *iHidratadorRegistroPtr;

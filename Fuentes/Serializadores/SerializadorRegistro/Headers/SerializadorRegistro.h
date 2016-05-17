@@ -10,10 +10,12 @@
 
 #include "iSerializadorRegistro.h"
 #include "../../SerializadorFeature/Headers/iSerializadorFeature.h"
+#include "../../SerializadorNumerico/Headers/iSerializadorNumerico.h"
 
 class SerializadorRegistro: public iSerializadorRegistro
 {
 	private:
+		iSerializadorNumericoPtr serializadorNumerico;
 		iSerializadorFeaturePtr serializadorFeature;
 
 	public:

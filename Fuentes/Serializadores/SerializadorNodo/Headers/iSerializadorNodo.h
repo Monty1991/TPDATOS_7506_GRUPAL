@@ -11,6 +11,11 @@
 
 #include "../../../Utils/Nodo/Headers/iNodo.h"
 
+enum eSerializadorNodo
+{
+	eSerializadorNodo_ArbolPuntoOptimo
+};
+
 typedef class iSerializadorNodo
 {
 	public:
@@ -22,4 +27,3 @@ typedef class iSerializadorNodo
 } *iSerializadorNodoPtr;
 
 #endif /* ISERIALIZADORNODO_H */
-

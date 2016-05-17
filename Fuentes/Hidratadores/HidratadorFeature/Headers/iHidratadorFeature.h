@@ -13,7 +13,7 @@
 typedef class iHidratadorFeature
 {
 	public:
-		virtual size_t Hidratar(char *buff, iFeaturePtr *feature, eValueType tipo) = 0;
+		virtual size_t Hidratar(char *buff, iFeaturePtr *feature) = 0;
 
 		virtual void Dispose() = 0;
 

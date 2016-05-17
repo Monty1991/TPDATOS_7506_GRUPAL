@@ -24,10 +24,9 @@ class HidratadorFeature: public iHidratadorFeature
 	public:
 		HidratadorFeature();
 
-		virtual size_t Hidratar(char *buff, iFeaturePtr *feature, eValueType tipo);
+		virtual size_t Hidratar(char *buff, iFeaturePtr *feature);
 
 		virtual void Dispose();
 };
 
 #endif /* HIDRATADORFEATURE_H */
-

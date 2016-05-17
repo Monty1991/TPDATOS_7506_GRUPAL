@@ -27,26 +27,33 @@ size_t SerializadorFeature::CalcularEspacio(const iFeaturePtr feature)
 {
 	eValueType tipo = feature->ObtenerTipo();
 
+	uNumber number;
+	size_t espacio = this->serializadorNumerico->CalcularEspacio(number, eValueType_U1);
+
 	if (tipo & Mascara_Numero)
-		return this->serializadorNumerico->CalcularEspacio(feature->AsNumber(), tipo);
+		return espacio + this->serializadorNumerico->CalcularEspacio(feature->AsNumber(), tipo);
 
 	if (tipo & Mascara_Unicode)
-		return this->serializadorCadenaUNICODE->CalcularEspacio(feature->AsCadenaUNICODE());
+		return espacio + this->serializadorCadenaUNICODE->CalcularEspacio(feature->AsCadenaUNICODE());
 
-	return this->serializadorCadenaANSI->CalcularEspacio(feature->AsCadenaANSI());
+	return espacio + this->serializadorCadenaANSI->CalcularEspacio(feature->AsCadenaANSI());
 }
 
 size_t SerializadorFeature::Serializar(char *buffer, const iFeaturePtr feature)
 {
 	eValueType tipo = feature->ObtenerTipo();
 
+	uNumber number;
+	number.entero.enteroSinSigno.entero8SinSigno = tipo;
+	size_t escrito = this->serializadorNumerico->Serializar(buffer, number, eValueType_U1);
+
 	if (tipo & Mascara_Numero)
-		return this->serializadorNumerico->Serializar(buffer, feature->AsNumber(), tipo);
+		return escrito + this->serializadorNumerico->Serializar(buffer, feature->AsNumber(), tipo);
 
 	if (tipo & Mascara_Unicode)
-		return this->serializadorCadenaUNICODE->Serializar(buffer, feature->AsCadenaUNICODE());
+		return escrito + this->serializadorCadenaUNICODE->Serializar(buffer, feature->AsCadenaUNICODE());
 
-	return this->serializadorCadenaANSI->Serializar(buffer, feature->AsCadenaANSI());	
+	return escrito + this->serializadorCadenaANSI->Serializar(buffer, feature->AsCadenaANSI());	
 }
 
 void SerializadorFeature::Dispose()

@@ -10,17 +10,19 @@
 
 #include "iHidratadorRegistro.h"
 #include "../../HidratadorFeature/Headers/iHidratadorFeature.h"
+#include "../../HidratadorNumerico/Headers/iHidratadorNumerico.h"
 
 class HidratadorRegistro: public iHidratadorRegistro
 {
 	private:
+		iHidratadorNumericoPtr hidratadorNumerico;
 		iHidratadorFeaturePtr hidratadorFeature;
 
 		virtual ~HidratadorRegistro();
 	public:
 		HidratadorRegistro();
 
-		virtual size_t Hidratar(char *buff, iRegistroPtr *registro, iDescriptorRegistroPtr descriptorRegistro);
+		virtual size_t Hidratar(char *buff, iRegistroPtr *registro);
 
 		virtual void Dispose();
 };

@@ -22,7 +22,6 @@ size_t HidratadorNodo::Hidratar(char *buff, iNodoPtr *nodo)
 {
 	size_t leido = 0;
 
-
 	uNumber numero;
 	leido += this->hidratadorNumerico->Hidratar(buff + leido, &numero, eValueType::eValueType_U1);
 	eTipoNodo tipo = (eTipoNodo) numero.entero.enteroSinSigno.entero8SinSigno;
@@ -35,7 +34,7 @@ size_t HidratadorNodo::Hidratar(char *buff, iNodoPtr *nodo)
 	iRegistroPtr *tablaRegistros = new iRegistroPtr[cantidadRegistros];
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		leido += this->hidratadorRegistro->Hidratar(buff + leido, tablaRegistros + i, NULL);
+		leido += this->hidratadorRegistro->Hidratar(buff + leido, tablaRegistros + i);
 
 	*nodo = NodoFactory_Nuevo(tipo, tablaRegistros, cantidadRegistros);
 
