@@ -1,9 +1,10 @@
 #include "../ArchivoArbolFactory.h"
 #include "../Headers/ArchivoArbol.h"
 
-iArchivoArbolPtr ArchivoArbolFactory_Nuevo(const char *nombreArchivo, size_t tamanioBloque, void *esquemaRegistroDato, void *esquemaRegistroInterno)
-{
-	// TODO: obvio, no?
-	// return new ArchivoArbol(nombreArchivo, tamanioBloque, esquemaRegistroDato, esquemaRegistroInterno);
-	return NULL;
+iArchivoArbolPtr ArchivoArbolFactory_Nuevo(const char *_nombreArchivo,
+		size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia,
+		eSerializadorNodo _typeSerializer, eHidratadorNodo _typeHydrator) {
+
+	return new ArchivoArbol(_nombreArchivo, _tamanioNodo, _cargaMinima,
+			_tolerancia, _typeSerializer, _typeHydrator);
 }

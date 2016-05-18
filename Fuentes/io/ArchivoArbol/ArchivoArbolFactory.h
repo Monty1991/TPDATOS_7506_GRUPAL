@@ -10,7 +10,9 @@
 
 #include "Headers/iArchivoArbol.h"
 
-iArchivoArbolPtr ArchivoArbolFactory_Nuevo(const char *nombreArchivo, size_t tamanioBloque, void *esquemaRegistroDato, void *esquemaRegistroInterno);
+iArchivoArbolPtr ArchivoArbolFactory_Nuevo(const char *_nombreArchivo,
+		size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia,
+		eSerializadorNodo _typeSerializer, eHidratadorNodo _typeHydrator);
 
 #endif	/* ARCHIVOARBOLFACTORY_H */
 
