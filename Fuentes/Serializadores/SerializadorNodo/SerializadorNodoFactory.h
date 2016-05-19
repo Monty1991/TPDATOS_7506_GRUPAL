@@ -10,6 +10,6 @@
 
 #include "Headers/iSerializadorNodo.h"
 
-iSerializadorNodoPtr SerializadorNodoFactory_Nuevo(eSerializadorNodo tipoNodo);
+iSerializadorNodoPtr SerializadorNodoFactory_Nuevo(eTipoArbol tipoArbol);
 
 #endif /* SERIALIZADORNODOFACTORY_H */

@@ -8,14 +8,14 @@
 
 ArchivoArbol::ArchivoArbol(const char *_nombreArchivo, size_t _tamanioNodo,
 		size_t _cargaMinima, size_t _tolerancia,
-		eSerializadorNodo _typeSerializer, eHidratadorNodo _typeHydrator) :
+		eTipoArbol tipoArbol) :
 		tamanioNodo(_tamanioNodo), cargaMinima(_cargaMinima), tolerancia(
 				_tolerancia) {
 
 	this->archivoBloque = ArchivoBloqueFactory_Nuevo(_nombreArchivo,
 			tamanioNodo);
-	this->serializadorNodo = SerializadorNodoFactory_Nuevo(_typeSerializer);
-	this->hidratadorNodo = HidratadorNodoFactory_Nuevo(_typeHydrator);
+	this->serializadorNodo = SerializadorNodoFactory_Nuevo(tipoArbol);
+	this->hidratadorNodo = HidratadorNodoFactory_Nuevo(tipoArbol);
 
 	iBloquePtr bloque = this->archivoBloque->LeerBloque(0);
 

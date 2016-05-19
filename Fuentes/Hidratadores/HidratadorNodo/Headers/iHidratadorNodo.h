@@ -10,11 +10,6 @@
 
 #include "../../../Utils/Nodo/Headers/iNodo.h"
 
-enum eHidratadorNodo
-{
-	eHidratadorNodo_ArbolPuntoOptimo
-};
-
 typedef class iHidratadorNodo
 {
 	public:

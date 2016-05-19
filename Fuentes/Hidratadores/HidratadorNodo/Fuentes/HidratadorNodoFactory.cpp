@@ -1,11 +1,11 @@
 #include "../HidratadorNodoFactory.h"
 #include "../Headers/HidratadorNodo.h"
 
-iHidratadorNodoPtr HidratadorNodoFactory_Nuevo(eHidratadorNodo tipoNodo)
+iHidratadorNodoPtr HidratadorNodoFactory_Nuevo(eTipoArbol tipoArbol)
 {
-	switch(tipoNodo)
+	switch(tipoArbol)
 	{
-		case eHidratadorNodo_ArbolPuntoOptimo:
+		case eTipoArbol_ArbolPuntoOptimo:
 			return new HidratadorNodo();
 	}
 

@@ -1,11 +1,11 @@
 #include "../SerializadorNodoFactory.h"
 #include "../Headers/SerializadorNodo.h"
 
-iSerializadorNodoPtr SerializadorNodoFactory_Nuevo(eSerializadorNodo tipoNodo)
+iSerializadorNodoPtr SerializadorNodoFactory_Nuevo(eTipoArbol tipoArbol)
 {
-	switch (tipoNodo)
+	switch (tipoArbol)
 	{
-		case eSerializadorNodo_ArbolPuntoOptimo:
+		case eTipoArbol_ArbolPuntoOptimo:
 			return new SerializadorNodo();	
 	}
 

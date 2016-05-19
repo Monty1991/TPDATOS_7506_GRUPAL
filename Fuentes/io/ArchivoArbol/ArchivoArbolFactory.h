@@ -12,7 +12,7 @@
 
 iArchivoArbolPtr ArchivoArbolFactory_Nuevo(const char *_nombreArchivo,
 		size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia,
-		eSerializadorNodo _typeSerializer, eHidratadorNodo _typeHydrator);
+		eTipoArbol tipoArbol);
 
 #endif	/* ARCHIVOARBOLFACTORY_H */
 

@@ -10,6 +10,6 @@
 
 #include "Headers/iHidratadorNodo.h"
 
-iHidratadorNodoPtr HidratadorNodoFactory_Nuevo(eHidratadorNodo tipoNodo);
+iHidratadorNodoPtr HidratadorNodoFactory_Nuevo(eTipoArbol tipoArbol);
 
 #endif /* HIDRATADORNODOFACTORY_H */

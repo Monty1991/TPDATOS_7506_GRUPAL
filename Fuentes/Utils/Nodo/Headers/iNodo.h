@@ -24,6 +24,11 @@ enum eTipoNodo
 	eTipoNodo_NodoInterno
 };
 
+enum eTipoArbol
+{
+	eTipoArbol_ArbolPuntoOptimo
+};
+
 typedef class iNodo
 {
 	public:

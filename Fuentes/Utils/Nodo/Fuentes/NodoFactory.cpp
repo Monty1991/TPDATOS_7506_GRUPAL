@@ -4,10 +4,10 @@
 
 iNodoPtr NodoFactory_Nuevo()
 {
-	return new Nodo(eTipoNodo_Hoja, NULL, 0);
+	return new Nodo(eTipoNodo_Hoja, NULL, 0, 0, 0);
 }
 
 iNodoPtr NodoFactory_Nuevo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros)
 {
-	return new Nodo(tipo, listaRegistros, cantidadRegistros);
+	return new Nodo(tipo, listaRegistros, cantidadRegistros, 0, 0);
 }

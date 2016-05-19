@@ -2,7 +2,7 @@
 #include "../../StringUtils/Headers/StringUtils.h"
 #include "../../../Exceptions/ExceptionFactory.h"
 
-Nodo::Nodo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros): tipo(tipo)
+Nodo::Nodo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistro, size_t pivote, float radio): tipo(tipo), pivote(pivote), radio(radio)
 {
 	this->tamanio = 16;
 	// con esto nos aseguramos de que la tabla sea potencia de 2
@@ -49,6 +49,17 @@ void Nodo::CambiarTipoNodo(eTipoNodo nuevoTipo)
 {
 	this->tipo = nuevoTipo;
 }
+
+size_t Nodo::ObtenerPivote()
+{
+	return this->pivote;
+}
+
+float Nodo::ObtenerRadio()
+{
+	return this->radio;
+}
+
 
 size_t Nodo::ObtenerCantidadRegistros()
 {
