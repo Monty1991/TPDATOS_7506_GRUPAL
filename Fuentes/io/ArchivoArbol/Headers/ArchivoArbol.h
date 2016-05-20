@@ -11,6 +11,8 @@
 #include "iArchivoArbol.h"
 #include "../../ArchivoBloque/Headers/iArchivoBloque.h"
 #include "../../../Utils/MapaDeBits/Headers/iMapaDeBits.h"
+#include "../../../Serializadores/SerializadorNodo/Headers/iSerializadorNodo.h"
+#include "../../../Hidratadores/HidratadorNodo/Headers/iHidratadorNodo.h"
 
 class ArchivoArbol: public iArchivoArbol {
 
@@ -30,23 +32,22 @@ private:
 
 	eEstadoCargaNodo DeterminarEstadoNodo(size_t _tamanioSerializacion);
 
-	iBloquePtr SerializarNodo(iNodoPtr _nodo);
+	iBloquePtr SerializarNodo(iNodoPtr _pNodo);
 
-	iNodoPtr HidratarNodo(iBloquePtr _bloque);
+	iNodoPtr HidratarNodo(iBloquePtr _pBloque);
 
 public:
 
 	ArchivoArbol(const char *_nombreArchivo, size_t _tamanioNodo,
-			size_t _cargaMinima, size_t _tolerancia,
-			eTipoArbol tipoArbol);
+			size_t _cargaMinima, size_t _tolerancia, eTipoArbol tipoArbol);
 
 	iNodoPtr LeerNodo(size_t _nroNodo);
 
-	void EscribirNodo(size_t _nroNodo, iNodoPtr _nodo);
+	void EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo);
 
-	size_t NuevoNodo(iNodoPtr *_nodo);
+	size_t NuevoNodo(iNodoPtr *_ppNodo);
 
-	eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _nodo);
+	eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _pNodo);
 
 	void LiberarNodo(size_t _nroNodo);
 
