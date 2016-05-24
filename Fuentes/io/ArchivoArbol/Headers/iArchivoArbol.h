@@ -22,7 +22,7 @@ public:
 
 	// Devuelve el nro de nodo mas pequenio que referencia a un nodo libre
 	// Y crea un nodo vacio y lo asigna al puntero referenciado.
-	virtual size_t NuevoNodo(iNodoPtr *_ppNodo) = 0;
+	virtual size_t NuevoNodo(iNodoPtr *_ppNodo, size_t tipoNodo) = 0;
 
 	// Devuelve uno de los valores, dependiendo del estado del nodo
 	virtual eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _pNodo) = 0;

@@ -26,6 +26,9 @@ private:
 	iHidratadorNodoPtr hidratadorNodo;
 	iSerializadorNodoPtr serializadorNodo;
 
+	// Necesario para fabricar nodos nuevos
+	eTipoArbol tipoArbol;
+	
 	virtual ~ArchivoArbol();
 
 	size_t GetNodoLibre();
@@ -45,7 +48,7 @@ public:
 
 	void EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo);
 
-	size_t NuevoNodo(iNodoPtr *_ppNodo);
+	size_t NuevoNodo(iNodoPtr *_ppNodo, size_t tipoNodo);
 
 	eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _pNodo);
 

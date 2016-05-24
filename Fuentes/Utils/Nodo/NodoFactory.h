@@ -10,9 +10,9 @@
 
 #include "Headers/iNodo.h"
 
-// devuelve un nodo vacio, de tipo hoja, por defecto.
-iNodoPtr NodoFactory_Nuevo();
+// Devuelve un nodo vacio
+iNodoPtr NodoFactory_Nuevo(eTipoArbol tipoArbol, size_t tipoNodo);
 
-iNodoPtr NodoFactory_Nuevo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
+iNodoPtr NodoFactory_Nuevo(eTipoArbol tipoArbol, size_t tipoNodo, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
 #endif	/* NODOFACTORY_H */

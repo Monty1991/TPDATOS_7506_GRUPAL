@@ -1,13 +1,24 @@
 #include "../NodoFactory.h"
-#include "../Headers/Nodo.h"
-#include <stdlib.h>
+#include "../../NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
 
-iNodoPtr NodoFactory_Nuevo()
+iNodoPtr NodoFactory_Nuevo(eTipoArbol tipoArbol, size_t tipoNodo)
 {
-	return new Nodo(eTipoNodo_Hoja, NULL, 0, 0, 0);
+	switch (tipoArbol)
+	{
+		case eTipoArbol::eTipoArbol_ArbolPuntoOptimo:
+			return NodoArbolPuntoOptimoFactory_Nuevo((eNodoArbolPuntoOptimo)tipoNodo);
+	}
+
+	return NULL;
 }
 
-iNodoPtr NodoFactory_Nuevo(eTipoNodo tipo, iRegistroPtr *listaRegistros, size_t cantidadRegistros)
+iNodoPtr NodoFactory_Nuevo(eTipoArbol tipoArbol, size_t tipoNodo, iRegistroPtr *listaRegistros, size_t cantidadRegistros)
 {
-	return new Nodo(tipo, listaRegistros, cantidadRegistros, 0, 0);
+	switch (tipoArbol)
+	{
+		case eTipoArbol_ArbolPuntoOptimo:
+			return NodoArbolPuntoOptimoFactory_Nuevo((eNodoArbolPuntoOptimo)tipoNodo, listaRegistros, cantidadRegistros);
+	}
+
+	return NULL;
 }

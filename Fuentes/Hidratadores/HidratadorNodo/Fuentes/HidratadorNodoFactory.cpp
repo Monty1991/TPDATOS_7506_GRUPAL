@@ -1,12 +1,12 @@
 #include "../HidratadorNodoFactory.h"
-#include "../Headers/HidratadorNodo.h"
+#include "../../HidratadorNodoArbolPuntoOptimo/HidratadorNodoArbolPuntoOptimoFactory.h"
 
 iHidratadorNodoPtr HidratadorNodoFactory_Nuevo(eTipoArbol tipoArbol)
 {
 	switch(tipoArbol)
 	{
 		case eTipoArbol_ArbolPuntoOptimo:
-			return new HidratadorNodo();
+			return HidratadorNodoArbolPuntoOptimoFactory_Nuevo();
 	}
 
 	// TODO: lanzar excepcion?

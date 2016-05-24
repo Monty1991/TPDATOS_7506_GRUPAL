@@ -9,7 +9,6 @@
 #define	BLOQUEFACTORY_H
 
 #include "Headers/iBloque.h"
-#include <stddef.h>
 
 iBloquePtr BloqueFactory_Nuevo(const char *buffer, size_t tamanioBloque);
 

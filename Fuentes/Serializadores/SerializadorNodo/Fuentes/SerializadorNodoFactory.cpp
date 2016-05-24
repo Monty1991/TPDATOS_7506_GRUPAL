@@ -1,12 +1,12 @@
 #include "../SerializadorNodoFactory.h"
-#include "../Headers/SerializadorNodo.h"
+#include "../../SerializadorNodoArbolPuntoOptimo/SerializadorNodoArbolPuntoOptimoFactory.h"
 
 iSerializadorNodoPtr SerializadorNodoFactory_Nuevo(eTipoArbol tipoArbol)
 {
 	switch (tipoArbol)
 	{
-		case eTipoArbol_ArbolPuntoOptimo:
-			return new SerializadorNodo();	
+		case eTipoArbol::eTipoArbol_ArbolPuntoOptimo:
+			return SerializadorNodoArbolPuntoOptimoFactory_Nuevo();	
 	}
 
 	// TODO: lanzar excepcion?

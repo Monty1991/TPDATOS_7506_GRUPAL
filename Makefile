@@ -1,13 +1,13 @@
 CC = g++
 CXXFLAGS = -std=c++11 -g
 MODULOIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o ArchivoArbol.o ArchivoArbolFactory.o
-UTILS = StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o Nodo.o NodoFactory.o
+UTILS = StringUtils.o Bloque.o BloqueFactory.o BloqueRegistro.o BloqueRegistroFactory.o MapaDeBits.o MapaDeBitsFactory.o TTDispersion.o TTDispersionFactory.o CaracterUtils.o ByteMap.o ByteMapFactory.o NodoFactory.o NodoArbolPuntoOptimo.o NodoArbolPuntoOptimoFactory.o
 MEMORY = Object.o Pointer.o Feature.o FeatureFactory.o Registro.o RegistroFactory.o
 TDA = LinkedList.o LinkedListFactory.o Arbol.o ArbolFactory.o Fecha.o FechaFactory.o
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o
 EXCEPTIONS = Exception.o ExceptionFactory.o
-SERIALIZADORES = SerializadorNumerico.o SerializadorNumericoFactory.o SerializadorCadenaSinPrefijo.o SerializadorCadenaSinPrefijoFactory.o SerializadorByteMap.o SerializadorByteMapFactory.o SerializadorTTDispersion.o SerializadorTTDispersionFactory.o SerializadorCadenaANSI.o SerializadorCadenaANSIFactory.o SerializadorCadenaUNICODE.o SerializadorCadenaUNICODEFactory.o SerializadorFeature.o SerializadorFeatureFactory.o SerializadorRegistro.o SerializadorRegistroFactory.o SerializadorNodo.o SerializadorNodoFactory.o
-HIDRATADORES = HidratadorNumerico.o HidratadorNumericoFactory.o HidratadorCadenaSinPrefijo.o HidratadorCadenaSinPrefijoFactory.o HidratadorTTDispersion.o HidratadorTTDispersionFactory.o HidratadorByteMap.o HidratadorByteMapFactory.o HidratadorCadenaANSI.o HidratadorCadenaANSIFactory.o HidratadorCadenaUNICODE.o HidratadorCadenaUNICODEFactory.o HidratadorFeature.o HidratadorFeatureFactory.o HidratadorRegistro.o HidratadorRegistroFactory.o HidratadorNodo.o HidratadorNodoFactory.o
+SERIALIZADORES = SerializadorNumerico.o SerializadorNumericoFactory.o SerializadorCadenaSinPrefijo.o SerializadorCadenaSinPrefijoFactory.o SerializadorByteMap.o SerializadorByteMapFactory.o SerializadorTTDispersion.o SerializadorTTDispersionFactory.o SerializadorCadenaANSI.o SerializadorCadenaANSIFactory.o SerializadorCadenaUNICODE.o SerializadorCadenaUNICODEFactory.o SerializadorFeature.o SerializadorFeatureFactory.o SerializadorRegistro.o SerializadorRegistroFactory.o SerializadorNodoFactory.o SerializadorNodoArbolPuntoOptimo.o SerializadorNodoArbolPuntoOptimoFactory.o
+HIDRATADORES = HidratadorNumerico.o HidratadorNumericoFactory.o HidratadorCadenaSinPrefijo.o HidratadorCadenaSinPrefijoFactory.o HidratadorTTDispersion.o HidratadorTTDispersionFactory.o HidratadorByteMap.o HidratadorByteMapFactory.o HidratadorCadenaANSI.o HidratadorCadenaANSIFactory.o HidratadorCadenaUNICODE.o HidratadorCadenaUNICODEFactory.o HidratadorFeature.o HidratadorFeatureFactory.o HidratadorRegistro.o HidratadorRegistroFactory.o HidratadorNodoFactory.o HidratadorNodoArbolPuntoOptimo.o HidratadorNodoArbolPuntoOptimoFactory.o
 OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SERIALIZADORES) $(HIDRATADORES) $(SYSTEM) $(EXCEPTIONS)
 APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/

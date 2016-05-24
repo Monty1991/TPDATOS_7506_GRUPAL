@@ -1,26 +1,26 @@
 /* 
- * File:   SerializadorNodo.h
+ * File:   SerializadorNodoArbolPuntoOptimo.h
  * Author: Monty
  *
- * Created on 10 de mayo de 2016, 12:56
+ * Created on 24 de mayo de 2016, 00:55
  */
 
-#ifndef SERIALIZADORNODO_H
-#define SERIALIZADORNODO_H
+#ifndef SERIALIZADORNODOARBOLPUNTOOPTIMO_H
+#define SERIALIZADORNODOARBOLPUNTOOPTIMO_H
 
-#include "iSerializadorNodo.h"
+#include "../../SerializadorNodo/Headers/iSerializadorNodo.h"
 #include "../../SerializadorNumerico/Headers/iSerializadorNumerico.h"
 #include "../../SerializadorRegistro/Headers/iSerializadorRegistro.h"
 
-class SerializadorNodo: public iSerializadorNodo
+class SerializadorNodoArbolPuntoOptimo: public iSerializadorNodo
 {
 	private:
 		iSerializadorNumericoPtr serializadorNumerico;
 		iSerializadorRegistroPtr serializadorRegistro;
 
-		virtual ~SerializadorNodo();
+		virtual ~SerializadorNodoArbolPuntoOptimo();
 	public:
-		SerializadorNodo();
+		SerializadorNodoArbolPuntoOptimo();
 
 		virtual size_t CalcularEspacioSerializacion(iNodoPtr nodo);
 
@@ -29,5 +29,4 @@ class SerializadorNodo: public iSerializadorNodo
 		virtual void Dispose();
 };
 
-#endif /* SERIALIZADORNODO_H */
-
+#endif /* SERIALIZADORNODOARBOLPUNTOOPTIMO_H */

@@ -13,6 +13,7 @@
 typedef class iMapaDeBits
 {
 	public:
+		// Devuelve la referencia al bloque interno
 		virtual const iBloquePtr Leer() = 0;
 
 		virtual size_t ObtenerTamanio() = 0;

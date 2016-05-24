@@ -18,12 +18,6 @@ enum eEstadoCargaNodo
 	eEstadoCargaNodo_Overflow,
 };
 
-enum eTipoNodo
-{
-	eTipoNodo_Hoja,
-	eTipoNodo_NodoInterno
-};
-
 enum eTipoArbol
 {
 	eTipoArbol_ArbolPuntoOptimo
@@ -32,14 +26,8 @@ enum eTipoArbol
 typedef class iNodo
 {
 	public:
-		virtual eTipoNodo ObtenerTipoNodo() = 0;
-		virtual void CambiarTipoNodo(eTipoNodo nuevoTipo) = 0;
+		virtual eTipoArbol ObtenerTipoArbol() = 0;
 
-//		virtual size_t ObtenerPivote() = 0;
-//		virtual float ObtenerRadio() = 0;
-//		virtual void CambiarPivote(size_t nuevoPivote) = 0;
-//		virtual void CambiarRadio(float nuevoRadio) = 0;
-		
 		virtual size_t ObtenerCantidadRegistros() = 0;
 		virtual iRegistroPtr ObtenerRegistro(size_t pos) = 0;
 

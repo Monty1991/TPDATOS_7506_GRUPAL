@@ -10,7 +10,7 @@
 ArchivoArbol::ArchivoArbol(const char *_nombreArchivo, size_t _tamanioNodo,
 		size_t _cargaMinima, size_t _tolerancia, eTipoArbol tipoArbol) :
 		tamanioNodo(_tamanioNodo), cargaMinima(_cargaMinima), tolerancia(
-				_tolerancia) {
+				_tolerancia), tipoArbol(tipoArbol) {
 
 	archivoBloque = ArchivoBloqueFactory_Nuevo(_nombreArchivo, tamanioNodo);
 	serializadorNodo = SerializadorNodoFactory_Nuevo(tipoArbol);
@@ -148,9 +148,9 @@ void ArchivoArbol::EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo) {
 	}
 }
 
-size_t ArchivoArbol::NuevoNodo(iNodoPtr *_ppNodo) {
+size_t ArchivoArbol::NuevoNodo(iNodoPtr *_ppNodo, size_t tipoNodo) {
 
-	*_ppNodo = NodoFactory_Nuevo();
+	*_ppNodo = NodoFactory_Nuevo(this->tipoArbol, tipoNodo);
 	return GetNodoLibre();
 }
 
@@ -166,13 +166,10 @@ void ArchivoArbol::LiberarNodo(size_t _nroNodo) {
 
 		mapaDeBits->SetearBit(_nroNodo, false);
 
-		iBloquePtr pBloque = mapaDeBits->Leer();
-		archivoBloque->EscribirBloque(0, pBloque);
+		archivoBloque->EscribirBloque(0, mapaDeBits->Leer());
 
-		pBloque->Dispose();
 		return;
 	}
 
 	Throw(" ", "Número de nodo inválido");
 }
-
