@@ -45,34 +45,38 @@ VpTree_ABM::VpTree_ABM(const char* _fileName, iDistanceFnPtr _fnDistancia,
 	raiz = archivo->LeerNodo(0); //Revisar
 }
 
-void VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado,
-		iNodoArbolPuntoOptimoNodoInternoPtr _pInterno,
-		iNodoArbolPuntoOptimoNodoHojaPtr _pHoja) {
+iNodoPtr VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado,
+		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
+	return NULL;
 }
 
-void VpTree_ABM::ResolverUnderflow(
-		iNodoArbolPuntoOptimoNodoInternoPtr _pInterno) {
+iNodoPtr VpTree_ABM::ResolverUnderflow(
+		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
+	return NULL;
 }
 
-void VpTree_ABM::ResolverUnderflow(
-		iNodoArbolPuntoOptimoNodoInternoPtr _pInterno,
-		iNodoArbolPuntoOptimoNodoHojaPtr _pHoja) {
+iNodoPtr VpTree_ABM::ResolverUnderflow(
+		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
+	return NULL;
 }
 
-void VpTree_ABM::ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _pHoja) {
+iNodoPtr VpTree_ABM::ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
+	return NULL;
 }
 
-iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _pHoja) {
+iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
 	return NULL;
 }
 
 float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
-		iNodoArbolPuntoOptimoNodoHojaPtr _pHoja) {
+		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
 	return 0;
 }
