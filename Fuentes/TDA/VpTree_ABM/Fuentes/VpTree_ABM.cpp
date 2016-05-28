@@ -45,29 +45,25 @@ VpTree_ABM::VpTree_ABM(const char* _fileName, iDistanceFnPtr _fnDistancia,
 	raiz = archivo->LeerNodo(0); //Revisar
 }
 
-iNodoPtr VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado,
+void VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado,
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
-	return NULL;
 }
 
-iNodoPtr VpTree_ABM::ResolverUnderflow(
+void VpTree_ABM::ResolverUnderflow(
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
-	return NULL;
 }
 
-iNodoPtr VpTree_ABM::ResolverUnderflow(
+void VpTree_ABM::ResolverUnderflow(
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
-	return NULL;
 }
 
-iNodoPtr VpTree_ABM::ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
+void VpTree_ABM::ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
-	return NULL;
 }
 
 iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {

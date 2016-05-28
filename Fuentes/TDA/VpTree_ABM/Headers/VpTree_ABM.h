@@ -29,23 +29,21 @@ private:
 	virtual ~VpTree_ABM();
 
 	/**
-	 * Resuelve un estado del árbol y devuelve el nodo que debe ser escrito
-	 * en el archivo. Dicho nodo podrá ser interno u hoja.
+	 * Resuelve un estado del árbol y escribe los nodos actualizados en disco
 	 *
-	 * Los casos que no requieren nodo interno, dicho parámetro se ignora
-	 * Los casos que no requieren nodo hoja,    dicho parámetro se ignora
+	 * Aquel caso que no requiera de nodo interno, dicho parámetro es ignorado
+	 * Aquel caso que no requiera de nodo hoja,    dicho parámetro es ignorado
 	 */
-	iNodoPtr ResolverEstado(eEstadoVpTree_ABM _estado,
+	void ResolverEstado(eEstadoVpTree_ABM _estado,
 			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
-	iNodoPtr ResolverUnderflow(
-			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
+	void ResolverUnderflow(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
 
-	iNodoPtr ResolverUnderflow(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+	void ResolverUnderflow(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
-	iNodoPtr ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	void ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	/**Genera un nuevo pivote a partir del conjunto de registros en la _hoja**/
 	iFeaturePtr GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
