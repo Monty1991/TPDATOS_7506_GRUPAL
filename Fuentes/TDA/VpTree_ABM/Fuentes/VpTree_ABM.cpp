@@ -7,6 +7,7 @@
 
 #include "../Headers/VpTree_ABM.h"
 #include "../../../io/ArchivoArbol/ArchivoArbolFactory.h"
+#include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
 
 VpTree_ABM::~VpTree_ABM() {
 
@@ -42,13 +43,38 @@ VpTree_ABM::VpTree_ABM(const char* _fileName, iDistanceFnPtr _fnDistancia,
 	archivo = ArchivoArbolFactory_Nuevo(_fileName, _tamanioNodo, _cargaMinima,
 			_tolerancia, eTipoArbol_ArbolPuntoOptimo);
 
-	raiz = archivo->LeerNodo(0); //Revisar
+	raiz = archivo->LeerNodo(0);
+
+	if (raiz == NULL) {
+
+		raiz = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo_Hoja);
+		archivo->EscribirNodo(0, raiz);
+	}
 }
 
-void VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado,
+void VpTree_ABM::ResolverEstado(
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
+	switch (estado) {
+
+	case eEstadoVpTree_ABM__Ok:
+		return;
+
+	case eEstadoVpTree_ABM__HojaEnOverflow:
+		ResolverOverflow(_hoja);
+		break;
+
+	case eEstadoVpTree_ABM__HojaEnUnderflow:
+		ResolverUnderflow(_nodoInterno, _hoja);
+		break;
+
+	case eEstadoVpTree_ABM__NodoInternoEnUnderflow:
+		ResolverUnderflow(_nodoInterno);
+		break;
+	}
+
+	estado = eEstadoVpTree_ABM__Ok;
 }
 
 void VpTree_ABM::ResolverUnderflow(
@@ -79,21 +105,29 @@ float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 
 eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg) {
 
-	return eResultadoVpTree_ABM_DUPLICADO;
+	return eResultadoVpTree_ABM__Ok;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key) {
 
-	return eResultadoVpTree_ABM_DUPLICADO;
+	return eResultadoVpTree_ABM__Ok;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Modificacion(iRegistroPtr _reg) {
 
-	return eResultadoVpTree_ABM_DUPLICADO;
+	return eResultadoVpTree_ABM__Ok;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Buscar(iRegistroPtr _reg) {
 
-	return eResultadoVpTree_ABM_DUPLICADO;
+	return eResultadoVpTree_ABM__Ok;
+}
+
+iNodoPtr VpTree_ABM::LeerIzq(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
+
+}
+
+iNodoPtr VpTree_ABM::LeerDer(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
+
 }
 

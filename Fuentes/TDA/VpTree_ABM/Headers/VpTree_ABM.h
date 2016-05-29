@@ -13,9 +13,10 @@
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
 
 enum eEstadoVpTree_ABM {
-	eEstadoVpTree_ABM__HOJA_EN_OVERFLOW,
-	eEstadoVpTree_ABM__HOJA_EN_UNDERFLOW,
-	eEstadoVpTree_ABM__NODO_INTERNO_EN_UNDERFLOW
+	eEstadoVpTree_ABM__Ok,
+	eEstadoVpTree_ABM__HojaEnOverflow,
+	eEstadoVpTree_ABM__HojaEnUnderflow,
+	eEstadoVpTree_ABM__NodoInternoEnUnderflow
 };
 
 class VpTree_ABM: public iVpTree_ABM {
@@ -23,6 +24,7 @@ class VpTree_ABM: public iVpTree_ABM {
 private:
 
 	iNodoPtr raiz;
+	eEstadoVpTree_ABM estado;
 	iArchivoArbolPtr archivo;
 	iDistanceFnPtr fnDistancia;
 
@@ -34,8 +36,7 @@ private:
 	 * Aquel caso que no requiera de nodo interno, dicho parámetro es ignorado
 	 * Aquel caso que no requiera de nodo hoja,    dicho parámetro es ignorado
 	 */
-	void ResolverEstado(eEstadoVpTree_ABM _estado,
-			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+	void ResolverEstado(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	void ResolverUnderflow(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
@@ -51,6 +52,12 @@ private:
 	//PRE: llamar a GenerarPivote(_hoja)
 	float CalcularRadio(iFeaturePtr _pivote,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+
+	//Devuelve NULL si no tiene hijo izquierdo
+	iNodoPtr LeerIzq(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
+
+	//Devuelve NULL si no tiene hijo derecho
+	iNodoPtr LeerDer(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
 
 public:
 

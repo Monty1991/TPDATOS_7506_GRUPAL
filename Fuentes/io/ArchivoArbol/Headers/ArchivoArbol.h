@@ -52,6 +52,8 @@ public:
 
 	eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _pNodo);
 
+	float DeterminarPorcentajeCarga(iNodoPtr _pNodo);
+
 	void LiberarNodo(size_t _nroNodo);
 
 	void Close();

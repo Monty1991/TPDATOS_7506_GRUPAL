@@ -16,7 +16,7 @@ ArchivoArbol::ArchivoArbol(const char *_nombreArchivo, size_t _tamanioNodo,
 	serializadorNodo = SerializadorNodoFactory_Nuevo(tipoArbol);
 	hidratadorNodo = HidratadorNodoFactory_Nuevo(tipoArbol);
 
-	iBloquePtr pBloque = archivoBloque->LeerBloque(0);
+	iBloquePtr pBloque = archivoBloque->LeerBloque(0); //Revisar
 	mapaDeBits = MapaDeBitsFactory_Nuevo(pBloque);
 
 	pBloque->Dispose();
@@ -55,6 +55,11 @@ ArchivoArbol::~ArchivoArbol() {
 void ArchivoArbol::Close() {
 
 	delete this;
+}
+
+float ArchivoArbol::DeterminarPorcentajeCarga(iNodoPtr _pNodo){
+
+    return (serializadorNodo->CalcularEspacioSerializacion(_pNodo) / tamanioNodo) * 100;
 }
 
 size_t ArchivoArbol::GetNodoLibre() {
@@ -112,7 +117,7 @@ iNodoPtr ArchivoArbol::LeerNodo(size_t _nroNodo) {
 			return pNodo;
 		}
 
-	Throw(" ", "Número de nodo inválido");
+	return NULL;
 }
 
 void ArchivoArbol::EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo) {

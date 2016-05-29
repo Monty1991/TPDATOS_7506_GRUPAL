@@ -27,6 +27,8 @@ public:
 	// Devuelve uno de los valores, dependiendo del estado del nodo
 	virtual eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _pNodo) = 0;
 
+	virtual float DeterminarPorcentajeCarga(iNodoPtr _pNodo) = 0;
+
 	// Libera el nodo que se encuentra en la posición pasada como parámetro.
 	virtual void LiberarNodo(size_t _nroNodo) = 0;
 

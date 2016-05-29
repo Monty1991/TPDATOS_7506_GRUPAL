@@ -11,9 +11,9 @@
 #include "../../../Memoria/Registro/Headers/iRegistro.h"
 
 enum eResultadoVpTree_ABM {
-	eResultadoVpTree_ABM_OK,
-	eResultadoVpTree_ABM_DUPLICADO,
-	eResultadoVpTree_ABM_INEXISTENTE,
+	eResultadoVpTree_ABM__Ok,
+	eResultadoVpTree_ABM__Duplicado,
+	eResultadoVpTree_ABM__Inexistente,
 };
 
 typedef class iDistanceFn {
