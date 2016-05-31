@@ -31,6 +31,14 @@ void Archivo::Seek(size_t position)
 	fseek(this->file, position, SEEK_SET);
 }
 
+fpos_t Archivo::GetFileSize()
+{
+	fseek(this->file, 0, SEEK_END);
+	fpos_t fpos;
+	fgetpos(this->file, &fpos);
+	return fpos;
+}
+
 int Archivo::ReadChar()
 {
 	return getc(this->file);

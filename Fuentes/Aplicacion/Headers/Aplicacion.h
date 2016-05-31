@@ -21,4 +21,3 @@ class Aplicacion: public iAplicacion
 };
 
 #endif	/* APLICACION_H */
-

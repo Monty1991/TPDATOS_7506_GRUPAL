@@ -20,17 +20,19 @@ typedef class Archivo: public iArchivo
 		Archivo(const char *nombre, const char *mode);
 		virtual ~Archivo();
 
-		void Read(char *buff, size_t count);
-		void Write(const char *buff, size_t amount);
-		void Seek(size_t position);
+		virtual void Read(char *buff, size_t count);
+		virtual void Write(const char *buff, size_t amount);
+		virtual void Seek(size_t position);
+		
+		virtual fpos_t GetFileSize();
 
-		int ReadChar();
-		void WriteChar(int c);
+		virtual int ReadChar();
+		virtual void WriteChar(int c);
 
-		void Printf(const char *format);
+		virtual void Printf(const char *format);
 
-		void Flush();
-		void Close();
+		virtual void Flush();
+		virtual void Close();
 
 } *ArchivoPtr;
 

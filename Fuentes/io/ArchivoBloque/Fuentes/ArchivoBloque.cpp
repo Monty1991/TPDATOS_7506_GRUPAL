@@ -8,10 +8,23 @@
 #include "../Headers/ArchivoBloque.h"
 #include "../../../Utils/Bloque/BloqueFactory.h"
 
-ArchivoBloque::ArchivoBloque(const char *nombre, size_t tamanioBloque)
+ArchivoBloque::ArchivoBloque(const char *nombre, size_t tamanioBloque): tamanioBloque(tamanioBloque)
 {
 	this->archivo = ArchivoFactory_Nuevo(nombre, eTipoArchivo::eTipoArchivo_Binario);
-	this->tamanioBloque = tamanioBloque;
+	fpos_t fpos = this->archivo->GetFileSize();
+
+	// nos aseguramos de que el bloque 0 siempre exista
+	if (fpos < this->tamanioBloque)
+	{
+		char buff[this->tamanioBloque];
+		for (size_t i = 0; i < this->tamanioBloque; i++)
+			buff[i] = 0;
+
+		iBloquePtr bloque = BloqueFactory_Nuevo(buff, this->tamanioBloque);
+
+		this->EscribirBloque(0, bloque);
+		bloque->Dispose();
+	}
 }
 
 ArchivoBloque::~ArchivoBloque()

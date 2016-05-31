@@ -9,6 +9,7 @@
 #define	IARCHIVO_H
 
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef class iArchivo
 {
@@ -18,6 +19,9 @@ typedef class iArchivo
 		virtual void Read(char *buff, size_t count) = 0;
 		virtual void Write(const char *buff, size_t count) = 0;
 		virtual void Seek(size_t position) = 0;
+
+		// consulta tamanio archivo
+		virtual fpos_t GetFileSize() = 0;
 
 		// Acceso secuencial
 		virtual int ReadChar() = 0;
