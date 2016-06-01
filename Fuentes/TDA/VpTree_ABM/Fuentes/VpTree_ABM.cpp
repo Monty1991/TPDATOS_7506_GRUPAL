@@ -36,8 +36,8 @@ void VpTree_ABM::Dispose() {
 	delete this;
 }
 
-VpTree_ABM::VpTree_ABM(const char* _fileName,
-		size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia) {
+VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _tamanioNodo,
+		size_t _cargaMinima, size_t _tolerancia) {
 
 	this->espacioMetrico = EspacioMetricoFactory_Nuevo();
 
@@ -51,10 +51,12 @@ VpTree_ABM::VpTree_ABM(const char* _fileName,
 		raiz = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo_Hoja);
 		archivo->EscribirNodo(0, raiz);
 	}
+
+	estado = eEstadoVpTree_ABM__Ok;
 }
 
-void VpTree_ABM::ResolverEstado(
-		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+void VpTree_ABM::ResolverEstado(size_t _nroNodoInterno,
+		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
 	switch (estado) {
@@ -63,43 +65,44 @@ void VpTree_ABM::ResolverEstado(
 		return;
 
 	case eEstadoVpTree_ABM__HojaEnOverflow:
-		ResolverOverflow(_hoja);
+		ResolverOverflow(_nroHoja, _hoja);
 		break;
 
 	case eEstadoVpTree_ABM__HojaEnUnderflow:
-		ResolverUnderflow(_nodoInterno, _hoja);
+		ResolverUnderflow(_nroNodoInterno, _nodoInterno, _nroHoja, _hoja);
 		break;
 
 	case eEstadoVpTree_ABM__NodoInternoEnUnderflow:
-		ResolverUnderflow(_nodoInterno);
+		ResolverUnderflow(_nroNodoInterno, _nodoInterno);
 		break;
 	}
 
 	estado = eEstadoVpTree_ABM__Ok;
 }
 
-void VpTree_ABM::ResolverUnderflow(
+void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
 }
 
-void VpTree_ABM::ResolverUnderflow(
-		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
+		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
 }
 
-void VpTree_ABM::ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
+void VpTree_ABM::ResolverOverflow(size_t _nroHoja,
+		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
 }
 
-size_t VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja)
-{
+size_t VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 	size_t cantidad = _hoja->ObtenerCantidadRegistros();
 	size_t listaClaves[cantidad];
 
 	for (size_t i = 0; i < cantidad; i++)
-		listaClaves[i] = _hoja->ObtenerRegistro(i)->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+		listaClaves[i] =
+				_hoja->ObtenerRegistro(i)->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno;
 
 	return this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
 }
@@ -132,8 +135,10 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(iRegistroPtr _reg) {
 
 iNodoPtr VpTree_ABM::LeerIzq(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
+	return NULL;
 }
 
 iNodoPtr VpTree_ABM::LeerDer(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
+	return NULL;
 }

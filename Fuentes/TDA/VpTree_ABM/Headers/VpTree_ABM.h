@@ -37,15 +37,19 @@ private:
 	 * Aquel caso que no requiera de nodo interno, dicho parámetro es ignorado
 	 * Aquel caso que no requiera de nodo hoja,    dicho parámetro es ignorado
 	 */
-	void ResolverEstado(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+	void ResolverEstado(size_t _nroNodoInterno,
+			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
-	void ResolverUnderflow(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
+	void ResolverUnderflow(size_t _nroNodoInterno,
+			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
 
-	void ResolverUnderflow(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno,
+	void ResolverUnderflow(size_t _nroNodoInterno,
+			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
-	void ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	void ResolverOverflow(size_t _nroHoja,
+			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	/**Genera un nuevo pivote a partir del conjunto de registros en la _hoja**/
 	size_t GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
@@ -62,8 +66,8 @@ private:
 
 public:
 
-	VpTree_ABM(const char* _fileName,
-			size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia);
+	VpTree_ABM(const char* _fileName, size_t _tamanioNodo, size_t _cargaMinima,
+			size_t _tolerancia);
 
 	eResultadoVpTree_ABM Alta(iRegistroPtr _reg);
 
