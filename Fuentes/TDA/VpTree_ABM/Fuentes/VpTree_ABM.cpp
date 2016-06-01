@@ -8,6 +8,7 @@
 #include "../Headers/VpTree_ABM.h"
 #include "../../../io/ArchivoArbol/ArchivoArbolFactory.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
+#include "../../../Utils/EspacioMetrico/EspacioMetricoFactory.h"
 
 VpTree_ABM::~VpTree_ABM() {
 
@@ -23,10 +24,10 @@ VpTree_ABM::~VpTree_ABM() {
 		archivo = NULL;
 	}
 
-	if (fnDistancia) {
+	if (this->espacioMetrico) {
 
-		fnDistancia->Dispose();
-		fnDistancia = NULL;
+		this->espacioMetrico->Dispose();
+		this->espacioMetrico = NULL;
 	}
 }
 
@@ -35,10 +36,10 @@ void VpTree_ABM::Dispose() {
 	delete this;
 }
 
-VpTree_ABM::VpTree_ABM(const char* _fileName, iDistanceFnPtr _fnDistancia,
+VpTree_ABM::VpTree_ABM(const char* _fileName,
 		size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia) {
 
-	fnDistancia = _fnDistancia->Clone();
+	this->espacioMetrico = EspacioMetricoFactory_Nuevo();
 
 	archivo = ArchivoArbolFactory_Nuevo(_fileName, _tamanioNodo, _cargaMinima,
 			_tolerancia, eTipoArbol_ArbolPuntoOptimo);
@@ -92,9 +93,15 @@ void VpTree_ABM::ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
 }
 
-iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
+size_t VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja)
+{
+	size_t cantidad = _hoja->ObtenerCantidadRegistros();
+	size_t listaClaves[cantidad];
 
-	return NULL;
+	for (size_t i = 0; i < cantidad; i++)
+		listaClaves[i] = _hoja->ObtenerRegistro(i)->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+
+	return this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
 }
 
 float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
@@ -130,4 +137,3 @@ iNodoPtr VpTree_ABM::LeerIzq(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 iNodoPtr VpTree_ABM::LeerDer(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
 }
-

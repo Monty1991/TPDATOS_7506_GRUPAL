@@ -16,18 +16,6 @@ enum eResultadoVpTree_ABM {
 	eResultadoVpTree_ABM__Inexistente,
 };
 
-typedef class iDistanceFn {
-
-public:
-
-	virtual float Evaluar(iFeaturePtr _key1, iFeaturePtr _key2)=0;
-
-	virtual iDistanceFn* Clone()=0;
-
-	virtual void Dispose()=0;
-
-}* iDistanceFnPtr;
-
 typedef class iVpTree_ABM {
 
 public:

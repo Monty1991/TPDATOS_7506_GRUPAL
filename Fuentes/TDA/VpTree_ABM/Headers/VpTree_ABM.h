@@ -11,6 +11,7 @@
 #include "iVpTree_ABM.h"
 #include "../../../io/ArchivoArbol/Headers/iArchivoArbol.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
+#include "../../../Utils/EspacioMetrico/Headers/iEspacioMetrico.h"
 
 enum eEstadoVpTree_ABM {
 	eEstadoVpTree_ABM__Ok,
@@ -26,7 +27,7 @@ private:
 	iNodoPtr raiz;
 	eEstadoVpTree_ABM estado;
 	iArchivoArbolPtr archivo;
-	iDistanceFnPtr fnDistancia;
+	iEspacioMetricoPtr espacioMetrico;
 
 	virtual ~VpTree_ABM();
 
@@ -47,7 +48,7 @@ private:
 	void ResolverOverflow(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	/**Genera un nuevo pivote a partir del conjunto de registros en la _hoja**/
-	iFeaturePtr GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	size_t GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	//PRE: llamar a GenerarPivote(_hoja)
 	float CalcularRadio(iFeaturePtr _pivote,
@@ -61,7 +62,7 @@ private:
 
 public:
 
-	VpTree_ABM(const char* _fileName, iDistanceFnPtr _fnDistancia,
+	VpTree_ABM(const char* _fileName,
 			size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia);
 
 	eResultadoVpTree_ABM Alta(iRegistroPtr _reg);
@@ -72,7 +73,7 @@ public:
 
 	eResultadoVpTree_ABM Buscar(iRegistroPtr _reg);
 
-	void Dispose();
+	virtual void Dispose();
 
 };
 

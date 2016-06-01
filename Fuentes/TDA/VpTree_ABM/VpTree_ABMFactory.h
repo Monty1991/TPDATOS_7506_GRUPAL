@@ -11,7 +11,7 @@
 #include "Headers/iVpTree_ABM.h"
 
 iVpTree_ABMPtr VpTree_ABMFactory_Nuevo(const char* _fileName,
-		iDistanceFnPtr _fnDistancia, size_t _tamanioNodo, size_t _cargaMinima,
+		size_t _tamanioNodo, size_t _cargaMinima,
 		size_t _tolerancia);
 
 #endif /* VPTREE_ABMFACTORY_H_ */
