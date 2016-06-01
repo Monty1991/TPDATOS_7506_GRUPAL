@@ -11,10 +11,9 @@
 ArchivoBloque::ArchivoBloque(const char *nombre, size_t tamanioBloque): tamanioBloque(tamanioBloque)
 {
 	this->archivo = ArchivoFactory_Nuevo(nombre, eTipoArchivo::eTipoArchivo_Binario);
-	fpos_t fpos = this->archivo->GetFileSize();
 
 	// nos aseguramos de que el bloque 0 siempre exista
-	if (fpos < this->tamanioBloque)
+	if (this->archivo->GetFileSize() < this->tamanioBloque)
 	{
 		char buff[this->tamanioBloque];
 		for (size_t i = 0; i < this->tamanioBloque; i++)
