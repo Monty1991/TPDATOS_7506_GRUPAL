@@ -24,10 +24,10 @@ class VpTree_ABM: public iVpTree_ABM {
 
 private:
 
-	iNodoPtr raiz;
 	size_t nroCampoClave;
 	eEstadoVpTree_ABM estado;
 	iArchivoArbolPtr archivo;
+	iNodoArbolPuntoOptimoPtr raiz;
 	iEspacioMetricoPtr espacioMetrico;
 
 	virtual ~VpTree_ABM();
@@ -60,10 +60,12 @@ private:
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	//Devuelve NULL si no tiene hijo izquierdo
-	iNodoPtr LeerIzq(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
+	iNodoArbolPuntoOptimoPtr LeerIzq(
+			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
 
 	//Devuelve NULL si no tiene hijo derecho
-	iNodoPtr LeerDer(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
+	iNodoArbolPuntoOptimoPtr LeerDer(
+			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
 
 	float Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
 
