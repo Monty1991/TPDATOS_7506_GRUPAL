@@ -9,9 +9,9 @@
 #include "../VpTree_ABMFactory.h"
 
 iVpTree_ABMPtr VpTree_ABMFactory_Nuevo(const char* _fileName,
-		size_t _tamanioNodo, size_t _cargaMinima,
+		size_t _nroCampoClave, size_t _tamanioNodo, size_t _cargaMinima,
 		size_t _tolerancia) {
 
-	return new VpTree_ABM(_fileName, _tamanioNodo, _cargaMinima,
+	return new VpTree_ABM(_fileName, _nroCampoClave, _tamanioNodo, _cargaMinima,
 			_tolerancia);
 }

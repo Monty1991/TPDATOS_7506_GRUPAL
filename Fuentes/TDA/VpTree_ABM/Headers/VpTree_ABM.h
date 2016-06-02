@@ -25,6 +25,7 @@ class VpTree_ABM: public iVpTree_ABM {
 private:
 
 	iNodoPtr raiz;
+	size_t nroCampoClave;
 	eEstadoVpTree_ABM estado;
 	iArchivoArbolPtr archivo;
 	iEspacioMetricoPtr espacioMetrico;
@@ -64,10 +65,12 @@ private:
 	//Devuelve NULL si no tiene hijo derecho
 	iNodoPtr LeerDer(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
 
+	float Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
+
 public:
 
-	VpTree_ABM(const char* _fileName, size_t _tamanioNodo, size_t _cargaMinima,
-			size_t _tolerancia);
+	VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
+			size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia);
 
 	eResultadoVpTree_ABM Alta(iRegistroPtr _reg);
 

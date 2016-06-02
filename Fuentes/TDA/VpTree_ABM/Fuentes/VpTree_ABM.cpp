@@ -9,6 +9,7 @@
 #include "../../../io/ArchivoArbol/ArchivoArbolFactory.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
 #include "../../../Utils/EspacioMetrico/EspacioMetricoFactory.h"
+#include "../../../Exceptions/ExceptionFactory.h"
 
 VpTree_ABM::~VpTree_ABM() {
 
@@ -36,8 +37,14 @@ void VpTree_ABM::Dispose() {
 	delete this;
 }
 
-VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _tamanioNodo,
-		size_t _cargaMinima, size_t _tolerancia) {
+float VpTree_ABM::Distancia(iFeaturePtr _key1, iFeaturePtr _key2) {
+
+	return 0;
+}
+
+VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
+		size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia) :
+		nroCampoClave(_nroCampoClave) {
 
 	this->espacioMetrico = EspacioMetricoFactory_Nuevo();
 
