@@ -109,7 +109,7 @@ void NodoArbolPuntoOptimoNodoHoja::RedimensionarTabla(size_t nuevoTamanio)
 	this->tamanioTablaRegistros = nuevoTamanio;
 }
 
-NodoArbolPuntoOptimoNodoInterno::NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros): pivote(0), radio(0)
+NodoArbolPuntoOptimoNodoInterno::NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros): pivote(0), radio(0), hijoIzquierdo(0), hijoDerecho(0)
 {
 	this->nodoHoja = new NodoArbolPuntoOptimoNodoHoja(listaRegistros, cantidadRegistros);
 }
@@ -153,6 +153,26 @@ float NodoArbolPuntoOptimoNodoInterno::ObtenerRadio()
 void NodoArbolPuntoOptimoNodoInterno::EstablecerRadio(float radio)
 {
 	this->radio = radio;
+}
+
+void NodoArbolPuntoOptimoNodoInterno::EstablecerHijoIzquierdo(size_t nodo)
+{
+	this->hijoIzquierdo = nodo;
+}
+
+size_t NodoArbolPuntoOptimoNodoInterno::ObtenerHijoIzquierdo()
+{
+	return this->hijoIzquierdo;
+}
+
+void NodoArbolPuntoOptimoNodoInterno::EstablecerHijoDerecho(size_t nodo)
+{
+	this->hijoDerecho = nodo;
+}
+
+size_t NodoArbolPuntoOptimoNodoInterno::ObtenerHijoDerecho()
+{
+	return this->hijoDerecho;
 }
 
 size_t NodoArbolPuntoOptimoNodoInterno::ObtenerCantidadRegistros()

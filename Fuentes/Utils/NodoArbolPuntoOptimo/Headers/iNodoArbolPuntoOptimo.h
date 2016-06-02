@@ -32,6 +32,11 @@ typedef class iNodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodo
 		virtual float ObtenerRadio() = 0;
 		virtual void EstablecerRadio(float radio) = 0;
 
+		virtual void EstablecerHijoIzquierdo(size_t nodo) = 0;
+		virtual size_t ObtenerHijoIzquierdo() = 0;
+		virtual void EstablecerHijoDerecho(size_t nodo) = 0;
+		virtual size_t ObtenerHijoDerecho() = 0;
+
 } *iNodoArbolPuntoOptimoNodoInternoPtr;
 
 #endif /* INODOARBOLPUNTOOPTIMO_H */

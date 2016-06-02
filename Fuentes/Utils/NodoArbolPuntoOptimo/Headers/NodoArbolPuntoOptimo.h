@@ -44,6 +44,9 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 	private:
 		size_t pivote;
 		float radio;
+		
+		size_t hijoIzquierdo;
+		size_t hijoDerecho;
 		// El compilador protesta si hereda, por "ambiguo" >:(
 		iNodoArbolPuntoOptimoNodoHojaPtr nodoHoja;
 
@@ -61,6 +64,11 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 		
 		virtual float ObtenerRadio();
 		virtual void EstablecerRadio(float radio);
+
+		virtual void EstablecerHijoIzquierdo(size_t nodo);
+		virtual size_t ObtenerHijoIzquierdo();
+		virtual void EstablecerHijoDerecho(size_t nodo);
+		virtual size_t ObtenerHijoDerecho();
 
 		virtual size_t ObtenerCantidadRegistros();
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);

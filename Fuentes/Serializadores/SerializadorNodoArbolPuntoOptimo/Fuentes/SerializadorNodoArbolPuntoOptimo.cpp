@@ -40,6 +40,12 @@ size_t SerializadorNodoArbolPuntoOptimo::CalcularEspacioSerializacion(iNodoPtr n
 
 		number.flotante.flotante32 = nodoArbolPuntoOptimoNodoInterno->ObtenerRadio();
 		espacio += this->serializadorNumerico->CalcularEspacio(number, eValueType::eValueType_F32);
+
+		number.entero.enteroSinSigno.entero32SinSigno = nodoArbolPuntoOptimoNodoInterno->ObtenerHijoIzquierdo();
+		espacio += this->serializadorNumerico->CalcularEspacio(number, eValueType::eValueType_U4);
+
+		number.entero.enteroSinSigno.entero32SinSigno = nodoArbolPuntoOptimoNodoInterno->ObtenerHijoDerecho();
+		espacio += this->serializadorNumerico->CalcularEspacio(number, eValueType::eValueType_U4);
 	}
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
@@ -69,6 +75,12 @@ size_t SerializadorNodoArbolPuntoOptimo::Serializar(char *buff, iNodoPtr nodo)
 
 		number.flotante.flotante32 = nodoArbolPuntoOptimoNodoInterno->ObtenerRadio();
 		espacio += this->serializadorNumerico->Serializar(buff, number, eValueType::eValueType_F32);
+
+		number.entero.enteroSinSigno.entero32SinSigno = nodoArbolPuntoOptimoNodoInterno->ObtenerHijoIzquierdo();
+		espacio += this->serializadorNumerico->Serializar(buff, number, eValueType::eValueType_U4);
+
+		number.entero.enteroSinSigno.entero32SinSigno = nodoArbolPuntoOptimoNodoInterno->ObtenerHijoDerecho();
+		espacio += this->serializadorNumerico->Serializar(buff, number, eValueType::eValueType_U4);
 	}
 
 	for (size_t i = 0; i < cantidadRegistros; i++)

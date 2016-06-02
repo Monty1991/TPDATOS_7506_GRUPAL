@@ -28,6 +28,9 @@ size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
 
 	size_t pivote = 0;
 	float radio = 0;
+	size_t hijoIzquierdo = 0;
+	size_t hijoDerecho = 0;
+	
 	if (tipo == eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno)
 	{
 		leido += this->hidratadorNumerico->Hidratar(buff + leido, &numero, eValueType::eValueType_U4);
@@ -35,6 +38,12 @@ size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
 
 		leido += this->hidratadorNumerico->Hidratar(buff + leido, &numero, eValueType::eValueType_F32);
 		radio = numero.flotante.flotante32;
+
+		leido += this->hidratadorNumerico->Hidratar(buff + leido, &numero, eValueType::eValueType_U4);
+		hijoIzquierdo = numero.entero.enteroSinSigno.entero32SinSigno;
+
+		leido += this->hidratadorNumerico->Hidratar(buff + leido, &numero, eValueType::eValueType_U4);
+		hijoDerecho = numero.entero.enteroSinSigno.entero32SinSigno;
 	}
 	
 	leido += this->hidratadorNumerico->Hidratar(buff + leido, &numero, eValueType::eValueType_U1);
@@ -52,6 +61,8 @@ size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
 		iNodoArbolPuntoOptimoNodoInternoPtr nodoArbolPuntoOptimoNodoInternoPtr = ((iNodoArbolPuntoOptimoNodoInternoPtr)(*nodo));
 		nodoArbolPuntoOptimoNodoInternoPtr->EstablecerPivote(pivote);
 		nodoArbolPuntoOptimoNodoInternoPtr->EstablecerRadio(radio);
+		nodoArbolPuntoOptimoNodoInternoPtr->EstablecerHijoIzquierdo(hijoIzquierdo);
+		nodoArbolPuntoOptimoNodoInternoPtr->EstablecerHijoDerecho(hijoDerecho);
 	}
 
 	delete [] tablaRegistros;
