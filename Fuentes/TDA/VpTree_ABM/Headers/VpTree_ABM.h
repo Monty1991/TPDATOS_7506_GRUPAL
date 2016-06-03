@@ -59,14 +59,6 @@ private:
 	float CalcularRadio(iFeaturePtr _pivote,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
-	//Devuelve NULL si no tiene hijo izquierdo
-	iNodoArbolPuntoOptimoPtr LeerIzq(
-			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
-
-	//Devuelve NULL si no tiene hijo derecho
-	iNodoArbolPuntoOptimoPtr LeerDer(
-			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
-
 	float Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
 
 public:

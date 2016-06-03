@@ -51,7 +51,7 @@ VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
 	archivo = ArchivoArbolFactory_Nuevo(_fileName, _tamanioNodo, _cargaMinima,
 			_tolerancia, eTipoArbol_ArbolPuntoOptimo);
 
-	raiz = (iNodoArbolPuntoOptimoPtr)archivo->LeerNodo(0);
+	raiz = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(0);
 
 	if (raiz == NULL) {
 
@@ -90,16 +90,42 @@ void VpTree_ABM::ResolverEstado(size_t _nroNodoInterno,
 void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
-	/**iNodoArbolPuntoOptimoPtr _hijo;
+	/**    size_t nroHijo;
+	 iNodoArbolPuntoOptimoPtr hijo;
 
-	if ((_hijo = LeerDer(_nodoInterno)) == NULL)
-		if ((_hijo = LeerIzq(_nodoInterno)) == NULL)
-			Throw(" ", "Nodo interno sin hijos.");**/
+	 if ((nroHijo = _nodoInterno->ObtenerHijoDerecho()) == 0)
+	 if ((nroHijo = _nodoInterno->ObtenerHijoIzquierdo()) == 0)
+	 Throw(" ", "Nodo interno sin hijos.");
 
+	 hijo = (iNodoArbolPuntoOptimoPtr)archivo->LeerNodo(nroHijo);
 
+	 if (hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja && archivo->DeterminarEstadoNodo(hijo) == eEstadoCargaNodo_CargaMinima){
 
+	 for (size_t i = 0; i < hijo->ObtenerCantidadRegistros(); i++)
+	 _nodoInterno->AgregarRegistro(hijo->ObtenerRegistro(i));
 
+	 archivo->LiberarNodo(nroHijo);
 
+	 if (_nodoInterno->ObtenerHijoDerecho() == nroHijo)
+	 _nodoInterno->EstablecerHijoDerecho(0);
+	 else _nodoInterno->EstablecerHijoIzquierdo(0);
+
+	 if (_nodoInterno->ObtenerHijoDerecho() != _nodoInterno->ObtenerHijoIzquierdo())
+	 archivo->EscribirNodo(_nroNodoInterno,_nodoInterno);
+	 else {
+
+	 iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo_Hoja);
+
+	 for (size_t i = 0; i < _nodoInterno->ObtenerCantidadRegistros(); i++)
+	 hojaNueva->AgregarRegistro(_nodoInterno->ObtenerRegistro(i));
+
+	 archivo->EscribirNodo(_nroNodoInterno,hojaNueva);
+	 hojaNueva->Dispose();
+
+	 }
+
+	 }
+	 **/
 }
 
 void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
@@ -150,22 +176,3 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(iRegistroPtr _reg) {
 	return eResultadoVpTree_ABM__Ok;
 }
 
-iNodoArbolPuntoOptimoPtr VpTree_ABM::LeerIzq(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
-
-	size_t _hijoIzq = _nodoInterno->ObtenerHijoIzquierdo();
-
-	if (_hijoIzq == 0)
-		return NULL;
-	else
-		return (iNodoArbolPuntoOptimoPtr)archivo->LeerNodo(_hijoIzq);
-}
-
-iNodoArbolPuntoOptimoPtr VpTree_ABM::LeerDer(iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
-
-	size_t _hijoDer = _nodoInterno->ObtenerHijoDerecho();
-
-	if (_hijoDer == 0)
-		return NULL;
-	else
-		return (iNodoArbolPuntoOptimoPtr)archivo->LeerNodo(_hijoDer);
-}
