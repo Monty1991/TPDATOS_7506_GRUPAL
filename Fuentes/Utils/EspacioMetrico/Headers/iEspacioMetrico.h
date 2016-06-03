@@ -18,9 +18,11 @@ typedef class iEspacioMetrico: public iObject
 		
 		virtual void Dispose() = 0;
 
-		virtual float CalcularDistancia(size_t id1, size_t id2) = 0;
+		virtual float CalcularDistancia(size_t clave2, size_t clave1) = 0;
+		virtual float CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2) = 0;
 
 		virtual size_t CalcularPivote(size_t *listaClaves, size_t cantidadClaves) = 0;
+		virtual sCadenaANSI *CalcularPivote(sCadenaANSI **listaClaves, size_t cantidadClaves) = 0;
 		
 } *iEspacioMetricoPtr;
 

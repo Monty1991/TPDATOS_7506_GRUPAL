@@ -24,13 +24,18 @@ class EspacioMetrico: public iEspacioMetrico, public Object
 		
 		virtual void Dispose();
 
-		virtual float CalcularDistancia(size_t clave1, size_t clave2);
+		virtual float CalcularDistancia(size_t clave2, size_t clave1);
+		virtual float CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2);
 
 		virtual size_t CalcularPivote(size_t *listaClaves, size_t cantidadClaves);
+		virtual sCadenaANSI *CalcularPivote(sCadenaANSI **listaClaves, size_t cantidadClaves);
 
 	private:
 		virtual void SepararCoordenadas(size_t clave, size_t *coord1, size_t *coord2);
+		virtual void SepararCoordenadas(sCadenaANSI *clave, sCadenaANSI **coord1, sCadenaANSI **coord2);
 		virtual size_t JuntarCoordenadas(size_t coord1, size_t coord2);
+		virtual sCadenaANSI *JuntarCoordenadas(sCadenaANSI *coord1, sCadenaANSI *coord2);
+		virtual size_t DistanciaLevenshtein(sCadenaANSI *coord1, sCadenaANSI *coord2);
 };
 
 #endif /* ESPACIOMETRICO_H */
