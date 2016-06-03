@@ -97,6 +97,11 @@ iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro(size_t clave)
 	return reg;
 }
 
+iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro()
+{
+	return NULL;
+}
+
 void NodoArbolPuntoOptimoNodoHoja::RedimensionarTabla(size_t nuevoTamanio)
 {
 	iRegistroPtr *nuevaTabla = new iRegistroPtr[nuevoTamanio];
@@ -194,3 +199,9 @@ iRegistroPtr NodoArbolPuntoOptimoNodoInterno::QuitarRegistro(size_t clave)
 {
 	return this->nodoHoja->QuitarRegistro(clave);
 }
+
+iRegistroPtr NodoArbolPuntoOptimoNodoInterno::QuitarRegistro()
+{
+	return NULL;
+}
+

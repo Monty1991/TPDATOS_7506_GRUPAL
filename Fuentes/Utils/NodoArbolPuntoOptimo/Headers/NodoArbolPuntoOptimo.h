@@ -31,6 +31,7 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
 
 		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg);
 		virtual iRegistroPtr QuitarRegistro(size_t clave);
+		virtual iRegistroPtr QuitarRegistro();
 
 	private:
 		void RedimensionarTabla(size_t nuevoTamanio);
@@ -75,6 +76,8 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 
 		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg);
 		virtual iRegistroPtr QuitarRegistro(size_t clave);
+		virtual iRegistroPtr QuitarRegistro();
+
 };
 
 #endif /* NODOARBOLPUNTOOPTIMO_H */
