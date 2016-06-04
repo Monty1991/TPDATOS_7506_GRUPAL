@@ -25,7 +25,6 @@ class VpTree_ABM: public iVpTree_ABM {
 private:
 
 	size_t nroCampoClave;
-	eEstadoVpTree_ABM estado;
 	iArchivoArbolPtr archivo;
 	iNodoArbolPuntoOptimoPtr raiz;
 	iEspacioMetricoPtr espacioMetrico;
@@ -38,7 +37,7 @@ private:
 	 * Aquel caso que no requiera de nodo interno, dicho parámetro es ignorado
 	 * Aquel caso que no requiera de nodo hoja,    dicho parámetro es ignorado
 	 */
-	void ResolverEstado(size_t _nroNodoInterno,
+	void ResolverEstado(eEstadoVpTree_ABM _estado, size_t _nroNodoInterno,
 			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 

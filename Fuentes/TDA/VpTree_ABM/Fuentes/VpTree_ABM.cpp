@@ -58,15 +58,14 @@ VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
 		raiz = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo_Hoja);
 		archivo->EscribirNodo(0, raiz);
 	}
-
-	estado = eEstadoVpTree_ABM__Ok;
 }
 
-void VpTree_ABM::ResolverEstado(size_t _nroNodoInterno,
+void VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado,
+		size_t _nroNodoInterno,
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
-	switch (estado) {
+	switch (_estado) {
 
 	case eEstadoVpTree_ABM__Ok:
 		return;
@@ -83,8 +82,6 @@ void VpTree_ABM::ResolverEstado(size_t _nroNodoInterno,
 		ResolverUnderflow(_nroNodoInterno, _nodoInterno);
 		break;
 	}
-
-	estado = eEstadoVpTree_ABM__Ok;
 }
 
 void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
@@ -103,11 +100,10 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 			&& archivo->DeterminarEstadoNodo(hijo)
 					== eEstadoCargaNodo_CargaMinima) {
 
-		for (size_t i = 0; i < hijo->ObtenerCantidadRegistros(); i++)
-			_nodoInterno->AgregarRegistro(hijo->ObtenerRegistro(i));
+		while (hijo->ObtenerCantidadRegistros() != 0)
+			_nodoInterno->AgregarRegistro(hijo->QuitarRegistro());
 
 		archivo->LiberarNodo(nroHijo);
-		hijo->Dispose();
 
 		if (_nodoInterno->ObtenerHijoDerecho() == nroHijo)
 			_nodoInterno->EstablecerHijoDerecho(0);
@@ -125,15 +121,13 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 					NodoArbolPuntoOptimoFactory_Nuevo(
 							eNodoArbolPuntoOptimo_Hoja);
 
-			for (size_t i = 0; i < _nodoInterno->ObtenerCantidadRegistros();
-					i++)
-				hojaNueva->AgregarRegistro(_nodoInterno->ObtenerRegistro(i));
+			while (_nodoInterno->ObtenerCantidadRegistros() != 0)
+				hojaNueva->AgregarRegistro(_nodoInterno->QuitarRegistro());
 
-			archivo->EscribirNodo(_nroNodoInterno, hojaNueva);
+			archivo->EscribirNodo(_nroNodoInterno, hojaNueva); /**Conversión de nodo interno a hoja**/
 			hojaNueva->Dispose();
 		}
 	}
-
 
 	else {
 
@@ -147,7 +141,6 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 
 			archivo->EscribirNodo(_nroNodoInterno, _nodoInterno);
 			archivo->EscribirNodo(nroHijo, hijo);
-			hijo->Dispose();
 
 		} else if (hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Interno) {
 
@@ -159,6 +152,8 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 			ResolverUnderflow(_nroNodoInterno, _nodoInterno, nroHijo,
 					(iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
 	}
+
+	hijo->Dispose();
 }
 
 void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
