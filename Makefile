@@ -8,7 +8,8 @@ SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFacto
 EXCEPTIONS = Exception.o ExceptionFactory.o
 SERIALIZADORES = SerializadorNumerico.o SerializadorNumericoFactory.o SerializadorCadenaSinPrefijo.o SerializadorCadenaSinPrefijoFactory.o SerializadorByteMap.o SerializadorByteMapFactory.o SerializadorTTDispersion.o SerializadorTTDispersionFactory.o SerializadorCadenaANSI.o SerializadorCadenaANSIFactory.o SerializadorCadenaUNICODE.o SerializadorCadenaUNICODEFactory.o SerializadorFeature.o SerializadorFeatureFactory.o SerializadorRegistro.o SerializadorRegistroFactory.o SerializadorNodoFactory.o SerializadorNodoArbolPuntoOptimo.o SerializadorNodoArbolPuntoOptimoFactory.o
 HIDRATADORES = HidratadorNumerico.o HidratadorNumericoFactory.o HidratadorCadenaSinPrefijo.o HidratadorCadenaSinPrefijoFactory.o HidratadorTTDispersion.o HidratadorTTDispersionFactory.o HidratadorByteMap.o HidratadorByteMapFactory.o HidratadorCadenaANSI.o HidratadorCadenaANSIFactory.o HidratadorCadenaUNICODE.o HidratadorCadenaUNICODEFactory.o HidratadorFeature.o HidratadorFeatureFactory.o HidratadorRegistro.o HidratadorRegistroFactory.o HidratadorNodoFactory.o HidratadorNodoArbolPuntoOptimo.o HidratadorNodoArbolPuntoOptimoFactory.o
-OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SERIALIZADORES) $(HIDRATADORES) $(SYSTEM) $(EXCEPTIONS)
+COMANDOS = ComandoAlta.o ComandoAltaFactory.o
+OBJS = $(MODULOIO) $(MEMORY) $(TDA) $(UTILS) $(SERIALIZADORES) $(HIDRATADORES) $(SYSTEM) $(EXCEPTIONS) $(COMANDOS)
 APLICACION = Aplicacion.o
 CarpetaFuentes =./Fuentes/
 OBJDIR = Objects
@@ -45,6 +46,10 @@ $(SERIALIZADORES): $$(join $(CarpetaFuentes)Serializadores/, $$(subst Factory,,$
 
 .SECONDEXPANSION:
 $(HIDRATADORES): $$(join $(CarpetaFuentes)Hidratadores/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
+	$(CC) $(CXXFLAGS) -c $< -o $(OBJDIR)/$@
+
+.SECONDEXPANSION:
+$(COMANDOS): $$(join $(CarpetaFuentes)Comandos/, $$(subst Factory,,$$(subst .o,, $$@))/Fuentes/$$(subst .o,,$$@).cpp)
 	$(CC) $(CXXFLAGS) -c $< -o $(OBJDIR)/$@
 
 .SECONDEXPANSION:
