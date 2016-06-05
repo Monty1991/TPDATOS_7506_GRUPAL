@@ -37,24 +37,28 @@ private:
 	virtual ~VpTree_ABM();
 
 	/**
-	 * Resuelve un estado del árbol y escribe los nodos actualizados en disco
+	 * Resuelve un estado del árbol.
 	 *
-	 * Aquel caso que no requiera de nodo interno, dicho parámetro es ignorado
-	 * Aquel caso que no requiera de nodo hoja,    dicho parámetro es ignorado
+	 * Escribe todos los nodos actualizados en disco.
+	 *
+	 * No conserva el estado de los parámetros. Muy Importante.
+	 *
+	 * Cuando no requiere nodo padre, dicho parámetro es ignorado.
+	 * Cuando no requiere nodo hijo,  dicho parámetro es ignorado.
 	 */
-	void ResolverEstado(eEstadoVpTree_ABM _estado, size_t _nroNodoInterno,
-			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	void ResolverEstado(eEstadoVpTree_ABM _estado, size_t _nroNodoPadre,
+			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
+			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
-	void ResolverUnderflow(size_t _nroNodoInterno,
-			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno);
+	void ResolverUnderflow(size_t _nroNodoPadre,
+			iNodoArbolPuntoOptimoNodoInternoPtr _padre);
 
-	void ResolverUnderflow(size_t _nroNodoInterno,
-			iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	void ResolverUnderflow(size_t _nroNodoPadre,
+			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
+			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
-	void ResolverOverflow(size_t _nroHoja,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	void ResolverOverflow(size_t _nroNodoHijo,
+			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
 	/**Genera un nuevo pivote a partir del conjunto de registros en la _hoja**/
 	size_t GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
@@ -65,9 +69,10 @@ private:
 
 	float Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
 
+	//Obtiene el hermano del hijo pasado como parámetro
 	eHermanoVpTree_ABM ObtenerHermano(
-			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _hijo,
-			iNodoArbolPuntoOptimoPtr* _hermano);
+			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
+			size_t* _nroNodoHermano, iNodoArbolPuntoOptimoPtr* _hermano);
 
 public:
 
