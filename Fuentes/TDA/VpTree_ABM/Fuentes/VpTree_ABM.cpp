@@ -83,9 +83,8 @@ void VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado, size_t _nroNodoPadre,
 void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 		iNodoArbolPuntoOptimoNodoInternoPtr _padre) {
 
-	size_t nroNodoHijo;
+	size_t nroNodoHijo = 0;
 	iNodoArbolPuntoOptimoPtr hijo = NULL;
-	iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva = NULL;
 
 	if ((nroNodoHijo = _padre->ObtenerHijoDerecho()) == 0)
 		if ((nroNodoHijo = _padre->ObtenerHijoIzquierdo()) == 0)
@@ -93,32 +92,16 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 
 	hijo = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(nroNodoHijo);
 
-	if (hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja
-			&& archivo->DeterminarEstadoNodo(hijo)
-					== eEstadoCargaNodo_CargaMinima) {
+	if ((hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja)
+			&& (archivo->DeterminarEstadoNodo(hijo)
+					== eEstadoCargaNodo_CargaMinima)) {
 
-		while (hijo->ObtenerCantidadRegistros())
-			_padre->AgregarRegistro(hijo->QuitarRegistro());
-
+		iNodoArbolPuntoOptimoPtr padreNuevo = Fusionar(_padre, nroNodoHijo,
+				(iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
 		archivo->LiberarNodo(nroNodoHijo);
+		archivo->EscribirNodo(_nroNodoPadre, padreNuevo);
 
-		if (_padre->ObtenerHijoDerecho() == nroNodoHijo)
-			_padre->EstablecerHijoDerecho(0);
-		else
-			_padre->EstablecerHijoIzquierdo(0);
-
-		if (_padre->ObtenerHijoDerecho() != _padre->ObtenerHijoIzquierdo())
-			archivo->EscribirNodo(_nroNodoPadre, _padre);
-		else {
-
-			hojaNueva = NodoArbolPuntoOptimoFactory_Nuevo(
-					eNodoArbolPuntoOptimo_Hoja);
-
-			while (_padre->ObtenerCantidadRegistros())
-				hojaNueva->AgregarRegistro(_padre->QuitarRegistro());
-
-			archivo->EscribirNodo(_nroNodoPadre, hojaNueva);
-		}
+		padreNuevo->Dispose();
 	}
 
 	else {
@@ -139,14 +122,12 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 					(iNodoArbolPuntoOptimoNodoInternoPtr) hijo);
 
 		} else
+
 			ResolverUnderflow(_nroNodoPadre, _padre, nroNodoHijo,
 					(iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
 	}
 
 	hijo->Dispose();
-
-	if (hojaNueva)
-		hojaNueva->Dispose();
 }
 
 void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
@@ -157,33 +138,16 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 	size_t* pNroNodoHermano = &nroNodoHermano;
 	iNodoArbolPuntoOptimoPtr pHermano = NULL;
 	iNodoArbolPuntoOptimoPtr* ppHermano = &pHermano;
-	iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva = NULL;
 
 	if ((archivo->DeterminarPorcentajeCarga(_padre)
 			+ archivo->DeterminarPorcentajeCarga(_hijo)) <= 100) {
 
-		while (_hijo->ObtenerCantidadRegistros())
-			_padre->AgregarRegistro(_hijo->QuitarRegistro());
-
+		iNodoArbolPuntoOptimoPtr padreNuevo = Fusionar(_padre, _nroNodoHijo,
+				_hijo);
 		archivo->LiberarNodo(_nroNodoHijo);
+		archivo->EscribirNodo(_nroNodoPadre, padreNuevo);
 
-		if (_padre->ObtenerHijoDerecho() == _nroNodoHijo)
-			_padre->EstablecerHijoDerecho(0);
-		else
-			_padre->EstablecerHijoIzquierdo(0);
-
-		if (_padre->ObtenerHijoDerecho() != _padre->ObtenerHijoIzquierdo())
-			archivo->EscribirNodo(_nroNodoPadre, _padre);
-		else {
-
-			hojaNueva = NodoArbolPuntoOptimoFactory_Nuevo(
-					eNodoArbolPuntoOptimo_Hoja);
-
-			while (_padre->ObtenerCantidadRegistros())
-				hojaNueva->AgregarRegistro(_padre->QuitarRegistro());
-
-			archivo->EscribirNodo(_nroNodoPadre, hojaNueva);
-		}
+		padreNuevo->Dispose();
 	}
 
 	else if (ObtenerHermano(_padre, _nroNodoHijo, pNroNodoHermano, ppHermano)
@@ -202,36 +166,34 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 
 	else {
 
-		hojaNueva = NodoArbolPuntoOptimoFactory_Nuevo(
-				eNodoArbolPuntoOptimo_Hoja);
-
-		while (_padre->ObtenerCantidadRegistros())
-			hojaNueva->AgregarRegistro(_padre->QuitarRegistro());
-
-		while (_hijo->ObtenerCantidadRegistros())
-			hojaNueva->AgregarRegistro((_hijo->QuitarRegistro()));
-
-		if ((*ppHermano))
-			while ((*ppHermano)->ObtenerCantidadRegistros())
-				hojaNueva->AgregarRegistro((*ppHermano)->QuitarRegistro());
-
+		iNodoArbolPuntoOptimoPtr padreNuevo = Fusionar(_padre, _nroNodoHijo,
+				_hijo);
 		archivo->LiberarNodo(_nroNodoHijo);
 
-		if (nroNodoHermano)
+		if (nroNodoHermano) {
+
+			iNodoArbolPuntoOptimoPtr padreNuevo2 = Fusionar(
+					(iNodoArbolPuntoOptimoNodoInternoPtr) padreNuevo,
+					nroNodoHermano,
+					(iNodoArbolPuntoOptimoNodoHojaPtr) (*ppHermano));
 			archivo->LiberarNodo(nroNodoHermano);
 
-		if (archivo->DeterminarEstadoNodo(hojaNueva)
+			padreNuevo->Dispose();
+			padreNuevo = padreNuevo2;
+		}
+
+		if (archivo->DeterminarEstadoNodo(padreNuevo)
 				== eEstadoCargaNodo_Overflow)
-			ResolverOverflow(_nroNodoPadre, hojaNueva);
+			ResolverOverflow(_nroNodoPadre,
+					(iNodoArbolPuntoOptimoNodoHojaPtr) padreNuevo);
 		else
-			archivo->EscribirNodo(_nroNodoPadre, hojaNueva);
+			archivo->EscribirNodo(_nroNodoPadre, padreNuevo);
+
+		padreNuevo->Dispose();
 	}
 
 	if ((*ppHermano))
 		(*ppHermano)->Dispose();
-
-	if (hojaNueva)
-		hojaNueva->Dispose();
 }
 
 void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
