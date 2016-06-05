@@ -14,10 +14,15 @@
 #include "../../../Utils/EspacioMetrico/Headers/iEspacioMetrico.h"
 
 enum eEstadoVpTree_ABM {
-	eEstadoVpTree_ABM__Ok,
 	eEstadoVpTree_ABM__HojaEnOverflow,
 	eEstadoVpTree_ABM__HojaEnUnderflow,
 	eEstadoVpTree_ABM__NodoInternoEnUnderflow
+};
+
+enum eHermanoVpTree_ABM {
+	eHermanoVpTree_ABM__Hoja,
+	eHermanoVpTree_ABM__NodoInterno,
+	eHermanoVpTree_ABM__Inexistente
 };
 
 class VpTree_ABM: public iVpTree_ABM {
@@ -59,6 +64,10 @@ private:
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	float Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
+
+	eHermanoVpTree_ABM ObtenerHermano(
+			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _hijo,
+			iNodoArbolPuntoOptimoPtr* _hermano);
 
 public:
 

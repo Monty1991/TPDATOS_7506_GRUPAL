@@ -67,9 +67,6 @@ void VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado,
 
 	switch (_estado) {
 
-	case eEstadoVpTree_ABM__Ok:
-		return;
-
 	case eEstadoVpTree_ABM__HojaEnOverflow:
 		ResolverOverflow(_nroHoja, _hoja);
 		break;
@@ -131,11 +128,9 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 
 	else {
 
-		do
-			_nodoInterno->AgregarRegistro(hijo->QuitarRegistro());
-
 		while (archivo->DeterminarEstadoNodo(_nodoInterno)
-				== eEstadoCargaNodo_Underflow);
+				== eEstadoCargaNodo_Underflow)
+			_nodoInterno->AgregarRegistro(hijo->QuitarRegistro());
 
 		if (archivo->DeterminarEstadoNodo(hijo) != eEstadoCargaNodo_Underflow) {
 
@@ -160,11 +155,75 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
+	/**	if ((archivo->DeterminarPorcentajeCarga(_nodoInterno)
+	 + archivo->DeterminarPorcentajeCarga(_hoja)) <= 100) {
+
+	 while (_hoja->ObtenerCantidadRegistros() != 0)
+	 _nodoInterno->AgregarRegistro(_hoja->QuitarRegistro());
+
+	 archivo->LiberarNodo(_nroHoja);
+
+	 if (_nodoInterno->ObtenerHijoDerecho() == _nroHoja)
+	 _nodoInterno->EstablecerHijoDerecho(0);
+	 else
+	 _nodoInterno->EstablecerHijoIzquierdo(0);
+
+	 if (_nodoInterno->ObtenerHijoDerecho()
+	 != _nodoInterno->ObtenerHijoIzquierdo())
+
+	 archivo->EscribirNodo(_nroNodoInterno, _nodoInterno);
+
+	 else {
+
+	 iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva =
+	 NodoArbolPuntoOptimoFactory_Nuevo(
+	 eNodoArbolPuntoOptimo_Hoja);
+
+	 while (_nodoInterno->ObtenerCantidadRegistros() != 0)
+	 hojaNueva->AgregarRegistro(_nodoInterno->QuitarRegistro());
+
+	 archivo->EscribirNodo(_nroNodoInterno, hojaNueva);
+	 hojaNueva->Dispose();
+	 }
+	 }
+
+	 else if (DeterminarHermano(_nodoInterno,_nroHoja) == eHermanoVpTree_ABM__NodoInterno){
+
+	 }
+
+	 else {
+
+	 }**/
 }
 
 void VpTree_ABM::ResolverOverflow(size_t _nroHoja,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
+}
+
+eHermanoVpTree_ABM VpTree_ABM::ObtenerHermano(
+		iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _hijo,
+		iNodoArbolPuntoOptimoPtr* _hermano) {
+
+	size_t hermano;
+
+	if (_padre->ObtenerHijoDerecho() == _hijo)
+		hermano = _padre->ObtenerHijoIzquierdo();
+	else
+		hermano = _padre->ObtenerHijoDerecho();
+
+	if (hermano == 0) {
+
+		*_hermano = NULL;
+		return eHermanoVpTree_ABM__Inexistente;
+	}
+
+	*_hermano = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(hermano);
+
+	if ((*_hermano)->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja)
+		return eHermanoVpTree_ABM__Hoja;
+	else
+		return eHermanoVpTree_ABM__NodoInterno;
 }
 
 size_t VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
