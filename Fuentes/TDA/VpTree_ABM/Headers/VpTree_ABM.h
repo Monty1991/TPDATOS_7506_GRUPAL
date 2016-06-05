@@ -74,6 +74,10 @@ private:
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			size_t* _nroNodoHermano, iNodoArbolPuntoOptimoPtr* _hermano);
 
+	iNodoArbolPuntoOptimoPtr Fusionar(
+			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
+			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
+
 public:
 
 	VpTree_ABM(const char* _fileName, size_t _nroCampoClave,

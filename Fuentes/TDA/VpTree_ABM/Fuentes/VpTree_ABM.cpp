@@ -239,6 +239,46 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 
 }
 
+iNodoArbolPuntoOptimoPtr VpTree_ABM::Fusionar(
+		iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
+		iNodoArbolPuntoOptimoNodoHojaPtr _hijo) {
+
+	iNodoArbolPuntoOptimoPtr padreNuevo = NULL;
+
+	if (_padre->ObtenerHijoDerecho() == _nroNodoHijo)
+		_padre->EstablecerHijoDerecho(0);
+	else if (_padre->ObtenerHijoIzquierdo() == _nroNodoHijo)
+		_padre->EstablecerHijoIzquierdo(0);
+	else
+		Throw(" ", "No es hijo del padre");
+
+	if (_padre->ObtenerHijoDerecho() == _padre->ObtenerHijoIzquierdo())
+		padreNuevo = NodoArbolPuntoOptimoFactory_Nuevo(
+				eNodoArbolPuntoOptimo_Hoja);
+	else {
+
+		padreNuevo = NodoArbolPuntoOptimoFactory_Nuevo(
+				eNodoArbolPuntoOptimo_Interno);
+
+		((iNodoArbolPuntoOptimoNodoInternoPtr) padreNuevo)->EstablecerPivote(
+				_padre->ObtenerPivote());
+		((iNodoArbolPuntoOptimoNodoInternoPtr) padreNuevo)->EstablecerRadio(
+				_padre->ObtenerRadio());
+		((iNodoArbolPuntoOptimoNodoInternoPtr) padreNuevo)->EstablecerHijoDerecho(
+				_padre->ObtenerHijoDerecho());
+		((iNodoArbolPuntoOptimoNodoInternoPtr) padreNuevo)->EstablecerHijoIzquierdo(
+				_padre->ObtenerHijoIzquierdo());
+	}
+
+	while (_padre->ObtenerCantidadRegistros())
+		padreNuevo->AgregarRegistro(_padre->QuitarRegistro());
+
+	while (_hijo->ObtenerCantidadRegistros())
+		padreNuevo->AgregarRegistro(_hijo->QuitarRegistro());
+
+	return padreNuevo;
+}
+
 eHermanoVpTree_ABM VpTree_ABM::ObtenerHermano(
 		iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 		size_t* _nroNodoHermano, iNodoArbolPuntoOptimoPtr* _hermano) {
