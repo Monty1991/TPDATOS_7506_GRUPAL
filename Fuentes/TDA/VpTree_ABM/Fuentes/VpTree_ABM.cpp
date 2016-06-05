@@ -85,7 +85,8 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno) {
 
 	size_t nroHijo;
-	iNodoArbolPuntoOptimoPtr hijo;
+	iNodoArbolPuntoOptimoPtr hijo = NULL;
+	iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva = NULL;
 
 	if ((nroHijo = _nodoInterno->ObtenerHijoDerecho()) == 0)
 		if ((nroHijo = _nodoInterno->ObtenerHijoIzquierdo()) == 0)
@@ -109,20 +110,16 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 
 		if (_nodoInterno->ObtenerHijoDerecho()
 				!= _nodoInterno->ObtenerHijoIzquierdo())
-
 			archivo->EscribirNodo(_nroNodoInterno, _nodoInterno);
-
 		else {
 
-			iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva =
-					NodoArbolPuntoOptimoFactory_Nuevo(
-							eNodoArbolPuntoOptimo_Hoja);
+			hojaNueva = NodoArbolPuntoOptimoFactory_Nuevo(
+					eNodoArbolPuntoOptimo_Hoja);
 
 			while (_nodoInterno->ObtenerCantidadRegistros() != 0)
 				hojaNueva->AgregarRegistro(_nodoInterno->QuitarRegistro());
 
 			archivo->EscribirNodo(_nroNodoInterno, hojaNueva); /**Conversión de nodo interno a hoja**/
-			hojaNueva->Dispose();
 		}
 	}
 
@@ -149,51 +146,94 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 	}
 
 	hijo->Dispose();
+
+	if (hojaNueva)
+		hojaNueva->Dispose();
 }
 
 void VpTree_ABM::ResolverUnderflow(size_t _nroNodoInterno,
 		iNodoArbolPuntoOptimoNodoInternoPtr _nodoInterno, size_t _nroHoja,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
-	/**	if ((archivo->DeterminarPorcentajeCarga(_nodoInterno)
-	 + archivo->DeterminarPorcentajeCarga(_hoja)) <= 100) {
+	iNodoArbolPuntoOptimoPtr pHermano = NULL;
+	iNodoArbolPuntoOptimoPtr* ppHermano = &pHermano;
+	iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva = NULL;
 
-	 while (_hoja->ObtenerCantidadRegistros() != 0)
-	 _nodoInterno->AgregarRegistro(_hoja->QuitarRegistro());
+	if ((archivo->DeterminarPorcentajeCarga(_nodoInterno)
+			+ archivo->DeterminarPorcentajeCarga(_hoja)) <= 100) {
 
-	 archivo->LiberarNodo(_nroHoja);
+		while (_hoja->ObtenerCantidadRegistros() != 0)
+			_nodoInterno->AgregarRegistro(_hoja->QuitarRegistro());
 
-	 if (_nodoInterno->ObtenerHijoDerecho() == _nroHoja)
-	 _nodoInterno->EstablecerHijoDerecho(0);
-	 else
-	 _nodoInterno->EstablecerHijoIzquierdo(0);
+		archivo->LiberarNodo(_nroHoja);
 
-	 if (_nodoInterno->ObtenerHijoDerecho()
-	 != _nodoInterno->ObtenerHijoIzquierdo())
+		if (_nodoInterno->ObtenerHijoDerecho() == _nroHoja)
+			_nodoInterno->EstablecerHijoDerecho(0);
+		else
+			_nodoInterno->EstablecerHijoIzquierdo(0);
 
-	 archivo->EscribirNodo(_nroNodoInterno, _nodoInterno);
+		if (_nodoInterno->ObtenerHijoDerecho()
+				!= _nodoInterno->ObtenerHijoIzquierdo())
+			archivo->EscribirNodo(_nroNodoInterno, _nodoInterno);
+		else {
 
-	 else {
+			hojaNueva = NodoArbolPuntoOptimoFactory_Nuevo(
+					eNodoArbolPuntoOptimo_Hoja);
 
-	 iNodoArbolPuntoOptimoNodoHojaPtr hojaNueva =
-	 NodoArbolPuntoOptimoFactory_Nuevo(
-	 eNodoArbolPuntoOptimo_Hoja);
+			while (_nodoInterno->ObtenerCantidadRegistros() != 0)
+				hojaNueva->AgregarRegistro(_nodoInterno->QuitarRegistro());
 
-	 while (_nodoInterno->ObtenerCantidadRegistros() != 0)
-	 hojaNueva->AgregarRegistro(_nodoInterno->QuitarRegistro());
+			archivo->EscribirNodo(_nroNodoInterno, hojaNueva);
+		}
+	}
 
-	 archivo->EscribirNodo(_nroNodoInterno, hojaNueva);
-	 hojaNueva->Dispose();
-	 }
-	 }
+	else if (ObtenerHermano(_nodoInterno, _nroHoja, ppHermano)
+			== eHermanoVpTree_ABM__NodoInterno) {
 
-	 else if (DeterminarHermano(_nodoInterno,_nroHoja) == eHermanoVpTree_ABM__NodoInterno){
+		archivo->EscribirNodo(_nroNodoInterno, (*ppHermano));/**Pisamos al padre con el hermano**/
+		archivo->LiberarNodo(_nodoInterno->ObtenerHijoDerecho());/**Liberamos ambos hermanos**/
+		archivo->LiberarNodo(_nodoInterno->ObtenerHijoIzquierdo());
 
-	 }
+		while (_nodoInterno->ObtenerCantidadRegistros() != 0)
+			Alta(_nodoInterno->QuitarRegistro());
 
-	 else {
+		while (_hoja->ObtenerCantidadRegistros() != 0)
+			Alta(_hoja->QuitarRegistro());
+	}
 
-	 }**/
+	else {
+
+		hojaNueva = NodoArbolPuntoOptimoFactory_Nuevo(
+				eNodoArbolPuntoOptimo_Hoja);
+
+		while (_nodoInterno->ObtenerCantidadRegistros() != 0)
+			hojaNueva->AgregarRegistro(_nodoInterno->QuitarRegistro());
+
+		while (_hoja->ObtenerCantidadRegistros() != 0)
+			hojaNueva->AgregarRegistro((_hoja->QuitarRegistro()));
+
+		if ((*ppHermano))
+			while ((*ppHermano)->ObtenerCantidadRegistros() != 0)
+				hojaNueva->AgregarRegistro((*ppHermano)->QuitarRegistro());
+
+		if (_nodoInterno->ObtenerHijoDerecho() != 0)
+			archivo->LiberarNodo(_nodoInterno->ObtenerHijoDerecho());
+
+		if (_nodoInterno->ObtenerHijoIzquierdo() != 0)
+			archivo->LiberarNodo(_nodoInterno->ObtenerHijoIzquierdo());
+
+		if (archivo->DeterminarEstadoNodo(hojaNueva)
+				== eEstadoCargaNodo_Overflow)
+			ResolverOverflow(_nroNodoInterno, hojaNueva);/**Conversión de nodo interno a hoja**/
+		else
+			archivo->EscribirNodo(_nroNodoInterno, hojaNueva);/**Conversión de nodo interno a hoja**/
+	}
+
+	if ((*ppHermano))
+		(*ppHermano)->Dispose();
+
+	if (hojaNueva)
+		hojaNueva->Dispose();
 }
 
 void VpTree_ABM::ResolverOverflow(size_t _nroHoja,
