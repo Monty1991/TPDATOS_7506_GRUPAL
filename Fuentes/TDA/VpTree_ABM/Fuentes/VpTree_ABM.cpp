@@ -207,6 +207,9 @@ iNodoArbolPuntoOptimoPtr VpTree_ABM::Fusionar(
 
 	iNodoArbolPuntoOptimoPtr padreNuevo = NULL;
 
+	if (_nroNodoHijo == 0)
+		Throw(" ", "La raiz no puede ser hija del padre.");
+
 	if (_padre->ObtenerHijoDerecho() == _nroNodoHijo)
 		_padre->EstablecerHijoDerecho(0);
 	else if (_padre->ObtenerHijoIzquierdo() == _nroNodoHijo)
@@ -244,6 +247,9 @@ iNodoArbolPuntoOptimoPtr VpTree_ABM::Fusionar(
 eHermanoVpTree_ABM VpTree_ABM::ObtenerHermano(
 		iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 		size_t* _nroNodoHermano, iNodoArbolPuntoOptimoPtr* _hermano) {
+
+	if (_nroNodoHijo == 0)
+		Throw(" ", "La raiz no puede ser hija del padre.");
 
 	if (_padre->ObtenerHijoDerecho() == _nroNodoHijo)
 		*_nroNodoHermano = _padre->ObtenerHijoIzquierdo();
