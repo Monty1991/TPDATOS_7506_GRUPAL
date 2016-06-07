@@ -30,8 +30,8 @@ typedef class iNodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodo
 
 public:
 
-	virtual size_t ObtenerPivote() = 0;
-	virtual void EstablecerPivote(size_t pivote) = 0;
+	virtual iFeaturePtr ObtenerPivote() = 0;
+	virtual void EstablecerPivote(iFeaturePtr pivote) = 0;
 
 	virtual float ObtenerRadio() = 0;
 	virtual void EstablecerRadio(float radio) = 0;

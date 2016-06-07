@@ -32,7 +32,7 @@ typedef class iNodo
 		virtual iRegistroPtr ObtenerRegistro(size_t pos) = 0;
 
 		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg) = 0;
-		virtual iRegistroPtr QuitarRegistro(size_t clave) = 0;
+		virtual iRegistroPtr QuitarRegistro(size_t pos) = 0;
 		virtual iRegistroPtr QuitarRegistro() = 0;
 
 		virtual void Dispose() = 0;

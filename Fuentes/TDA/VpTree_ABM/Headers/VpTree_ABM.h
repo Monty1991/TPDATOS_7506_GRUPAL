@@ -61,7 +61,7 @@ private:
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
 	/**Genera un nuevo pivote a partir del conjunto de registros en la _hoja**/
-	size_t GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	iFeaturePtr GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	//PRE: llamar a GenerarPivote(_hoja)
 	float CalcularRadio(iFeaturePtr _pivote,

@@ -11,6 +11,6 @@
 #include "Headers/iFeature.h"
 
 iFeaturePtr FeatureFactory_Nuevo(uValue valor, eValueType tipo);
+iFeaturePtr FeatureFactory_Nuevo(sCadenaANSI *cadena);
 
 #endif /* FEATUREFACTORY_H */
-

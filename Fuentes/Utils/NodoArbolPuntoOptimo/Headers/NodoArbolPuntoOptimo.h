@@ -30,7 +30,7 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);
 
 		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg);
-		virtual iRegistroPtr QuitarRegistro(size_t clave);
+		virtual iRegistroPtr QuitarRegistro(size_t pos);
 		virtual iRegistroPtr QuitarRegistro();
 
 	private:
@@ -43,7 +43,7 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
 class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 {
 	private:
-		size_t pivote;
+		iFeaturePtr pivote;
 		float radio;
 		
 		size_t hijoIzquierdo;
@@ -60,8 +60,8 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 		// Se reescribe el metodo, para mostrar el tipo correcto de nodo
 		virtual eNodoArbolPuntoOptimo ObtenerTipoNodo();
 
-		virtual size_t ObtenerPivote();
-		virtual void EstablecerPivote(size_t pivote);
+		virtual iFeaturePtr ObtenerPivote();
+		virtual void EstablecerPivote(iFeaturePtr pivote);
 		
 		virtual float ObtenerRadio();
 		virtual void EstablecerRadio(float radio);
@@ -75,7 +75,7 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);
 
 		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg);
-		virtual iRegistroPtr QuitarRegistro(size_t clave);
+		virtual iRegistroPtr QuitarRegistro(size_t pos);
 		virtual iRegistroPtr QuitarRegistro();
 
 };

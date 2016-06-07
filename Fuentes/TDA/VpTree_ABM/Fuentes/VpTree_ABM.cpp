@@ -8,8 +8,10 @@
 #include "../Headers/VpTree_ABM.h"
 #include "../../../io/ArchivoArbol/ArchivoArbolFactory.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
+#include "../../../Memoria/Feature/FeatureFactory.h"
 #include "../../../Utils/EspacioMetrico/EspacioMetricoFactory.h"
 #include "../../../Exceptions/ExceptionFactory.h"
+#include "../../Heap/HeapFactory.h"
 
 VpTree_ABM::~VpTree_ABM() {
 
@@ -39,7 +41,23 @@ void VpTree_ABM::Dispose() {
 
 float VpTree_ABM::Distancia(iFeaturePtr _key1, iFeaturePtr _key2) {
 
-	return 0;
+	if (!_key1)
+		Throw(ExceptionType_InvalidArg, "_key1 == NULL");
+	if (!_key2)
+		Throw(ExceptionType_InvalidArg, "_key2 == NULL");
+
+	if (_key1->ObtenerTipo() != _key2->ObtenerTipo())
+		Throw(ExceptionType_InvalidArg, "_key1->Tipo != _key2->Tipo");
+
+	// numerico -> usar claves numericas
+	if (_key1->ObtenerTipo() & Mascara_Numero)
+		return this->espacioMetrico->CalcularDistancia(_key1->AsNumber().entero.enteroSinSigno.entero32SinSigno, _key2->AsNumber().entero.enteroSinSigno.entero32SinSigno);
+	
+	// no numerico -> usar claves de cadenas
+	if (!(_key1->ObtenerTipo() & Mascara_Numero))
+		return this->espacioMetrico->CalcularDistancia(_key1->AsCadenaANSI(), _key2->AsCadenaANSI());
+
+	Throw(ExceptionType_InvalidArg, "_key1->Tipo not supported");
 }
 
 VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
@@ -270,21 +288,70 @@ eHermanoVpTree_ABM VpTree_ABM::ObtenerHermano(
 		return eHermanoVpTree_ABM__NodoInterno;
 }
 
-size_t VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
+iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 	size_t cantidad = _hoja->ObtenerCantidadRegistros();
-	size_t listaClaves[cantidad];
+	if (!cantidad)
+		return NULL;
 
-	for (size_t i = 0; i < cantidad; i++)
-		listaClaves[i] =
-				_hoja->ObtenerRegistro(i)->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+	iFeaturePtr pivote = NULL;
 
-	return this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
+	iFeaturePtr clave = _hoja->ObtenerRegistro(0)->GetFeature(this->nroCampoClave);
+	if (clave->ObtenerTipo() & Mascara_Numero)
+	{	
+		size_t listaClaves[cantidad];
+
+		for (size_t i = 0; i < cantidad; i++)
+			listaClaves[i] = _hoja->ObtenerRegistro(i)->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+
+		uValue number;
+		number.primitivo.numero.entero.enteroSinSigno.entero32SinSigno = this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
+		pivote = FeatureFactory_Nuevo(number, eValueType::eValueType_U4);
+	}
+	else
+	{
+		sCadenaANSI *listaClaves[cantidad];
+
+		for (size_t i = 0; i < cantidad; i++)
+			listaClaves[i] = _hoja->ObtenerRegistro(i)->GetFeature(0)->AsCadenaANSI();
+
+		sCadenaANSI *cadena = this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
+		pivote = FeatureFactory_Nuevo(cadena);
+		if (cadena->cadena)
+			delete[] cadena->cadena;
+		delete cadena;
+	}
+
+	return pivote;	
 }
 
 float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
-	return 0;
+	// Que te ayude mandrake :P
+	iHeapPtr heapMinimos = HeapFactory_Nuevo(eHeap::eHeap_Minimo);
+
+	size_t cantidadRegistros = _hoja->ObtenerCantidadRegistros();
+
+	// insertamos en orden todos los registros, luego quitamos la mitad
+	// y nos quedamos con el radio igual a la distancia del siguiente en el heap
+
+	for (size_t i = 0; i < cantidadRegistros; i++)
+	{
+		sHeapComponentPtr heapComponent = new sHeapComponent();
+		iRegistroPtr registro = _hoja->ObtenerRegistro(i);
+		heapComponent->valor = this->Distancia(_pivote, registro->GetFeature(this->nroCampoClave));
+		heapComponent->object = registro;
+		
+		heapMinimos->Push(heapComponent);
+	}
+
+	for (size_t i = 0; i < cantidadRegistros / 2; i++)
+		delete heapMinimos->Pop();
+
+	float radio = heapMinimos->Peek()->valor;
+	delete heapMinimos;	// borra el resto
+	
+	return radio;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg) {
@@ -306,4 +373,3 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(iRegistroPtr _reg) {
 
 	return eResultadoVpTree_ABM__Ok;
 }
-

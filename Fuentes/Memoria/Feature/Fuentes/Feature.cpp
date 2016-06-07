@@ -34,6 +34,16 @@ Feature::Feature(uValue valor, eValueType tipo): Object(), contenido(valor), tip
 	}
 }
 
+Feature::Feature(sCadenaANSI *cadena): Object(), tipo(eValueType::eValueType_CA)
+{
+	size_t largo = cadena->largo;
+	char *nuevaCadena = new char[largo];
+	memcpy(nuevaCadena, cadena->cadena, largo);
+
+	this->contenido.primitivo.cadena.ansi.largo = largo;
+	this->contenido.primitivo.cadena.ansi.cadena = nuevaCadena;
+}
+
 Feature::~Feature()
 {
 	if (this->tipo & Mascara_Registro)

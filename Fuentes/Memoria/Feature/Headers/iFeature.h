@@ -15,6 +15,7 @@ typedef class iFeature: public iObject
 	public:
 		virtual eValueType ObtenerTipo() = 0;
 
+		virtual iFeature *Copiar() = 0;
 		virtual iFeature *Clone() = 0;
 		
 		virtual uNumber AsNumber() = 0;

@@ -20,6 +20,7 @@ class Feature: public iFeature, public Object
 		virtual ~Feature();
 	public:
 		Feature(uValue valor, eValueType tipo);
+		Feature(sCadenaANSI *cadenaAnsi);
 
 		virtual iFeaturePtr Copiar();
 		virtual iFeaturePtr Clone();

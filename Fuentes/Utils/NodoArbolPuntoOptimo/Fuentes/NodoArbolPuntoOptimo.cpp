@@ -78,19 +78,16 @@ iRegistroPtr NodoArbolPuntoOptimoNodoHoja::AgregarRegistro(iRegistroPtr reg)
 	return old;
 }
 
-iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro(size_t clave)
+iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro(size_t pos)
 {
-	iRegistroPtr reg = NULL;
-	size_t pos;
-	for (pos = 0; pos < this->cantidadRegistros; pos++)
-		if (this->tablaRegistros[pos]->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno == clave)
-			break;
-
 	if (pos >= this->cantidadRegistros)
 		return NULL;
 
-	reg = this->tablaRegistros[pos];
-	this->tablaRegistros[pos] = this->tablaRegistros[--this->cantidadRegistros];
+	iRegistroPtr reg = reg = this->tablaRegistros[pos];
+	this->cantidadRegistros--;
+	for (size_t i = pos; pos < this->cantidadRegistros; i++)
+		this->tablaRegistros[i] = this->tablaRegistros[i + 1];
+
 	if (this->cantidadRegistros <= this->tamanioTablaRegistros * 4)
 		this->RedimensionarTabla(this->tamanioTablaRegistros / 2);
 
@@ -99,7 +96,7 @@ iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro(size_t clave)
 
 iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro()
 {
-	return NULL;
+	return this->QuitarRegistro(0);
 }
 
 void NodoArbolPuntoOptimoNodoHoja::RedimensionarTabla(size_t nuevoTamanio)
@@ -114,7 +111,7 @@ void NodoArbolPuntoOptimoNodoHoja::RedimensionarTabla(size_t nuevoTamanio)
 	this->tamanioTablaRegistros = nuevoTamanio;
 }
 
-NodoArbolPuntoOptimoNodoInterno::NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros): pivote(0), radio(0), hijoIzquierdo(0), hijoDerecho(0)
+NodoArbolPuntoOptimoNodoInterno::NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros): pivote(NULL), radio(0), hijoIzquierdo(0), hijoDerecho(0)
 {
 	this->nodoHoja = new NodoArbolPuntoOptimoNodoHoja(listaRegistros, cantidadRegistros);
 }
@@ -123,6 +120,9 @@ NodoArbolPuntoOptimoNodoInterno::~NodoArbolPuntoOptimoNodoInterno()
 {
 	if (this->nodoHoja)
 		this->nodoHoja->Dispose();
+
+	if (this->pivote)
+		this->pivote->Dispose();
 }
 
 void NodoArbolPuntoOptimoNodoInterno::Dispose()
@@ -140,14 +140,25 @@ eNodoArbolPuntoOptimo NodoArbolPuntoOptimoNodoInterno::ObtenerTipoNodo()
 	return eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno;
 }
 
-size_t NodoArbolPuntoOptimoNodoInterno::ObtenerPivote()
+iFeaturePtr NodoArbolPuntoOptimoNodoInterno::ObtenerPivote()
 {
 	return this->pivote;
 }
 
-void NodoArbolPuntoOptimoNodoInterno::EstablecerPivote(size_t pivote)
+void NodoArbolPuntoOptimoNodoInterno::EstablecerPivote(iFeaturePtr pivote)
 {
-	this->pivote = pivote;
+	// Si es el mismo pivote, no tiene sentido reescribir
+	if (this->pivote == pivote)
+		return;
+
+	if (this->pivote)
+	{
+		this->pivote->Dispose();
+		this->pivote = NULL;
+	}
+
+	if (pivote)
+		this->pivote = pivote->Copiar();
 }
 
 float NodoArbolPuntoOptimoNodoInterno::ObtenerRadio()
@@ -195,13 +206,12 @@ iRegistroPtr NodoArbolPuntoOptimoNodoInterno::AgregarRegistro(iRegistroPtr reg)
 	return this->nodoHoja->AgregarRegistro(reg);
 }
 
-iRegistroPtr NodoArbolPuntoOptimoNodoInterno::QuitarRegistro(size_t clave)
+iRegistroPtr NodoArbolPuntoOptimoNodoInterno::QuitarRegistro(size_t pos)
 {
-	return this->nodoHoja->QuitarRegistro(clave);
+	return this->nodoHoja->QuitarRegistro(pos);
 }
 
 iRegistroPtr NodoArbolPuntoOptimoNodoInterno::QuitarRegistro()
 {
-	return NULL;
+	return this->nodoHoja->QuitarRegistro();
 }
-

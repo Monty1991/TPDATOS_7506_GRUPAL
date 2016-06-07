@@ -10,13 +10,15 @@
 
 #include "../../HidratadorNodo/Headers/iHidratadorNodo.h"
 
-#include "../../HidratadorNumerico/HidratadorNumericoFactory.h"
+#include "../../HidratadorNumerico/Headers/iHidratadorNumerico.h"
+#include "../../HidratadorFeature/Headers/iHidratadorFeature.h"
 #include "../../HidratadorRegistro/Headers/iHidratadorRegistro.h"
 
 class HidratadorNodoArbolPuntoOptimo: public iHidratadorNodo
 {
 	private:
 		iHidratadorNumericoPtr hidratadorNumerico;
+		iHidratadorFeaturePtr hidratadorFeature;
 		iHidratadorRegistroPtr hidratadorRegistro;
 
 		virtual ~HidratadorNodoArbolPuntoOptimo();
