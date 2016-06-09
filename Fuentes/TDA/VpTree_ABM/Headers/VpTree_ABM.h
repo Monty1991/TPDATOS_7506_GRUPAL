@@ -13,12 +13,6 @@
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
 #include "../../../Utils/EspacioMetrico/Headers/iEspacioMetrico.h"
 
-enum eEstadoVpTree_ABM {
-	eEstadoVpTree_ABM__HojaEnOverflow,
-	eEstadoVpTree_ABM__HojaEnUnderflow,
-	eEstadoVpTree_ABM__NodoInternoEnUnderflow
-};
-
 enum eHermanoVpTree_ABM {
 	eHermanoVpTree_ABM__Hoja,
 	eHermanoVpTree_ABM__NodoInterno,
@@ -36,31 +30,26 @@ private:
 
 	virtual ~VpTree_ABM();
 
-	/**
-	 * Resuelve un estado del árbol.
-	 *
-	 * Escribe todos los nodos actualizados en disco.
-	 *
-	 * No conserva el estado de los parámetros. Muy Importante.
-	 *
-	 * Cuando no requiere nodo padre, dicho parámetro es ignorado.
-	 * Cuando no requiere nodo hijo,  dicho parámetro es ignorado.
-	 */
-	void ResolverEstado(eEstadoVpTree_ABM _estado, size_t _nroNodoPadre,
-			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
-
+	//Resuelve el underflow de un nodo interno
+	//Todos los nodos actualizados son escritos a disco
+	//Luego de la invocación los nodos pasados como parámetro contienen basura
 	void ResolverUnderflow(size_t _nroNodoPadre,
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre);
 
+	//Resuelve el underflow de un nodo hoja
+	//Todos los nodos actualizados son escritos a disco
+	//Luego de la invocación los nodos pasados como parámetro contienen basura
 	void ResolverUnderflow(size_t _nroNodoPadre,
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
+	//Resuelve el overflow de un nodo hoja
+	//Todos los nodos actualizados son escritos a disco
+	//Luego de la invocación los nodos pasados como parámetro contienen basura
 	void ResolverOverflow(size_t _nroNodoHijo,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
-	/**Genera un nuevo pivote a partir del conjunto de registros en la _hoja**/
+	//Genera un nuevo pivote a partir del conjunto de registros en la hoja
 	iFeaturePtr GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	//PRE: llamar a GenerarPivote(_hoja)
@@ -74,9 +63,14 @@ private:
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			size_t* _nroNodoHermano, iNodoArbolPuntoOptimoPtr* _hermano);
 
+	//Devuelve el nodo fusión entre padre e hijo
+	//Luego de la invocación los nodos pasados como parámetro contienen basura
 	iNodoArbolPuntoOptimoPtr Fusionar(
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
+
+	//Garantiza que la raiz esté siempre bufferizada
+	void Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);
 
 public:
 

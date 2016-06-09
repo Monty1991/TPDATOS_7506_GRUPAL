@@ -39,6 +39,36 @@ void VpTree_ABM::Dispose() {
 	delete this;
 }
 
+void VpTree_ABM::Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo) {
+
+	if (!_nroNodo && (_nodo != raiz)) {
+
+		raiz->Dispose();
+
+		if (_nodo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja)
+			raiz = NodoArbolPuntoOptimoFactory_Nuevo(
+					eNodoArbolPuntoOptimo_Hoja);
+		else {
+
+			raiz = NodoArbolPuntoOptimoFactory_Nuevo(
+					eNodoArbolPuntoOptimo_Interno);
+			((iNodoArbolPuntoOptimoNodoInternoPtr) raiz)->EstablecerPivote(
+					((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerPivote());
+			((iNodoArbolPuntoOptimoNodoInternoPtr) raiz)->EstablecerRadio(
+					((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerRadio());
+			((iNodoArbolPuntoOptimoNodoInternoPtr) raiz)->EstablecerHijoDerecho(
+					((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerHijoDerecho());
+			((iNodoArbolPuntoOptimoNodoInternoPtr) raiz)->EstablecerHijoIzquierdo(
+					((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerHijoIzquierdo());
+		}
+
+		for (size_t i = 0; i < _nodo->ObtenerCantidadRegistros(); i++)
+			raiz->AgregarRegistro(_nodo->ObtenerRegistro(i));
+	}
+
+	archivo->EscribirNodo(_nroNodo, _nodo);
+}
+
 float VpTree_ABM::Distancia(iFeaturePtr _key1, iFeaturePtr _key2) {
 
 	if (!_key1)
@@ -51,11 +81,14 @@ float VpTree_ABM::Distancia(iFeaturePtr _key1, iFeaturePtr _key2) {
 
 	// numerico -> usar claves numericas
 	if (_key1->ObtenerTipo() & Mascara_Numero)
-		return this->espacioMetrico->CalcularDistancia(_key1->AsNumber().entero.enteroSinSigno.entero32SinSigno, _key2->AsNumber().entero.enteroSinSigno.entero32SinSigno);
-	
+		return this->espacioMetrico->CalcularDistancia(
+				_key1->AsNumber().entero.enteroSinSigno.entero32SinSigno,
+				_key2->AsNumber().entero.enteroSinSigno.entero32SinSigno);
+
 	// no numerico -> usar claves de cadenas
 	if (!(_key1->ObtenerTipo() & Mascara_Numero))
-		return this->espacioMetrico->CalcularDistancia(_key1->AsCadenaANSI(), _key2->AsCadenaANSI());
+		return this->espacioMetrico->CalcularDistancia(_key1->AsCadenaANSI(),
+				_key2->AsCadenaANSI());
 
 	Throw(ExceptionType_InvalidArg, "_key1->Tipo not supported");
 }
@@ -74,27 +107,7 @@ VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
 	if (raiz == NULL) {
 
 		raiz = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo_Hoja);
-		archivo->EscribirNodo(0, raiz);
-	}
-}
-
-void VpTree_ABM::ResolverEstado(eEstadoVpTree_ABM _estado, size_t _nroNodoPadre,
-		iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
-		iNodoArbolPuntoOptimoNodoHojaPtr _hijo) {
-
-	switch (_estado) {
-
-	case eEstadoVpTree_ABM__HojaEnOverflow:
-		ResolverOverflow(_nroNodoHijo, _hijo);
-		break;
-
-	case eEstadoVpTree_ABM__HojaEnUnderflow:
-		ResolverUnderflow(_nroNodoPadre, _padre, _nroNodoHijo, _hijo);
-		break;
-
-	case eEstadoVpTree_ABM__NodoInternoEnUnderflow:
-		ResolverUnderflow(_nroNodoPadre, _padre);
-		break;
+		Escribir(0, raiz);
 	}
 }
 
@@ -117,7 +130,7 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 		iNodoArbolPuntoOptimoPtr padreNuevo = Fusionar(_padre, nroNodoHijo,
 				(iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
 		archivo->LiberarNodo(nroNodoHijo);
-		archivo->EscribirNodo(_nroNodoPadre, padreNuevo);
+		Escribir(_nroNodoPadre, padreNuevo);
 
 		padreNuevo->Dispose();
 	}
@@ -130,12 +143,12 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 
 		if (archivo->DeterminarEstadoNodo(hijo) != eEstadoCargaNodo_Underflow) {
 
-			archivo->EscribirNodo(_nroNodoPadre, _padre);
-			archivo->EscribirNodo(nroNodoHijo, hijo);
+			Escribir(_nroNodoPadre, _padre);
+			Escribir(nroNodoHijo, hijo);
 
 		} else if (hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Interno) {
 
-			archivo->EscribirNodo(_nroNodoPadre, _padre);
+			Escribir(_nroNodoPadre, _padre);
 			ResolverUnderflow(nroNodoHijo,
 					(iNodoArbolPuntoOptimoNodoInternoPtr) hijo);
 
@@ -163,7 +176,7 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 		iNodoArbolPuntoOptimoPtr padreNuevo = Fusionar(_padre, _nroNodoHijo,
 				_hijo);
 		archivo->LiberarNodo(_nroNodoHijo);
-		archivo->EscribirNodo(_nroNodoPadre, padreNuevo);
+		Escribir(_nroNodoPadre, padreNuevo);
 
 		padreNuevo->Dispose();
 	}
@@ -171,7 +184,7 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 	else if (ObtenerHermano(_padre, _nroNodoHijo, pNroNodoHermano, ppHermano)
 			== eHermanoVpTree_ABM__NodoInterno) {
 
-		archivo->EscribirNodo(_nroNodoPadre, (*ppHermano));
+		Escribir(_nroNodoPadre, (*ppHermano));
 		archivo->LiberarNodo(_nroNodoHijo);
 		archivo->LiberarNodo(nroNodoHermano);
 
@@ -205,7 +218,7 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 			ResolverOverflow(_nroNodoPadre,
 					(iNodoArbolPuntoOptimoNodoHojaPtr) padreNuevo);
 		else
-			archivo->EscribirNodo(_nroNodoPadre, padreNuevo);
+			Escribir(_nroNodoPadre, padreNuevo);
 
 		padreNuevo->Dispose();
 	}
@@ -295,33 +308,35 @@ iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 
 	iFeaturePtr pivote = NULL;
 
-	iFeaturePtr clave = _hoja->ObtenerRegistro(0)->GetFeature(this->nroCampoClave);
-	if (clave->ObtenerTipo() & Mascara_Numero)
-	{	
+	iFeaturePtr clave = _hoja->ObtenerRegistro(0)->GetFeature(
+			this->nroCampoClave);
+	if (clave->ObtenerTipo() & Mascara_Numero) {
 		size_t listaClaves[cantidad];
 
 		for (size_t i = 0; i < cantidad; i++)
-			listaClaves[i] = _hoja->ObtenerRegistro(i)->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+			listaClaves[i] =
+					_hoja->ObtenerRegistro(i)->GetFeature(0)->AsNumber().entero.enteroSinSigno.entero32SinSigno;
 
 		uValue number;
-		number.primitivo.numero.entero.enteroSinSigno.entero32SinSigno = this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
+		number.primitivo.numero.entero.enteroSinSigno.entero32SinSigno =
+				this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
 		pivote = FeatureFactory_Nuevo(number, eValueType::eValueType_U4);
-	}
-	else
-	{
+	} else {
 		sCadenaANSI *listaClaves[cantidad];
 
 		for (size_t i = 0; i < cantidad; i++)
-			listaClaves[i] = _hoja->ObtenerRegistro(i)->GetFeature(0)->AsCadenaANSI();
+			listaClaves[i] =
+					_hoja->ObtenerRegistro(i)->GetFeature(0)->AsCadenaANSI();
 
-		sCadenaANSI *cadena = this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
+		sCadenaANSI *cadena = this->espacioMetrico->CalcularPivote(listaClaves,
+				cantidad);
 		pivote = FeatureFactory_Nuevo(cadena);
 		if (cadena->cadena)
 			delete[] cadena->cadena;
 		delete cadena;
 	}
 
-	return pivote;	
+	return pivote;
 }
 
 float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
@@ -335,13 +350,13 @@ float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 	// insertamos en orden todos los registros, luego quitamos la mitad
 	// y nos quedamos con el radio igual a la distancia del siguiente en el heap
 
-	for (size_t i = 0; i < cantidadRegistros; i++)
-	{
+	for (size_t i = 0; i < cantidadRegistros; i++) {
 		sHeapComponentPtr heapComponent = new sHeapComponent();
 		iRegistroPtr registro = _hoja->ObtenerRegistro(i);
-		heapComponent->valor = this->Distancia(_pivote, registro->GetFeature(this->nroCampoClave));
+		heapComponent->valor = this->Distancia(_pivote,
+				registro->GetFeature(this->nroCampoClave));
 		heapComponent->object = registro;
-		
+
 		heapMinimos->Push(heapComponent);
 	}
 
@@ -350,7 +365,7 @@ float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 
 	float radio = heapMinimos->Peek()->valor;
 	delete heapMinimos;	// borra el resto
-	
+
 	return radio;
 }
 
