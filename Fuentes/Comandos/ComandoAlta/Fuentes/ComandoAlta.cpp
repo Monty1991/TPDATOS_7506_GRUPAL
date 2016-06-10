@@ -37,7 +37,7 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 {
 	if (cantidad < 5)
 	{
-		fprintf(salida, "ERROR!! Se esperaban al menos 5 parametros");
+		fprintf(salida, "ERROR!! Se esperaban al menos 5 parametros\n");
 		return;
 	}
 
@@ -45,5 +45,9 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 	size_t nroCampo = strtoull(listaParametros[3], NULL, 0);
 	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(listaParametros[0], nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
 
-	vpTree->Alta(NULL,true);
+	eResultadoVpTree_ABM resultado = vpTree->Alta(NULL,true);
+	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
+		fprintf(salida, "La operacion se ha completado con exito\n");
+	else if(resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Duplicado)
+		fprintf(salida, "ERROR!! Ya existe un registro con esa clave. Tal vez queria modificar?\n");
 }
