@@ -45,5 +45,5 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 	size_t nroCampo = strtoull(listaParametros[3], NULL, 0);
 	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(listaParametros[0], nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
 
-	vpTree->Alta(NULL);
+	vpTree->Alta(NULL,true);
 }

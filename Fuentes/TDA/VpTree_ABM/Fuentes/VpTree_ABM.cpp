@@ -189,10 +189,10 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 		archivo->LiberarNodo(nroNodoHermano);
 
 		while (_padre->ObtenerCantidadRegistros())
-			Alta(_padre->QuitarRegistro());
+			Alta(_padre->QuitarRegistro(), false);
 
 		while (_hijo->ObtenerCantidadRegistros())
-			Alta(_hijo->QuitarRegistro());
+			Alta(_hijo->QuitarRegistro(), false);
 	}
 
 	else {
@@ -369,9 +369,60 @@ float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 	return radio;
 }
 
-eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg) {
+eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodo,
+		iNodoArbolPuntoOptimoPtr _nodo) {
 
-	return eResultadoVpTree_ABM__Ok;
+	_nodo->AgregarRegistro(_reg);
+
+	if (archivo->DeterminarEstadoNodo(_nodo) != eEstadoCargaNodo_Overflow) {
+
+		Escribir(_nroNodo, _nodo);
+		return eResultadoVpTree_ABM__Ok;
+	}
+
+	else if (_nodo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja) {
+
+		ResolverOverflow(_nroNodo, (iNodoArbolPuntoOptimoNodoHojaPtr) _nodo);
+		return eResultadoVpTree_ABM__Ok;
+	}
+
+	else {
+
+		iFeaturePtr key;
+		iFeaturePtr pivote;
+		size_t nroNodoHijo;
+		eResultadoVpTree_ABM res;
+		iNodoArbolPuntoOptimoPtr nodoHijo;
+
+		_nodo->QuitarRegistro(_nodo->ObtenerCantidadRegistros() - 1);
+		pivote = ((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerPivote();
+		key = _reg->GetFeature(nroCampoClave);
+
+		if (Distancia(key, pivote)
+				< ((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerRadio())
+			nroNodoHijo =
+					((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerHijoIzquierdo();
+		else
+			nroNodoHijo =
+					((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerHijoDerecho();
+
+		nodoHijo = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(nroNodoHijo);
+		res = Alta(_reg, nroNodoHijo, nodoHijo);
+
+		key->Dispose();
+		pivote->Dispose();
+		nodoHijo->Dispose();
+		return res;
+	}
+}
+
+eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad) {
+
+	if (_unicidad)
+		if (Buscar(_reg) == eResultadoVpTree_ABM__Ok)
+			return eResultadoVpTree_ABM__Duplicado;
+
+	return Alta(_reg, 0, raiz);
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key) {

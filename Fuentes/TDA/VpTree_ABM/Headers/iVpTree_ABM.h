@@ -20,7 +20,7 @@ typedef class iVpTree_ABM {
 
 public:
 
-	virtual eResultadoVpTree_ABM Alta(iRegistroPtr _reg)=0;
+	virtual eResultadoVpTree_ABM Alta(iRegistroPtr _reg, bool _unicidad)=0;
 
 	virtual eResultadoVpTree_ABM Baja(iFeaturePtr _key)=0;
 

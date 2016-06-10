@@ -72,12 +72,14 @@ private:
 	//Garantiza que la raiz esté siempre bufferizada
 	void Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);
 
+	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);
+
 public:
 
 	VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
 			size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia);
 
-	eResultadoVpTree_ABM Alta(iRegistroPtr _reg);
+	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, bool _unicidad);
 
 	eResultadoVpTree_ABM Baja(iFeaturePtr _key);
 
