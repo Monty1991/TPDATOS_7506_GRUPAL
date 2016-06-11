@@ -374,27 +374,22 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodo,
 
 	_nodo->AgregarRegistro(_reg);
 
-	if (archivo->DeterminarEstadoNodo(_nodo) != eEstadoCargaNodo_Overflow) {
-
+	if (archivo->DeterminarEstadoNodo(_nodo) != eEstadoCargaNodo_Overflow)
 		Escribir(_nroNodo, _nodo);
-		return eResultadoVpTree_ABM__Ok;
-	}
 
-	else if (_nodo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja) {
-
+	else if (_nodo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja)
 		ResolverOverflow(_nroNodo, (iNodoArbolPuntoOptimoNodoHojaPtr) _nodo);
-		return eResultadoVpTree_ABM__Ok;
-	}
 
 	else {
 
 		iFeaturePtr key;
 		iFeaturePtr pivote;
 		size_t nroNodoHijo;
-		eResultadoVpTree_ABM res;
 		iNodoArbolPuntoOptimoPtr nodoHijo;
 
-		_nodo->QuitarRegistro(_nodo->ObtenerCantidadRegistros() - 1);
+		if (!_nroNodo)
+			(raiz->QuitarRegistro(raiz->ObtenerCantidadRegistros() - 1))->Dispose();
+
 		pivote = ((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerPivote();
 		key = _reg->GetFeature(nroCampoClave);
 
@@ -407,13 +402,14 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodo,
 					((iNodoArbolPuntoOptimoNodoInternoPtr) _nodo)->ObtenerHijoDerecho();
 
 		nodoHijo = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(nroNodoHijo);
-		res = Alta(_reg, nroNodoHijo, nodoHijo);
+		Alta(_reg, nroNodoHijo, nodoHijo);
 
 		key->Dispose();
 		pivote->Dispose();
 		nodoHijo->Dispose();
-		return res;
 	}
+
+	return eResultadoVpTree_ABM__Ok;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad) {
@@ -432,7 +428,16 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key) {
 
 eResultadoVpTree_ABM VpTree_ABM::Modificacion(iRegistroPtr _reg) {
 
-	return eResultadoVpTree_ABM__Ok;
+	eResultadoVpTree_ABM res = eResultadoVpTree_ABM__Ok;
+	iFeaturePtr key = _reg->GetFeature(nroCampoClave);
+
+	if (Baja(key) == eResultadoVpTree_ABM__Inexistente)
+		res = eResultadoVpTree_ABM__Inexistente;
+	else
+		Alta(_reg, false);
+
+	key->Dispose();
+	return res;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Buscar(iRegistroPtr _reg) {

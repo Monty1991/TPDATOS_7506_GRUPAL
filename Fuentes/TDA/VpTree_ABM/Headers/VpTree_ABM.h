@@ -69,10 +69,10 @@ private:
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
-	//Garantiza que la raiz esté siempre bufferizada
 	void Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);
 
-	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);
+	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, size_t _nroNodo,
+			iNodoArbolPuntoOptimoPtr _nodo);
 
 public:
 
