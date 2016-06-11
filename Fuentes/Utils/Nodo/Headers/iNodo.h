@@ -26,6 +26,8 @@ enum eTipoArbol
 typedef class iNodo
 {
 	public:
+		virtual iNodo *Clone() = 0;
+
 		virtual eTipoArbol ObtenerTipoArbol() = 0;
 
 		virtual size_t ObtenerCantidadRegistros() = 0;

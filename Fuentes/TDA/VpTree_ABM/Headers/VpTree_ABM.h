@@ -69,9 +69,6 @@ private:
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
-	//Obtiene una copia del nodo que se pasa como parámetro
-	iNodoArbolPuntoOptimoPtr Copiar(iNodoArbolPuntoOptimoPtr _nodo);
-
 	//Escribe un nodo a disco
 	//Usar este método garantiza que la raiz esté siempre bufferizada
 	void Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);

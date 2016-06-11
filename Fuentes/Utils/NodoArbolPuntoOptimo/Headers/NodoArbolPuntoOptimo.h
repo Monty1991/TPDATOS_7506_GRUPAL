@@ -20,6 +20,7 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
 	public:
 		NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
+		virtual iNodoArbolPuntoOptimo *Clone();
 		virtual void Dispose();
 
 		virtual eTipoArbol ObtenerTipoArbol();
@@ -55,6 +56,7 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 	public:
 		NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
+		virtual iNodoArbolPuntoOptimo *Clone();
 		virtual void Dispose();
 		virtual eTipoArbol ObtenerTipoArbol();
 		// Se reescribe el metodo, para mostrar el tipo correcto de nodo

@@ -15,6 +15,7 @@ typedef class iRegistro: public iObject
 {
 	public:
 		virtual iRegistro *Copiar() = 0;
+		virtual iRegistro *Clone() = 0;
 
 		virtual size_t ObtenerCantidadCampos() = 0;
 

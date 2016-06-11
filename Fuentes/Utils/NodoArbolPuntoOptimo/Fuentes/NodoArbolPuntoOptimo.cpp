@@ -35,6 +35,11 @@ NodoArbolPuntoOptimoNodoHoja::~NodoArbolPuntoOptimoNodoHoja()
 	this->tablaRegistros = NULL;
 }
 
+iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoHoja::Clone()
+{
+	return new NodoArbolPuntoOptimoNodoHoja(this->tablaRegistros, this->cantidadRegistros);
+}
+
 void NodoArbolPuntoOptimoNodoHoja::Dispose()
 {
 	delete this;
@@ -123,6 +128,20 @@ NodoArbolPuntoOptimoNodoInterno::~NodoArbolPuntoOptimoNodoInterno()
 
 	if (this->pivote)
 		this->pivote->Dispose();
+}
+
+iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoInterno::Clone()
+{
+	iNodoArbolPuntoOptimoNodoInternoPtr copia = new NodoArbolPuntoOptimoNodoInterno(NULL, 0);
+	for (size_t i = 0; i < this->ObtenerCantidadRegistros(); i++)
+		copia->AgregarRegistro(this->ObtenerRegistro(i));
+
+	copia->EstablecerPivote(this->ObtenerPivote());
+	copia->EstablecerRadio(this->ObtenerRadio());
+	copia->EstablecerHijoIzquierdo(this->ObtenerHijoIzquierdo());
+	copia->EstablecerHijoDerecho(this->ObtenerHijoDerecho());
+	
+	return copia;
 }
 
 void NodoArbolPuntoOptimoNodoInterno::Dispose()
