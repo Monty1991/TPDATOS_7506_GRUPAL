@@ -39,10 +39,8 @@ void VpTree_ABM::Dispose() {
 	delete this;
 }
 
-void VpTree_ABM::Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo)
-{
-	if (!_nroNodo && (_nodo != raiz))
-	{
+void VpTree_ABM::Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo) {
+	if (!_nroNodo && (_nodo != raiz)) {
 		iNodoPtr viejaRaiz = this->raiz;
 		raiz = _nodo->Clone();
 
@@ -403,6 +401,35 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad) {
 	eResultadoVpTree_ABM res = Alta(_reg, 0, copiaRaiz);
 	copiaRaiz->Dispose();
 	return res;
+}
+
+size_t* VpTree_ABM::Ubicar(iFeaturePtr _key, iNodoArbolPuntoOptimoPtr _nodo) {
+
+	size_t* i;
+	bool encontrada;
+	iFeaturePtr key;
+	iRegistroPtr reg;
+
+	i = new size_t;
+	*i = 0;
+	encontrada = false;
+
+	while ((*i < _nodo->ObtenerCantidadRegistros()) && !encontrada) {
+
+		reg = _nodo->ObtenerRegistro(*i++);
+		key = reg->GetFeature(nroCampoClave);
+
+		if (!Distancia(key, _key))
+			encontrada = true;
+
+		reg->Dispose();
+		key->Dispose();
+	}
+
+	if (encontrada)
+		return i;
+	else
+		return NULL;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key) {

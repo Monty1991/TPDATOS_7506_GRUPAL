@@ -69,6 +69,11 @@ private:
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
+	//Busca la clave dentro del nodo
+	//Si la encuentra devuelve su posición
+	//Caso contrario devuelve NULL
+	size_t* Ubicar(iFeaturePtr _key, iNodoArbolPuntoOptimoPtr _nodo);
+
 	//Escribe un nodo a disco
 	//Usar este método garantiza que la raiz esté siempre bufferizada
 	void Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);
