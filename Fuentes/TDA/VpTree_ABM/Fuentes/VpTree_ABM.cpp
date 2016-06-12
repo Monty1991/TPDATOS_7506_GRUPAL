@@ -396,7 +396,7 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodoPadre,
 eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad) {
 
 	if (_unicidad)
-		if (Buscar(_reg) == eResultadoVpTree_ABM__Ok)
+		if (Buscar(_reg->GetFeature(this->nroCampoClave), NULL) == eResultadoVpTree_ABM__Ok)
 			return eResultadoVpTree_ABM__Duplicado;
 
 	iNodoArbolPuntoOptimoPtr copiaRaiz = raiz->Clone();
@@ -491,7 +491,7 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre,
 	return eResultadoVpTree_ABM__Ok;
 }
 
-eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key) {
+eResultadoVpTree_ABM VpTree_ABM::Baja(const iFeaturePtr _key) {
 
 	iNodoArbolPuntoOptimoPtr copiaRaiz = raiz->Clone();
 	eResultadoVpTree_ABM res = Baja(_key, -1, NULL, 0, copiaRaiz);
@@ -500,7 +500,7 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key) {
 	return res;
 }
 
-eResultadoVpTree_ABM VpTree_ABM::Modificacion(iRegistroPtr _reg) {
+eResultadoVpTree_ABM VpTree_ABM::Modificacion(const iRegistroPtr _reg) {
 
 	eResultadoVpTree_ABM res = eResultadoVpTree_ABM__Ok;
 	iFeaturePtr key = _reg->GetFeature(nroCampoClave);
@@ -510,11 +510,13 @@ eResultadoVpTree_ABM VpTree_ABM::Modificacion(iRegistroPtr _reg) {
 	else
 		Alta(_reg, false);
 
-	key->Dispose();
+//	El manejo de memoria de la clave es responabilidad de _reg
+//	key->Dispose();
 	return res;
 }
 
-eResultadoVpTree_ABM VpTree_ABM::Buscar(iRegistroPtr _reg) {
-
+eResultadoVpTree_ABM VpTree_ABM::Buscar(const iFeaturePtr _key, iRegistroPtr *_reg)
+{
+	*_reg = NULL;
 	return eResultadoVpTree_ABM__Ok;
 }

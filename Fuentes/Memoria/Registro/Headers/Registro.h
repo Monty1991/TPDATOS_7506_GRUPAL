@@ -26,7 +26,7 @@ class Registro: public iRegistro, public Object
 
 		virtual size_t ObtenerCantidadCampos();
 		
-		virtual iFeaturePtr GetFeature(size_t posicion);
+		virtual const iFeaturePtr GetFeature(size_t posicion);
 		virtual void SetFeature(size_t posicion, iFeaturePtr feature);
 
 		virtual void Dispose();

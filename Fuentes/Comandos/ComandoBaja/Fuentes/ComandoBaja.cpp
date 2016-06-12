@@ -65,9 +65,12 @@ void ComandoBaja::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 
 	eResultadoVpTree_ABM resultado = vpTree->Baja(clave);
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
-		fprintf(salida, "La operacion se ha completado con exito\n");
+		fprintf(salida, "La operacion se ha completado con exito.\n");
 	else if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente)
-		fprintf(salida, "ERROR!! No existe un registro con esa clave. Ya lo habia borrado antes?\n");
+		fprintf(salida, "ERROR!! No existe un registro con esa clave.\n");
 
-	clave->Dispose();
+	if (clave)
+		clave->Dispose();
+
+	vpTree->Dispose();
 }

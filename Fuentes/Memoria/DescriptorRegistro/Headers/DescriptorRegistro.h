@@ -13,17 +13,17 @@
 class DescriptorRegistro: public iDescriptorRegistro
 {
 	private:
-		sDescriptorCampoPtr *tablaDescriptorCampo;
+		sDescriptorCampoPtr tablaDescriptorCampo;
 		size_t cantidadDescriptoresCampo;
 
 		virtual ~DescriptorRegistro();
 	public:
-		DescriptorRegistro(sDescriptorCampoPtr *tablaDescriptorCampo, size_t cantidadDescriptoresCampo);
+		DescriptorRegistro(const sDescriptorCampoPtr tablaDescriptorCampo, size_t cantidadDescriptoresCampo);
 
 		virtual void Dispose();
 
 		virtual size_t ObtenerCantidadCampos();
-		virtual sDescriptorCampoPtr ObtenerDescriptorCampo(size_t pos);
+		virtual const sDescriptorCampoPtr ObtenerDescriptorCampo(size_t pos);
 };
 
 #endif /* DESCRIPTORREGISTRO_H */

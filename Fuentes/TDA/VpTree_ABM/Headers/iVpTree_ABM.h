@@ -20,13 +20,13 @@ typedef class iVpTree_ABM {
 
 public:
 
-	virtual eResultadoVpTree_ABM Alta(iRegistroPtr _reg, bool _unicidad)=0;
+	virtual eResultadoVpTree_ABM Alta(const  iRegistroPtr _reg, bool _unicidad)=0;
 
-	virtual eResultadoVpTree_ABM Baja(iFeaturePtr _key)=0;
+	virtual eResultadoVpTree_ABM Baja(const iFeaturePtr _key)=0;
 
-	virtual eResultadoVpTree_ABM Modificacion(iRegistroPtr _reg)=0;
+	virtual eResultadoVpTree_ABM Modificacion(const iRegistroPtr _reg)=0;
 
-	virtual eResultadoVpTree_ABM Buscar(iRegistroPtr _reg) = 0;
+	virtual eResultadoVpTree_ABM Buscar(const iFeaturePtr _key, iRegistroPtr *_reg) = 0;
 
 	virtual void Dispose() = 0;
 

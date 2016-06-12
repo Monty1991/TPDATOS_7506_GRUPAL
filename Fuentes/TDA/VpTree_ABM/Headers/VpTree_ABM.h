@@ -94,13 +94,13 @@ public:
 	VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
 			size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia);
 
-	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, bool _unicidad);
+	virtual eResultadoVpTree_ABM Alta(const iRegistroPtr _reg, bool _unicidad);
 
-	eResultadoVpTree_ABM Baja(iFeaturePtr _key);
+	virtual eResultadoVpTree_ABM Baja(const iFeaturePtr _key);
 
-	eResultadoVpTree_ABM Modificacion(iRegistroPtr _reg);
+	virtual eResultadoVpTree_ABM Modificacion(const iRegistroPtr _reg);
 
-	eResultadoVpTree_ABM Buscar(iRegistroPtr _reg);
+	virtual eResultadoVpTree_ABM Buscar(const iFeaturePtr _key, iRegistroPtr *_reg);
 
 	virtual void Dispose();
 

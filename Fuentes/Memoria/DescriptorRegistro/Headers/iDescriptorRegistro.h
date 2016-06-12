@@ -32,7 +32,7 @@ typedef class iDescriptorRegistro
 		virtual void Dispose() = 0;
 
 		virtual size_t ObtenerCantidadCampos() = 0;
-		virtual sDescriptorCampoPtr ObtenerDescriptorCampo(size_t pos) = 0;
+		virtual const sDescriptorCampoPtr ObtenerDescriptorCampo(size_t pos) = 0;
 
 } *iDescriptorRegistroPtr;
 

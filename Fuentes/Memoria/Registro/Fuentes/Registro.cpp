@@ -48,7 +48,7 @@ size_t Registro::ObtenerCantidadCampos()
 	return this->cantidadCampos;
 }
 
-iFeaturePtr Registro::GetFeature(size_t posicion)
+const iFeaturePtr Registro::GetFeature(size_t posicion)
 {
 	if (posicion >= this->cantidadCampos)
 	{
@@ -75,7 +75,7 @@ void Registro::SetFeature(size_t posicion, iFeaturePtr feature)
 	if (this->tabla[posicion] != NULL)
 		this->tabla[posicion]->Dispose();
 
-	this->tabla[posicion] = feature;
+	this->tabla[posicion] = feature->Copiar();
 }
 
 void Registro::Dispose()

@@ -19,7 +19,7 @@ typedef class iRegistro: public iObject
 
 		virtual size_t ObtenerCantidadCampos() = 0;
 
-		virtual iFeaturePtr GetFeature(size_t posicion) = 0;
+		virtual const iFeaturePtr GetFeature(size_t posicion) = 0;
 		virtual void SetFeature(size_t posicion, iFeaturePtr feature) = 0;
 
 } *iRegistroPtr;
