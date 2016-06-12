@@ -80,8 +80,14 @@ private:
 
 	//Procedimiento de alta recursivo
 	//Luego de la invocación los nodos pasados como parámetro contienen basura
-	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, size_t _nroNodo,
-			iNodoArbolPuntoOptimoPtr _nodo);
+	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, size_t _nroNodoPadre,
+			iNodoArbolPuntoOptimoPtr _padre);
+
+	//Procedimiento de baja recursivo
+	//Luego de la invocación los nodos pasados como parámetro contienen basura
+	eResultadoVpTree_ABM Baja(iFeaturePtr _key, size_t _nroNodoPadre,
+			iNodoArbolPuntoOptimoPtr _padre, size_t _nroNodoHijo,
+			iNodoArbolPuntoOptimoPtr _hijo);
 
 public:
 
