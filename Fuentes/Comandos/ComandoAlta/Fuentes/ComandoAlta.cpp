@@ -45,9 +45,9 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 		return;
 	}
 
+	const char *nombreArchivo = listaParametros[0];
 	size_t tamanioBloque = strtoull(listaParametros[1], NULL, 0);
 	size_t nroCampo = strtoull(listaParametros[3], NULL, 0);
-	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(listaParametros[0], nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
 
 	iDescriptorRegistroPtr descRegistro = DescriptorRegistroFactory_Nuevo(listaParametros[2]);
 	if (!descRegistro)
@@ -56,22 +56,29 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 		return;
 	}
 	
+	if (!descRegistro->ObtenerCantidadCampos())
+	{
+		descRegistro->Dispose();
+		fprintf(salida, "ERROR!! El descriptor no tiene campos!!.\n");
+		return;
+	}
+
 	/*
 	Si, el codigo es asqueroso, pero pongo la primer version aqui
 	 */
 	
-	const char *cadenaRegistro;
+	const char *cadenaRegistro = listaParametros[4];
 	iRegistroPtr registro = RegistroFactory_Nuevo(descRegistro->ObtenerCantidadCampos());
 	for (size_t i = 0; i < registro->ObtenerCantidadCampos(); i++)
 	{
+		iFeaturePtr campo = NULL;
 		switch (descRegistro->ObtenerDescriptorCampo(i)->desc)
 		{
 			case eDescriptorCampo::eDescriptorCampo_U:
 			{
 				uValue value;
 				value.primitivo.numero.entero.enteroSinSigno.entero32SinSigno = strtoul(cadenaRegistro, (char **)&cadenaRegistro, 0);
-				iFeaturePtr campo = FeatureFactory_Nuevo(value, eValueType::eValueType_U4);
-				registro->SetFeature(i, campo);
+				campo = FeatureFactory_Nuevo(value, eValueType::eValueType_U4);
 			}
 			break;
 
@@ -79,8 +86,7 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 			{
 				uValue value;
 				value.primitivo.numero.entero.enteroConSigno.entero32ConSigno = strtol(cadenaRegistro, (char **)&cadenaRegistro, 0);
-				iFeaturePtr campo = FeatureFactory_Nuevo(value, eValueType::eValueType_I4);
-				registro->SetFeature(i, campo);
+				campo = FeatureFactory_Nuevo(value, eValueType::eValueType_I4);
 			}
 			break;
 
@@ -88,8 +94,7 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 			{
 				uValue value;
 				value.primitivo.numero.flotante.flotante32 = strtod(cadenaRegistro, (char **)&cadenaRegistro);
-				iFeaturePtr campo = FeatureFactory_Nuevo(value, eValueType::eValueType_F32);
-				registro->SetFeature(i, campo);
+				campo = FeatureFactory_Nuevo(value, eValueType::eValueType_F32);
 			}
 			break;
 
@@ -104,9 +109,7 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 				
 				cadenaANSI.largo = largoCadena;
 
-				// El registro se queda con la referencia, por eso no hay Dispose
-				iFeaturePtr campo = FeatureFactory_Nuevo(&cadenaANSI);
-				registro->SetFeature(i, campo);			
+				campo = FeatureFactory_Nuevo(&cadenaANSI);
 			}
 			break;
 
@@ -121,23 +124,29 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 				
 				cadenaANSI.largo = largoCadena;
 
-				// El registro se queda con la referencia, por eso no hay Dispose
-				iFeaturePtr campo = FeatureFactory_Nuevo(&cadenaANSI);
-				registro->SetFeature(i, campo);			
+				campo = FeatureFactory_Nuevo(&cadenaANSI);
 			}
 			break;
 		}
 
+		Sistema_Execute(registro->SetFeature(i, campo););
+		campo->Dispose();
 		// llegados aquí, se leyo hasta la coma
 		cadenaRegistro++;
 	}
+	descRegistro->Dispose();
 
 	eResultadoVpTree_ABM resultado;
+
+	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(nombreArchivo, nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
+
 	Sistema_Execute(resultado = vpTree->Alta(registro, true););
+
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
 		fprintf(salida, "La operacion se ha completado con exito.\n");
 	else if(resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Duplicado)
 		fprintf(salida, "ERROR!! Ya existe un registro con esa clave.\n");
 
+	registro->Dispose();
 	vpTree->Dispose();
 }

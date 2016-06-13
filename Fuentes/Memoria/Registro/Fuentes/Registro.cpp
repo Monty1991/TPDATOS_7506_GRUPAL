@@ -13,7 +13,7 @@ Registro::Registro(size_t cantidadCampos): Object(), cantidadCampos(cantidadCamp
 {
 	this->tabla = new iFeaturePtr[this->cantidadCampos];
 	for (size_t i = 0; i < this->cantidadCampos; i++)
-		this->tabla = NULL;
+		this->tabla[i] = NULL;
 }
 
 Registro::~Registro()

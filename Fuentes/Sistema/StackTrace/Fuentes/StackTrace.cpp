@@ -19,28 +19,30 @@ StackTrace::StackTrace()
 StackTrace::~StackTrace()
 {
 	while (this->stack)
-		delete this->Pop();
+	{
+		iObjectPtr obj = this->Pop();
+		if (obj)
+			obj->Dispose();
+	}
 }
 
 void StackTrace::Push(iTraceEntryPtr traceEntry)
 {
-	this->stack = (LinkedListFactory_Nuevo(traceEntry, this->stack))->Copiar();
+	this->stack = LinkedListFactory_Nuevo(traceEntry, this->stack)->Copiar();
 }
 
 iTraceEntryPtr StackTrace::Pop()
 {
-	iLinkedListPtr listItem = this->stack;
-
-	if (!listItem)
+	if (!this->stack)
 		return NULL;
+
+	iLinkedListPtr listItem = this->stack;
 
 	iTraceEntryPtr traceEntry = (iTraceEntryPtr)listItem->Value();
 	if (traceEntry)
 		traceEntry = traceEntry->Copiar();
 
-	this->stack = (listItem->Next());
-	if (this->stack)
-		this->stack = this->stack->Copiar();
+	this->stack = listItem->Next();
 
 	listItem->Dispose();
 

@@ -48,12 +48,20 @@ Feature::~Feature()
 {
 	if (this->tipo & Mascara_Registro)
 		delete this->AsRegistro();
-	else if (this->tipo ^ Mascara_Numero)
+	else if (!(this->tipo & Mascara_Numero))
 	{
 		if (this->tipo & Mascara_Unicode)
-			delete [] this->contenido.primitivo.cadena.unicode.cadena;
+		{
+			sCadenaUNICODE *cadena = this->AsCadenaUNICODE();
+			if (cadena->cadena)
+				delete [] cadena->cadena;
+		}
 		else
-			delete [] this->contenido.primitivo.cadena.ansi.cadena;
+		{
+			sCadenaANSI *cadena = this->AsCadenaANSI();
+			if (cadena->cadena)
+				delete [] cadena->cadena;
+		}
 	}
 }
 

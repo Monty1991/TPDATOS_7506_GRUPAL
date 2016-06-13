@@ -8,8 +8,11 @@ iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(const sDescriptorCampoPtr
 
 iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(const char *cadenaDescriptorRegistro)
 {
-	size_t cuentaComas = 0;
+	size_t cuentaComas = 1;	// como minimo hay 1 campo
 	
+	while (*cadenaDescriptorRegistro == ' ')
+		cadenaDescriptorRegistro++;
+
 	for (const char *i = cadenaDescriptorRegistro; *i != '\0'; i++)
 		if (*i == ',')
 			cuentaComas++;
@@ -45,6 +48,7 @@ iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(const char *cadenaDescrip
 
 		descriptor[campoActual].desc = descCampo;
 		descriptor[campoActual].modificador = modificador;
+		campoActual++;
 
 		modificador = 0;
 	}

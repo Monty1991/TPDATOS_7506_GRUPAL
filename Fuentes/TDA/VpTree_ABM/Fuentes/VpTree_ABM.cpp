@@ -535,6 +535,10 @@ eResultadoVpTree_ABM VpTree_ABM::Modificacion(const iRegistroPtr _reg) {
 
 eResultadoVpTree_ABM VpTree_ABM::Buscar(const iFeaturePtr _key, iRegistroPtr *_reg)
 {
-	*_reg = NULL;
+	iRegistroPtr registro = NULL;
+
+	if (_reg)
+		*_reg = registro;
+
 	return eResultadoVpTree_ABM__Ok;
 }

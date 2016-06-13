@@ -7,10 +7,12 @@
 
 #include "../Headers/MapaDeBits.h"
 #include <string.h>
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
-MapaDeBits::MapaDeBits(const iBloquePtr bloque)
+MapaDeBits::MapaDeBits(const iBloquePtr bloque): bloque(NULL)
 {
-	this->bloque = bloque->Clone();
+	if (bloque)
+		this->bloque = bloque->Clone();
 }
 
 MapaDeBits::~MapaDeBits()
@@ -29,13 +31,16 @@ const iBloquePtr MapaDeBits::Leer()
 
 size_t MapaDeBits::ObtenerTamanio()
 {
+	if (!this->bloque)
+		return 0;
+
 	return this->bloque->ObtenerTamanioBloque();
 }
 
 bool MapaDeBits::ObtenerBit(size_t posicion)
 {
 	char x;
-	this->bloque->LeerBloque(&x, posicion / 8, 1);
+	Sistema_Execute(this->bloque->LeerBloque(&x, posicion / 8, 1););
 	return (x >> this->ObtenerOffsetCorrimiento(posicion)) & 1;
 }
 
@@ -43,7 +48,7 @@ void MapaDeBits::SetearBit(size_t posicion, bool valor)
 {
 	char x;
 	char offset = this->ObtenerOffsetCorrimiento(posicion);
-	this->bloque->LeerBloque(&x, posicion / 8, 1);
+	Sistema_Execute(this->bloque->LeerBloque(&x, posicion / 8, 1););
 
 	if (((x >> offset) & 1) == valor)	// si el bit ya tiene ese valor
 		return;
@@ -53,7 +58,7 @@ void MapaDeBits::SetearBit(size_t posicion, bool valor)
 	else
 		x &= ~ (1 << offset);
 
-	this->bloque->EscribirBloque(&x, posicion / 8, 1);
+	Sistema_Execute(this->bloque->EscribirBloque(&x, posicion / 8, 1););
 }
 
 void MapaDeBits::Dispose()

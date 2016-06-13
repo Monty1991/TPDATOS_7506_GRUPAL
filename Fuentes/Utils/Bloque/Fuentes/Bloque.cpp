@@ -9,13 +9,17 @@
 #include <string.h>
 #include "../../StringUtils/Headers/StringUtils.h"
 #include "../../../Exceptions/ExceptionFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
-Bloque::Bloque(const char *buffer, size_t tamanioBloque): Object()
+Bloque::Bloque(const char *buffer, size_t tamanioBloque): Object(), tamanioBloque(tamanioBloque), buff(NULL)
 {
-	this->tamanioBloque = tamanioBloque;
 	this->buff = new char[this->tamanioBloque];
 
-	this->EscribirBloque(buffer, 0, this->tamanioBloque);
+	// Lo limpiamos previamente
+	for (size_t i = 0; i < this->tamanioBloque; i++)
+		this->buff[i] = 0;
+
+	Sistema_Execute(this->EscribirBloque(buffer, 0, this->tamanioBloque););
 
 	this->BorrarBitModificacion();
 }

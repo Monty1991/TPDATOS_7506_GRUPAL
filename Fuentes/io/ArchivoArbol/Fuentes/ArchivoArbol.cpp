@@ -107,8 +107,8 @@ iNodoPtr ArchivoArbol::HidratarNodo(iBloquePtr _pBloque) {
 
 iNodoPtr ArchivoArbol::LeerNodo(size_t _nroNodo) {
 
-	if (_nroNodo < mapaDeBits->ObtenerTamanio())
-		if (mapaDeBits->ObtenerBit(_nroNodo)) {
+	if (_nroNodo < this->mapaDeBits->ObtenerTamanio())
+		if (this->mapaDeBits->ObtenerBit(_nroNodo)) {
 
 			iBloquePtr pBloque = archivoBloque->LeerBloque(++_nroNodo);
 			iNodoPtr pNodo = HidratarNodo(pBloque);
@@ -128,13 +128,13 @@ void ArchivoArbol::EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo) {
 	if (_nroNodo >= mapaDeBits->ObtenerTamanio())
 		Throw(" ", "Número de nodo inválido");
 
-	carga = DeterminarEstadoNodo(_pNodo);
+//	carga = DeterminarEstadoNodo(_pNodo);
 
-	if (carga == eEstadoCargaNodo_Underflow)
-		Throw(" ", "Nodo en underflow");
+//	if (carga == eEstadoCargaNodo_Underflow)
+//		Throw(" ", "Nodo en underflow");
 
-	if (carga == eEstadoCargaNodo_Overflow)
-		Throw(" ", "Nodo en overflow");
+//	if (carga == eEstadoCargaNodo_Overflow)
+//		Throw(" ", "Nodo en overflow");
 
 	pBloque = SerializarNodo(_pNodo);
 	archivoBloque->EscribirBloque(_nroNodo + 1, pBloque);
