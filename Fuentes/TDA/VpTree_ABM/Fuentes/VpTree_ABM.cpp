@@ -368,7 +368,7 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodoPadre,
 		iFeaturePtr key;
 		iFeaturePtr pivote;
 		size_t nroNodoHijo;
-		iNodoArbolPuntoOptimoPtr hijo;
+		iNodoPtr hijo;
 
 		pivote =
 				((iNodoArbolPuntoOptimoNodoInternoPtr) _padre)->ObtenerPivote();
@@ -382,8 +382,17 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodoPadre,
 			nroNodoHijo =
 					((iNodoArbolPuntoOptimoNodoInternoPtr) _padre)->ObtenerHijoDerecho();
 
-		hijo = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(nroNodoHijo);
-		Alta(_reg, nroNodoHijo, hijo);
+		if (!nroNodoHijo) {
+
+			nroNodoHijo = archivo->NuevoNodo(&hijo, eNodoArbolPuntoOptimo_Hoja);
+			ResolverUnderflow(_nroNodoPadre,
+					(iNodoArbolPuntoOptimoNodoInternoPtr) _padre, nroNodoHijo,
+					(iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
+		} else {
+
+			hijo = archivo->LeerNodo(nroNodoHijo);
+			Alta(_reg, nroNodoHijo, (iNodoArbolPuntoOptimoPtr) hijo);
+		}
 
 		key->Dispose();
 		pivote->Dispose();
@@ -400,6 +409,7 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad) {
 			return eResultadoVpTree_ABM__Duplicado;
 
 	iNodoArbolPuntoOptimoPtr copiaRaiz = raiz->Clone();
+
 	eResultadoVpTree_ABM res = Alta(_reg, 0, copiaRaiz);
 
 	copiaRaiz->Dispose();
@@ -441,7 +451,7 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre,
 
 	size_t* i = Ubicar(_key, _hijo);
 
-	if (!i)
+	if (!i) {
 
 		if (_hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja)
 			return eResultadoVpTree_ABM__Inexistente;
@@ -450,7 +460,7 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre,
 			iFeaturePtr pivote;
 			size_t nroNodoNieto;
 			eResultadoVpTree_ABM res;
-			iNodoArbolPuntoOptimoPtr nieto;
+			iNodoArbolPuntoOptimoPtr nieto = NULL;
 
 			pivote =
 					((iNodoArbolPuntoOptimoNodoInternoPtr) _hijo)->ObtenerPivote();
@@ -463,13 +473,20 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre,
 				nroNodoNieto =
 						((iNodoArbolPuntoOptimoNodoInternoPtr) _hijo)->ObtenerHijoDerecho();
 
-			nieto = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(nroNodoNieto);
-			res = Baja(_key, _nroNodoHijo, _hijo, nroNodoNieto, nieto);
+			if (!nroNodoNieto)
+				res = eResultadoVpTree_ABM__Inexistente;
+			else {
+
+				nieto = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(
+						nroNodoNieto);
+				res = Baja(_key, _nroNodoHijo, _hijo, nroNodoNieto, nieto);
+			}
 
 			nieto->Dispose();
 			pivote->Dispose();
 			return res;
 		}
+	}
 
 	(_hijo->QuitarRegistro(*i))->Dispose();
 	delete i;
@@ -494,7 +511,8 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre,
 eResultadoVpTree_ABM VpTree_ABM::Baja(const iFeaturePtr _key) {
 
 	iNodoArbolPuntoOptimoPtr copiaRaiz = raiz->Clone();
-	eResultadoVpTree_ABM res = Baja(_key, -1, NULL, 0, copiaRaiz);
+
+	eResultadoVpTree_ABM res = Baja(_key, NULL, NULL, 0, copiaRaiz);
 
 	copiaRaiz->Dispose();
 	return res;
