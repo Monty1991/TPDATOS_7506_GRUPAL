@@ -84,15 +84,14 @@ eEstadoCargaNodo ArchivoArbol::DeterminarEstadoNodo(
 		return eEstadoCargaNodo_Underflow;
 }
 
-iBloquePtr ArchivoArbol::SerializarNodo(iNodoPtr _pNodo) {
+iBloquePtr ArchivoArbol::SerializarNodo(iNodoPtr _pNodo)
+{
+	char buffer[this->tamanioNodo];
+	for (size_t i = 0; i < this->tamanioNodo; i++)
+		buffer[i] = 0;
 
-	char * buffer = new char[tamanioNodo];
-
-	serializadorNodo->Serializar(buffer, _pNodo);
-	iBloquePtr pBloque = BloqueFactory_Nuevo(buffer, tamanioNodo);
-
-	delete[] buffer;
-	return pBloque;
+	this->serializadorNodo->Serializar(buffer, _pNodo);
+	return BloqueFactory_Nuevo(buffer, this->tamanioNodo);
 }
 
 iNodoPtr ArchivoArbol::HidratarNodo(iBloquePtr _pBloque) {
