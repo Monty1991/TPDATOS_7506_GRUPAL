@@ -1,8 +1,7 @@
 #include "../Headers/Aplicacion.h"
 #include "../../Exceptions/Headers/iException.h"
 #include "../../Sistema/Sistema/Headers/Sistema.h"
-#include "../../io/ArchivoBloque/ArchivoBloqueFactory.h"
-#include "../../Utils/MapaDeBits/MapaDeBitsFactory.h"
+#include "../../Comandos/Comando/ComandoFactory.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -17,43 +16,40 @@ Aplicacion::~Aplicacion()
 	
 }
 
-int Aplicacion::main(int argc, char **argv)
+int Aplicacion::main(int argc, const char **argv)
 {
+	int result;
+	
 	TryCatchBlock(
 	{
-		iArchivoBloquePtr archivoBloque = ArchivoBloqueFactory_Nuevo("asdf.dat", 2048);
+		if (argc < 2)
+		{
+			fprintf(stdout, "ERROR!! No se indico un comando");
+			result = 1;
+			return result;
+		}
+		
+		iComandoPtr comando = ComandoFactory_Nuevo(argv[1]);
+		
+		if (!comando)
+		{
+			fprintf(stdout, "%s no se reconoce como un comando valido", argv[1]);
+			result = 1;
+			return result;
+		}
 
-			iBloquePtr bloque = archivoBloque->LeerBloque(0);					// cargamos el mapa de bits
-			char *buff = new char[2048];
-			memset(buff, 0, 2048);
-			iMapaDeBitsPtr mapaDeBits = MapaDeBitsFactory_Nuevo(bloque);
-			delete[] buff;
-			bloque->Dispose();
+		// quitamos el nombre de la aplicacion y del comando
+		comando->Ejecutar(stdout, argv + 2, argc - 2);
 
-			try
-			{
-				Sistema_Execute( mapaDeBits->SetearBit(0, true););
-				Sistema_Execute( mapaDeBits->SetearBit(0, false););				// forzamos al mapa de bits a modificarse
-
-				Sistema_Execute( archivoBloque->EscribirBloque(0, mapaDeBits->Leer());); // volcamos el mapa de bits al archivo
-				Sistema_Execute( mapaDeBits->SetearBit(5, true););				// volvemos a modificar el mapa
-				Sistema_Execute( archivoBloque->EscribirBloque(0, mapaDeBits->Leer()););	// actualizamos el archivo
-			}
-			catch (iExceptionPtr e)
-			{
-				Sistema_Log(e);
-				e->Dispose();
-			}
-
-			mapaDeBits->Dispose();
-			
-		archivoBloque->Close();									// cerramos el archivo
-
-		return 0;
+		comando->Dispose();
+		
+		result = 0;
 	},
 	[&](iExceptionPtr e){
 		Sistema_Log(e);
 		e->Dispose();
 		return 1;
 	})
+	
+	return result;
 }

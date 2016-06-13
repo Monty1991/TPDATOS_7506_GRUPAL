@@ -25,30 +25,11 @@ iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(const char *cadenaDescrip
 		if (*punteroCadena == ',')
 			continue;
 
-		eDescriptorCampo descCampo;
-		switch (*punteroCadena)
-		{
-			case 'u': case 'U':
-				descCampo = eDescriptorCampo::eDescriptorCampo_U;
-				break;
-			case 'i': case 'I':
-				descCampo = eDescriptorCampo::eDescriptorCampo_I;
-				break;
-			case 'f': case 'F':
-				descCampo = eDescriptorCampo::eDescriptorCampo_F;
-				break;
-			case 'c': case 'C':
-				descCampo = eDescriptorCampo::eDescriptorCampo_C;
-				break;
-			case 'v': case 'V':
-				descCampo = eDescriptorCampo::eDescriptorCampo_CV;
-				break;
-
-			default:
-				// problemas
-				// debiera lanzar excepcion
-				return NULL;
-		}
+		eDescriptorCampo descCampo = IdentificarDescriptorCampo(*punteroCadena);
+		
+		// Problemas, debiera tirar excepcion
+		if (descCampo == eDescriptorCampo::eDescriptorCampo_Unknown)
+			return NULL;
 
 		punteroCadena++;
 		size_t modificador = 0;

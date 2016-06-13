@@ -10,7 +10,7 @@
 
 typedef class iAplicacion
 {
-	virtual int main(int argc, char **argv) = 0;
+	virtual int main(int argc, const char **argv) = 0;
 } *iAplicacionPtr;
 
 #endif	/* IAPLICACION_H */

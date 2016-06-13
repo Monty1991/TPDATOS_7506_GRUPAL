@@ -40,7 +40,7 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 {
 	if (cantidad < 5)
 	{
-		fprintf(salida, "ERROR!! Se esperaban al menos 5 parametros\n");
+		fprintf(salida, "ERROR!! Se esperaban al menos 5 parametros.\n");
 		return;
 	}
 
@@ -51,7 +51,7 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 	iDescriptorRegistroPtr descRegistro = DescriptorRegistroFactory_Nuevo(listaParametros[2]);
 	if (!descRegistro)
 	{
-		fprintf(salida, "ERROR!! El formato del descriptor de registro provisto no es valido\n");
+		fprintf(salida, "ERROR!! El formato del descriptor de registro provisto no es valido.\n");
 		return;
 	}
 	
@@ -133,9 +133,9 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 	
 	eResultadoVpTree_ABM resultado = vpTree->Alta(registro, true);
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
-		fprintf(salida, "La operacion se ha completado con exito\n");
+		fprintf(salida, "La operacion se ha completado con exito.\n");
 	else if(resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Duplicado)
-		fprintf(salida, "ERROR!! Ya existe un registro con esa clave. Tal vez queria modificar?\n");
+		fprintf(salida, "ERROR!! Ya existe un registro con esa clave.\n");
 
 	vpTree->Dispose();
 }

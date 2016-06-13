@@ -1,5 +1,29 @@
 #include "../Headers/DescriptorRegistro.h"
 
+eDescriptorCampo IdentificarDescriptorCampo(char desc)
+{
+	switch(desc)
+	{
+		case 'u': case 'U':
+			return eDescriptorCampo::eDescriptorCampo_U;
+
+		case 'i': case 'I':
+			return eDescriptorCampo::eDescriptorCampo_I;
+
+		case 'f': case 'F':
+			return eDescriptorCampo::eDescriptorCampo_F;
+
+		case 'c': case 'C':
+			return eDescriptorCampo::eDescriptorCampo_C;
+
+		case 'v': case 'V':
+			return eDescriptorCampo::eDescriptorCampo_CV;
+
+		default:
+			return eDescriptorCampo::eDescriptorCampo_Unknown;
+	}
+}
+
 DescriptorRegistro::DescriptorRegistro(const sDescriptorCampoPtr tablaDescriptorCampo, size_t cantidadDescriptoresCampo): cantidadDescriptoresCampo(cantidadDescriptoresCampo)
 {
 	this->tablaDescriptorCampo = new sDescriptorCampo[this->cantidadDescriptoresCampo];

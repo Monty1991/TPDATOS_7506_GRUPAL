@@ -12,13 +12,16 @@
 
 enum eDescriptorCampo
 {
-	eDescriptorCampo_U,		// Entero Sin Signo
-	eDescriptorCampo_I,		// Entero Con Signo
-	eDescriptorCampo_F,		// Flotante, IEEE 754
+	eDescriptorCampo_Unknown,	// Desconocido
+	eDescriptorCampo_U,			// Entero Sin Signo
+	eDescriptorCampo_I,			// Entero Con Signo
+	eDescriptorCampo_F,			// Flotante, IEEE 754
 
-	eDescriptorCampo_C,		// cadena ANSI, tamanio fijo
-	eDescriptorCampo_CV,	// cadena ANSI, tamanio variable
+	eDescriptorCampo_C,			// cadena ANSI, tamanio fijo
+	eDescriptorCampo_CV,		// cadena ANSI, tamanio variable
 };
+
+eDescriptorCampo IdentificarDescriptorCampo(char desc);
 
 typedef struct sDescriptorCampo
 {

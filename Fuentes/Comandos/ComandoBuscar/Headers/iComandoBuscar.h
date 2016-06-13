@@ -8,7 +8,7 @@
 #ifndef ICOMANDOBUSCAR_H
 #define ICOMANDOBUSCAR_H
 
-#include "../../iComando.h"
+#include "../../Comando/Headers/iComando.h"
 
 typedef class iComandoBuscar: public iComando
 {

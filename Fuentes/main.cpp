@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	Aplicacion *aplicacion = new Aplicacion();
 	
 	int i = 0;
-	i = aplicacion->main(argc, argv);
+	i = aplicacion->main(argc, (const char **)argv);
 
 	delete aplicacion;
 

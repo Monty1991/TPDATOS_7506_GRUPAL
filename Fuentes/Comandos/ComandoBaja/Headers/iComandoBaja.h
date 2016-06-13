@@ -8,7 +8,7 @@
 #ifndef ICOMANDOBAJA_H
 #define ICOMANDOBAJA_H
 
-#include "../../iComando.h"
+#include "../../Comando/Headers/iComando.h"
 
 typedef class iComandoBaja: public iComando
 {
