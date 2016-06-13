@@ -73,9 +73,13 @@ void Registro::SetFeature(size_t posicion, iFeaturePtr feature)
 		return;
 
 	if (this->tabla[posicion] != NULL)
+	{
 		this->tabla[posicion]->Dispose();
+		this->tabla[posicion] = NULL;
+	}
 
-	this->tabla[posicion] = feature->Copiar();
+	if (feature)
+		this->tabla[posicion] = feature->Copiar();
 }
 
 void Registro::Dispose()

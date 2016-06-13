@@ -3,6 +3,7 @@
 
 #include "../Headers/ComandoBaja.h"
 #include "../../../TDA/VpTree_ABM/VpTree_ABMFactory.h"
+#include "../../../Memoria/DescriptorRegistro/DescriptorRegistroFactory.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
 
 ComandoBaja::ComandoBaja()
@@ -45,25 +46,14 @@ void ComandoBaja::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 
 	size_t tamanioBloque = strtoull(listaParametros[1], NULL, 0);
 	size_t nroCampo = strtoull(listaParametros[3], NULL, 0);
+
+	iDescriptorRegistroPtr descRegistro = DescriptorRegistroFactory_Nuevo(listaParametros[2]);
+	iFeaturePtr clave = FeatureFactory_Nuevo(descRegistro->ObtenerDescriptorCampo(0), listaParametros[4], NULL);
+	descRegistro->Dispose();
+
 	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(listaParametros[0], nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
-
-	iFeaturePtr clave = NULL;
-
-	if (false)
-	{
-		sCadenaANSI cadena;
-		cadena.cadena = (char *)listaParametros[4];
-		cadena.largo = strlen(cadena.cadena);
-		clave = FeatureFactory_Nuevo(&cadena);
-	}
-	else if (false)
-	{
-		uValue value;
-		value.primitivo.numero.entero.enteroSinSigno.entero32SinSigno = strtoul(listaParametros[4], NULL, 0);
-		clave = FeatureFactory_Nuevo(value, eValueType::eValueType_U4);
-	}
-
 	eResultadoVpTree_ABM resultado = vpTree->Baja(clave);
+
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
 		fprintf(salida, "La operacion se ha completado con exito.\n");
 	else if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente)

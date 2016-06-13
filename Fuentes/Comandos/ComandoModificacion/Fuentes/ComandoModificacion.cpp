@@ -71,63 +71,7 @@ void ComandoModificacion::Ejecutar(FILE *salida, const char **listaParametros, s
 	iRegistroPtr registro = RegistroFactory_Nuevo(descRegistro->ObtenerCantidadCampos());
 	for (size_t i = 0; i < registro->ObtenerCantidadCampos(); i++)
 	{
-		iFeaturePtr campo = NULL;
-		switch (descRegistro->ObtenerDescriptorCampo(i)->desc)
-		{
-			case eDescriptorCampo::eDescriptorCampo_U:
-			{
-				uValue value;
-				value.primitivo.numero.entero.enteroSinSigno.entero32SinSigno = strtoul(cadenaRegistro, (char **)&cadenaRegistro, 0);
-				campo = FeatureFactory_Nuevo(value, eValueType::eValueType_U4);
-			}
-			break;
-
-			case eDescriptorCampo::eDescriptorCampo_I:
-			{
-				uValue value;
-				value.primitivo.numero.entero.enteroConSigno.entero32ConSigno = strtol(cadenaRegistro, (char **)&cadenaRegistro, 0);
-				campo = FeatureFactory_Nuevo(value, eValueType::eValueType_I4);
-			}
-			break;
-
-			case eDescriptorCampo::eDescriptorCampo_F:
-			{
-				uValue value;
-				value.primitivo.numero.flotante.flotante32 = strtod(cadenaRegistro, (char **)&cadenaRegistro);
-				campo = FeatureFactory_Nuevo(value, eValueType::eValueType_F32);
-			}
-			break;
-
-			case eDescriptorCampo::eDescriptorCampo_C:
-			{
-				sCadenaANSI cadenaANSI;
-				cadenaANSI.cadena = (char *)cadenaRegistro;
-				
-				size_t largoCadena = 0;
-				while ((cadenaRegistro[largoCadena] != ',') && (cadenaRegistro[largoCadena] != '\0'))
-					largoCadena++;
-				
-				cadenaANSI.largo = largoCadena;
-
-				campo = FeatureFactory_Nuevo(&cadenaANSI);
-			}
-			break;
-
-			case eDescriptorCampo::eDescriptorCampo_CV:
-			{
-				sCadenaANSI cadenaANSI;
-				cadenaANSI.cadena = (char *)cadenaRegistro;
-				
-				size_t largoCadena = 0;
-				while ((cadenaRegistro[largoCadena] != ',') && (cadenaRegistro[largoCadena] != '\0'))
-					largoCadena++;
-				
-				cadenaANSI.largo = largoCadena;
-
-				campo = FeatureFactory_Nuevo(&cadenaANSI);
-			}
-			break;
-		}
+		iFeaturePtr campo = FeatureFactory_Nuevo(descRegistro->ObtenerDescriptorCampo(i), cadenaRegistro, (char **)&cadenaRegistro);
 
 		Sistema_Execute(registro->SetFeature(i, campo););
 		campo->Dispose();
