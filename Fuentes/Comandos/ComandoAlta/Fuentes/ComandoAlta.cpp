@@ -5,6 +5,7 @@
 #include "../../../Memoria/Registro/RegistroFactory.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
 #include "../../../Memoria/DescriptorRegistro/DescriptorRegistroFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 ComandoAlta::ComandoAlta()
 {
@@ -130,8 +131,9 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 		// llegados aquí, se leyo hasta la coma
 		cadenaRegistro++;
 	}
-	
-	eResultadoVpTree_ABM resultado = vpTree->Alta(registro, true);
+
+	eResultadoVpTree_ABM resultado;
+	Sistema_Execute(resultado = vpTree->Alta(registro, true););
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
 		fprintf(salida, "La operacion se ha completado con exito.\n");
 	else if(resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Duplicado)

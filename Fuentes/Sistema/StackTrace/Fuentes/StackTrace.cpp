@@ -24,18 +24,24 @@ StackTrace::~StackTrace()
 
 void StackTrace::Push(iTraceEntryPtr traceEntry)
 {
-	this->stack = LinkedListFactory_Nuevo(traceEntry, this->stack);
+	this->stack = (LinkedListFactory_Nuevo(traceEntry, this->stack))->Copiar();
 }
 
 iTraceEntryPtr StackTrace::Pop()
 {
-	if (!this->stack)
+	iLinkedListPtr listItem = this->stack;
+
+	if (!listItem)
 		return NULL;
 
-	iTraceEntryPtr traceEntry = (iTraceEntryPtr)this->stack->Value();
+	iTraceEntryPtr traceEntry = (iTraceEntryPtr)listItem->Value();
+	if (traceEntry)
+		traceEntry = traceEntry->Copiar();
 
-	iLinkedListPtr listItem = this->stack;
-	this->stack = listItem->Next();
+	this->stack = (listItem->Next());
+	if (this->stack)
+		this->stack = this->stack->Copiar();
+
 	listItem->Dispose();
 
 	return traceEntry;
@@ -68,7 +74,11 @@ StackTrace *StackTrace::Clone()
 	StackTrace *clone = new StackTrace();
 
 	// Toda clase es friend consigo misma.
-	clone->stack = this->stack->Clone();
+	iLinkedListPtr copia = NULL;
+	if (this->stack)
+		copia = this->stack->Clone();
+	
+	clone->stack = copia;
 
 	return clone;
 }

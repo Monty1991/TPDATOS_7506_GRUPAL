@@ -35,7 +35,10 @@ iLinkedListPtr LinkedList::Copiar()
 
 iLinkedListPtr LinkedList::Clone()
 {
-	return new LinkedList(this->obj->Clone(), (this->next? this->next->Clone(): NULL));
+	iObjectPtr objClone = (this->obj? this->obj->Clone(): NULL);
+	iLinkedListPtr nextClone = (this->next? this->next->Clone(): NULL);
+
+	return new LinkedList(objClone, nextClone);
 }
 
 iLinkedListPtr LinkedList::Next()

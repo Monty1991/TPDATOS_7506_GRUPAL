@@ -24,7 +24,7 @@ int Aplicacion::main(int argc, const char **argv)
 	{
 		if (argc < 2)
 		{
-			fprintf(stdout, "ERROR!! No se indico un comando");
+			fprintf(stdout, "ERROR!! No se indico un comando\n");
 			result = 1;
 			return result;
 		}
@@ -33,13 +33,13 @@ int Aplicacion::main(int argc, const char **argv)
 		
 		if (!comando)
 		{
-			fprintf(stdout, "%s no se reconoce como un comando valido", argv[1]);
+			fprintf(stdout, "%s no se reconoce como un comando valido\n", argv[1]);
 			result = 1;
 			return result;
 		}
 
 		// quitamos el nombre de la aplicacion y del comando
-		comando->Ejecutar(stdout, argv + 2, argc - 2);
+		Sistema_Execute(comando->Ejecutar(stdout, argv + 2, argc - 2););
 
 		comando->Dispose();
 		
