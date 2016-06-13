@@ -28,7 +28,7 @@ const char *ComandoBaja::ObtenerNombre()
 
 void ComandoBaja::ImprimirAyuda(FILE *salida)
 {
-	fprintf(salida, "baja: n t s i c\n");
+	fprintf(salida, "%s: n t s i c\n", this->ObtenerNombre());
 	fprintf(salida, "\tn: nombre archivo de datos\n");
 	fprintf(salida, "\tt: tamanio de bloque, en bytes\n");
 	fprintf(salida, "\ts: tipo de la clave\n");
@@ -40,7 +40,7 @@ void ComandoBaja::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 {
 	if (cantidad < 5)
 	{
-		fprintf(salida, "ERROR!! Se esperaban al menos 5 parametros\n");
+		this->ImprimirAyuda(salida);
 		return;
 	}
 

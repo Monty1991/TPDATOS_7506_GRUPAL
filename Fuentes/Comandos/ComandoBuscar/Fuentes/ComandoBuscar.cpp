@@ -28,7 +28,7 @@ const char *ComandoBuscar::ObtenerNombre()
 
 void ComandoBuscar::ImprimirAyuda(FILE *salida)
 {
-	fprintf(salida, "buscar: n t s i c\n");
+	fprintf(salida, "%s: n t s i c\n", this->ObtenerNombre());
 	fprintf(salida, "\tn: nombre archivo de datos\n");
 	fprintf(salida, "\tt: tamanio de bloque, en bytes\n");
 	fprintf(salida, "\ts: el tipo de la clave\n");
@@ -40,7 +40,7 @@ void ComandoBuscar::Ejecutar(FILE *salida, const char **listaParametros, size_t 
 {
 	if (cantidad < 5)
 	{
-		fprintf(salida, "ERROR!! Se esperaban al menos 5 parametros.\n");
+		this->ImprimirAyuda(salida);
 		return;
 	}
 

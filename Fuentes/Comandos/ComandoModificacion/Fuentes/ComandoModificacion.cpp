@@ -29,7 +29,7 @@ const char *ComandoModificacion::ObtenerNombre()
 
 void ComandoModificacion::ImprimirAyuda(FILE *salida)
 {
-	fprintf(salida, "modificacion: n t s i r\n");
+	fprintf(salida, "%s: n t s i r\n", this->ObtenerNombre());
 	fprintf(salida, "\tn: nombre archivo de datos\n");
 	fprintf(salida, "\tt: tamanio de bloque, en bytes\n");
 	fprintf(salida, "\ts: schema de registro, ver documentacion\n");
@@ -41,7 +41,7 @@ void ComandoModificacion::Ejecutar(FILE *salida, const char **listaParametros, s
 {
 	if (cantidad < 5)
 	{
-		fprintf(salida, "ERROR!! Se esperaban al menos 5 parametros.\n");
+		this->ImprimirAyuda(salida);
 		return;
 	}
 
