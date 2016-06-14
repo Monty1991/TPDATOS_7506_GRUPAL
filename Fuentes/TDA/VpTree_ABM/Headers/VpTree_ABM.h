@@ -69,10 +69,13 @@ private:
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
+	// Reparte los contenidos de un nodo entre 2 y devuelve el radio
+	float Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2);
+	
 	//Busca la clave dentro del nodo
 	//Si la encuentra devuelve su posición
 	//Caso contrario devuelve NULL
-	size_t* Ubicar(iFeaturePtr _key, iNodoArbolPuntoOptimoPtr _nodo);
+	size_t Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo);
 
 	//Escribe un nodo a disco
 	//Usar este método garantiza que la raiz esté siempre bufferizada

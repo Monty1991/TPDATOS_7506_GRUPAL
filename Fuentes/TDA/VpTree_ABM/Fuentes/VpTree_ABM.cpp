@@ -209,9 +209,113 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre,
 		(*ppHermano)->Dispose();
 }
 
-void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
-		iNodoArbolPuntoOptimoNodoHojaPtr _hijo) {
+// Reparte los contenidos de un nodo entre 2 y devuelve el radio
+float VpTree_ABM::Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2)
+{
+	iHeapPtr heapMinimos = HeapFactory_Nuevo(eHeap::eHeap_Minimo);
 
+	size_t cantidadRegistros = padre->ObtenerCantidadRegistros();
+
+	for (size_t i = 0; i < cantidadRegistros; i++)
+	{
+		sHeapComponentPtr heapComponent = new sHeapComponent();
+		iRegistroPtr registro = padre->ObtenerRegistro(i);
+		heapComponent->valor = this->Distancia(pivote,
+				registro->GetFeature(this->nroCampoClave));
+		heapComponent->object = registro;
+
+		heapMinimos->Push(heapComponent);
+	}
+
+	for (size_t i = 0; i < cantidadRegistros / 2; i++)
+	{
+		sHeapComponentPtr component = heapMinimos->Pop();
+		hijo1->AgregarRegistro((iRegistroPtr)component->object);
+		delete component;
+	}
+
+	float radio = heapMinimos->Peek()->valor;
+	for (size_t i = cantidadRegistros / 2; i < cantidadRegistros; i++)
+	{
+		sHeapComponentPtr component = heapMinimos->Pop();
+		hijo2->AgregarRegistro((iRegistroPtr)component->object);
+		delete component;
+	}
+
+	delete heapMinimos;
+
+	return radio;
+}
+
+void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
+		iNodoArbolPuntoOptimoNodoHojaPtr _hijo)
+{
+	iFeaturePtr pivote = this->GenerarPivote(_hijo);
+	iNodoArbolPuntoOptimoPtr hijos[2] = {NULL, NULL};
+
+	size_t hijoIzquierdo = this->archivo->NuevoNodo((iNodoPtr *)hijos, eTipoArbol::eTipoArbol_ArbolPuntoOptimo);
+	size_t hijoDerecho = this->archivo->NuevoNodo((iNodoPtr *)(hijos + 1), eTipoArbol::eTipoArbol_ArbolPuntoOptimo);
+
+	float radio = this->Repartir(_hijo, pivote, hijos[0], hijos[1]);
+
+	iNodoArbolPuntoOptimoNodoInternoPtr padre = (iNodoArbolPuntoOptimoNodoInternoPtr)NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno);
+
+	eEstadoCargaNodo estadoPadre = this->archivo->DeterminarEstadoNodo(padre);
+	eEstadoCargaNodo estadoHijos[2] = {this->archivo->DeterminarEstadoNodo(hijos[0]), this->archivo->DeterminarEstadoNodo(hijos[1])};
+	char hijoActual = 0;
+
+	while ((estadoHijos[hijoActual] != eEstadoCargaNodo::eEstadoCargaNodo_Underflow) &&
+			(estadoPadre != eEstadoCargaNodo::eEstadoCargaNodo_Overflow))
+	{
+		iRegistroPtr registro = hijos[hijoActual]->QuitarRegistro();
+		eEstadoCargaNodo nuevoEstadoHijo = this->archivo->DeterminarEstadoNodo(hijos[hijoActual]);
+		if (nuevoEstadoHijo == eEstadoCargaNodo::eEstadoCargaNodo_Underflow)
+		{
+			hijos[hijoActual]->AgregarRegistro(registro);
+			break;	// se rompio el ciclo
+		}
+
+		padre->AgregarRegistro(registro);
+		eEstadoCargaNodo nuevoEstadoPadre = this->archivo->DeterminarEstadoNodo(padre);
+		if (nuevoEstadoPadre == eEstadoCargaNodo::eEstadoCargaNodo_Overflow)
+		{
+			padre->QuitarRegistro(padre->ObtenerCantidadRegistros() - 1);
+			hijos[hijoActual]->AgregarRegistro(registro);
+			break;	// se rompio el ciclo
+		}
+
+		estadoPadre = nuevoEstadoPadre;
+		estadoHijos[hijoActual] = nuevoEstadoHijo;
+		hijoActual = 1 - hijoActual;
+	}
+
+	if (estadoPadre == eEstadoCargaNodo::eEstadoCargaNodo_Underflow)
+	{
+		size_t cantidadRegistros = hijos[1]->ObtenerCantidadRegistros();
+		for (size_t i = cantidadRegistros; i > 0; i--)
+			padre->AgregarRegistro(hijos[1]->QuitarRegistro(i - 1));
+
+		padre->EstablecerHijoDerecho(0);
+	}
+	else
+	{
+		this->archivo->EscribirNodo(hijoDerecho, hijos[1]);
+		padre->EstablecerHijoDerecho(hijoDerecho);
+	}
+
+	hijos[1]->Dispose();
+	this->archivo->EscribirNodo(hijoIzquierdo, hijos[0]);
+	hijos[0]->Dispose();
+
+	padre->EstablecerPivote(pivote);
+	pivote->Dispose();
+
+	padre->EstablecerRadio(radio);
+	padre->EstablecerHijoIzquierdo(hijoIzquierdo);
+	
+	this->Escribir(_nroNodoHijo, padre);
+	
+	padre->Dispose();
 }
 
 iNodoArbolPuntoOptimoPtr VpTree_ABM::Fusionar(
@@ -322,9 +426,9 @@ iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
 }
 
 float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
-		iNodoArbolPuntoOptimoNodoHojaPtr _hoja) {
+		iNodoArbolPuntoOptimoNodoHojaPtr _hoja)
+{
 
-	// Que te ayude mandrake :P
 	iHeapPtr heapMinimos = HeapFactory_Nuevo(eHeap::eHeap_Minimo);
 
 	size_t cantidadRegistros = _hoja->ObtenerCantidadRegistros();
@@ -416,42 +520,33 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad) {
 	return res;
 }
 
-size_t* VpTree_ABM::Ubicar(iFeaturePtr _key, iNodoArbolPuntoOptimoPtr _nodo) {
-
-	size_t* i;
+size_t VpTree_ABM::Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo)
+{
 	float dist;
 	iFeaturePtr key;
 	iRegistroPtr reg;
 
-	i = new size_t;
-	*i = 0;
+	for (size_t i = 0; i < _nodo->ObtenerCantidadRegistros(); i++) {
 
-	while (*i < _nodo->ObtenerCantidadRegistros()) {
-
-		reg = _nodo->ObtenerRegistro(*i);
+		reg = _nodo->ObtenerRegistro(i);
 		key = reg->GetFeature(nroCampoClave);
-		dist = Distancia(key, _key);
-
-		reg->Dispose();
-		key->Dispose();
+		dist = Distancia(key, clave);
 
 		if (!dist)
 			return i;
-
-		(*i)++;
 	}
 
-	delete i;
-	return NULL;
+	return _nodo->ObtenerCantidadRegistros() + 1;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre,
 		iNodoArbolPuntoOptimoPtr _padre, size_t _nroNodoHijo,
 		iNodoArbolPuntoOptimoPtr _hijo) {
 
-	size_t* i = Ubicar(_key, _hijo);
+	size_t posicionRegistro = Ubicar(_key, _hijo);
 
-	if (!i) {
+	if (posicionRegistro > _hijo->ObtenerCantidadRegistros() + 1)
+	{
 
 		if (_hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja)
 			return eResultadoVpTree_ABM__Inexistente;
@@ -482,14 +577,11 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre,
 				res = Baja(_key, _nroNodoHijo, _hijo, nroNodoNieto, nieto);
 			}
 
-			nieto->Dispose();
-			pivote->Dispose();
 			return res;
 		}
 	}
 
-	(_hijo->QuitarRegistro(*i))->Dispose();
-	delete i;
+	(_hijo->QuitarRegistro(posicionRegistro))->Dispose();
 
 	if ((archivo->DeterminarEstadoNodo(_hijo) == eEstadoCargaNodo_Underflow)
 			&& (_hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Interno))
@@ -528,8 +620,6 @@ eResultadoVpTree_ABM VpTree_ABM::Modificacion(const iRegistroPtr _reg) {
 	else
 		Alta(_reg, false);
 
-//	El manejo de memoria de la clave es responabilidad de _reg
-//	key->Dispose();
 	return res;
 }
 
@@ -537,8 +627,48 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(const iFeaturePtr _key, iRegistroPtr *_r
 {
 	iRegistroPtr registro = NULL;
 
+	iNodoArbolPuntoOptimoPtr nodoActual = this->raiz;
+
+	while (true)
+	{
+		size_t posicionRegistro = this->Ubicar(_key, nodoActual);
+		if (posicionRegistro < nodoActual->ObtenerCantidadRegistros())
+		{
+			registro = nodoActual->ObtenerRegistro(posicionRegistro)->Copiar();
+			break;
+		}
+
+		if (nodoActual->ObtenerTipoNodo() == eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja)
+			return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente;
+
+		iNodoArbolPuntoOptimoNodoInternoPtr interno = (iNodoArbolPuntoOptimoNodoInternoPtr)nodoActual;
+		float distanciaAPivote = this->Distancia(_key, interno->ObtenerPivote());
+		size_t nodoALeer = 0;
+		if (distanciaAPivote < interno->ObtenerRadio())
+			nodoALeer = interno->ObtenerHijoIzquierdo();
+		else
+			nodoALeer = interno->ObtenerHijoDerecho();
+
+		if (!nodoALeer)
+			break;
+
+		if (nodoActual && nodoActual != this->raiz)
+			nodoActual->Dispose();
+
+		nodoActual = (iNodoArbolPuntoOptimoPtr)this->archivo->LeerNodo(nodoALeer);
+
+		// por las dudas
+		if (!nodoActual)
+			break;
+	}
+	if (nodoActual && nodoActual != this->raiz)
+		nodoActual->Dispose();
+
 	if (_reg)
 		*_reg = registro;
 
-	return eResultadoVpTree_ABM__Ok;
+	if (!registro)
+		return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente;
+
+	return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok;
 }
