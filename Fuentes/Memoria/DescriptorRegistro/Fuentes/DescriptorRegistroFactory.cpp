@@ -1,5 +1,6 @@
 #include "../DescriptorRegistroFactory.h"
 #include "../Headers/DescriptorRegistro.h"
+#include "../../../Exceptions/ExceptionFactory.h"
 
 iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(const sDescriptorCampoPtr tablaDescriptorCampo, size_t cantidadDescriptoresCampo)
 {
@@ -20,19 +21,22 @@ iDescriptorRegistroPtr DescriptorRegistroFactory_Nuevo(const char *cadenaDescrip
 	sDescriptorCampo descriptor[cuentaComas];
 	size_t campoActual = 0;
 	const char *punteroCadena = cadenaDescriptorRegistro;
-	for (size_t i = 0; i < cuentaComas; i++)
+	while (true)
 	{
 		if (*punteroCadena == '\0')
 			break;
 
 		if (*punteroCadena == ',')
+		{
+			punteroCadena++;
 			continue;
+		}
 
 		eDescriptorCampo descCampo = IdentificarDescriptorCampo(*punteroCadena);
 		
 		// Problemas, debiera tirar excepcion
 		if (descCampo == eDescriptorCampo::eDescriptorCampo_Unknown)
-			return NULL;
+			Throw("Bad format", "eDescriptorCampo_Unknown");
 
 		punteroCadena++;
 		size_t modificador = 0;

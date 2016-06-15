@@ -58,17 +58,17 @@ typedef enum eValueType
 {
 	eValueType_I1 = Mascara_Numero | Mascara_Signo | Mascara_8Bits,							//	Entero 1 byte con signo
 	eValueType_U1 = Mascara_Numero | Mascara_8Bits,											//	Entero 1 byte sin signo
-	eValueType_I2 = Mascara_Numero | Mascara_Signo | Mascara_16Bits,						//	Entero 2 bytes sin signo
+	eValueType_I2 = Mascara_Numero | Mascara_Signo | Mascara_16Bits,						//	Entero 2 bytes con signo
 	eValueType_U2 = Mascara_Numero | Mascara_16Bits,										//	Entero 2 bytes sin signo
-	eValueType_I4 = Mascara_Numero | Mascara_Signo | Mascara_32Bits,						//	Entero 4 bytes sin signo
+	eValueType_I4 = Mascara_Numero | Mascara_Signo | Mascara_32Bits,						//	Entero 4 bytes con signo
 	eValueType_U4 = Mascara_Numero | Mascara_32Bits,										//	Entero 4 bytes sin signo
-	eValueType_I8 = Mascara_Numero | Mascara_Signo | Mascara_64Bits,						//	Entero 8 bytes sin signo
+	eValueType_I8 = Mascara_Numero | Mascara_Signo | Mascara_64Bits,						//	Entero 8 bytes con signo
 	eValueType_U8 = Mascara_Numero | Mascara_64Bits,										//	Entero 8 bytes sin signo
 	eValueType_F32 = Mascara_Numero | Mascara_Flotante | Mascara_Signo | Mascara_32Bits,	//	Flotante IEEE754 32 bits
 	eValueType_F64 = Mascara_Numero | Mascara_Flotante | Mascara_Signo | Mascara_64Bits,	//	Flotante IEEE754 64 bits
-	eValueType_CA,	//	Cadena ANSI
-	eValueType_CU = Mascara_Unicode,	//	Cadena UNICODE
-	eValueType_R = Mascara_Registro,	//	Registro
+	eValueType_CA,																			//	Cadena ANSI
+	eValueType_CU = Mascara_Unicode,														//	Cadena UNICODE
+	eValueType_R = Mascara_Registro,														//	Registro
 } *eValueTypePtr;
 
 struct sCadenaANSI

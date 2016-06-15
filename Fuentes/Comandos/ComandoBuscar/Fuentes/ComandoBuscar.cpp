@@ -68,7 +68,8 @@ void ComandoBuscar::Ejecutar(FILE *salida, const char **listaParametros, size_t 
 		if (registro)
 			for (size_t i = 0; i < registro->ObtenerCantidadCampos(); i++)
 			{
-				iFeaturePtr campo = registro->GetFeature(i);
+				iFeaturePtr campo = NULL;
+				Sistema_Execute(campo = registro->GetFeature(i););
 
 				if (campo->ObtenerTipo() & Mascara_Numero)
 				{
@@ -95,6 +96,8 @@ void ComandoBuscar::Ejecutar(FILE *salida, const char **listaParametros, size_t 
 
 				if (i < registro->ObtenerCantidadCampos() - 1)
 					fprintf(salida, ",");
+				else
+					fprintf(salida, ";\n");
 			}
 	}
 	
