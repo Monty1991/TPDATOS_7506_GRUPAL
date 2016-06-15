@@ -30,7 +30,7 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
 		virtual size_t ObtenerCantidadRegistros();
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);
 
-		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg);
+		virtual void AgregarRegistro(iRegistroPtr reg);
 		virtual iRegistroPtr QuitarRegistro(size_t pos);
 		virtual iRegistroPtr QuitarRegistro();
 
@@ -76,7 +76,7 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 		virtual size_t ObtenerCantidadRegistros();
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);
 
-		virtual iRegistroPtr AgregarRegistro(iRegistroPtr reg);
+		virtual void AgregarRegistro(iRegistroPtr reg);
 		virtual iRegistroPtr QuitarRegistro(size_t pos);
 		virtual iRegistroPtr QuitarRegistro();
 

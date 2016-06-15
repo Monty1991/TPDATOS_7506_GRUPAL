@@ -9,10 +9,8 @@
 #include <string.h>
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 
-MapaDeBits::MapaDeBits(const iBloquePtr bloque): bloque(NULL)
+MapaDeBits::MapaDeBits(const iBloquePtr bloque): bloque(bloque)
 {
-	if (bloque)
-		this->bloque = bloque->Clone();
 }
 
 MapaDeBits::~MapaDeBits()

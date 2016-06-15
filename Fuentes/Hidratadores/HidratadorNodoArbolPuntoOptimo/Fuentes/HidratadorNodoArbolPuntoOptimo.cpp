@@ -3,6 +3,7 @@
 #include "../../HidratadorFeature/HidratadorFeatureFactory.h"
 #include "../../HidratadorRegistro/HidratadorRegistroFactory.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorNodoArbolPuntoOptimo::HidratadorNodoArbolPuntoOptimo()
 {

@@ -22,6 +22,7 @@ typedef class iRegistro: public iObject
 		virtual const iFeaturePtr GetFeature(size_t posicion) = 0;
 		virtual void SetFeature(size_t posicion, iFeaturePtr feature) = 0;
 
+		virtual void Dispose() = 0;
 } *iRegistroPtr;
 
 #endif	/* IREGISTRO_H */

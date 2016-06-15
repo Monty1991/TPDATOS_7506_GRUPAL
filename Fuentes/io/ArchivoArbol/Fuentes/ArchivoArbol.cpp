@@ -16,10 +16,7 @@ ArchivoArbol::ArchivoArbol(const char *_nombreArchivo, size_t _tamanioNodo,
 	serializadorNodo = SerializadorNodoFactory_Nuevo(tipoArbol);
 	hidratadorNodo = HidratadorNodoFactory_Nuevo(tipoArbol);
 
-	iBloquePtr pBloque = archivoBloque->LeerBloque(0); //Revisar
-	mapaDeBits = MapaDeBitsFactory_Nuevo(pBloque);
-
-	pBloque->Dispose();
+	mapaDeBits = MapaDeBitsFactory_Nuevo(archivoBloque->LeerBloque(0));
 }
 
 ArchivoArbol::~ArchivoArbol() {
@@ -59,7 +56,7 @@ void ArchivoArbol::Close() {
 
 float ArchivoArbol::DeterminarPorcentajeCarga(iNodoPtr _pNodo){
 
-    return (serializadorNodo->CalcularEspacioSerializacion(_pNodo) / tamanioNodo) * 100;
+    return (serializadorNodo->CalcularEspacioSerializacion(_pNodo) * 100) / tamanioNodo;
 }
 
 size_t ArchivoArbol::GetNodoLibre() {
@@ -97,9 +94,8 @@ iBloquePtr ArchivoArbol::SerializarNodo(iNodoPtr _pNodo)
 iNodoPtr ArchivoArbol::HidratarNodo(iBloquePtr _pBloque) {
 
 	iNodoPtr pNodo = NULL;
-	iNodoPtr * ppNodo = &pNodo;
 
-	hidratadorNodo->Hidratar((char*) _pBloque->ObtenerContenido(), ppNodo);
+	hidratadorNodo->Hidratar((char*) _pBloque->ObtenerContenido(), &pNodo);
 
 	return pNodo;
 }
@@ -109,7 +105,7 @@ iNodoPtr ArchivoArbol::LeerNodo(size_t _nroNodo) {
 	if (_nroNodo < this->mapaDeBits->ObtenerTamanio())
 		if (this->mapaDeBits->ObtenerBit(_nroNodo)) {
 
-			iBloquePtr pBloque = archivoBloque->LeerBloque(++_nroNodo);
+			iBloquePtr pBloque = archivoBloque->LeerBloque(_nroNodo + 1);
 			iNodoPtr pNodo = HidratarNodo(pBloque);
 
 			pBloque->Dispose();
@@ -119,36 +115,21 @@ iNodoPtr ArchivoArbol::LeerNodo(size_t _nroNodo) {
 	return NULL;
 }
 
-void ArchivoArbol::EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo) {
-
-	iBloquePtr pBloque = NULL;
-	eEstadoCargaNodo carga;
-
+void ArchivoArbol::EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo)
+{
 	if (_nroNodo >= mapaDeBits->ObtenerTamanio())
-		Throw(" ", "Número de nodo inválido");
+		Throw(ExceptionType_ArrayIndexOutOfBounds, "Número de nodo inválido");
 
-//	carga = DeterminarEstadoNodo(_pNodo);
-
-//	if (carga == eEstadoCargaNodo_Underflow)
-//		Throw(" ", "Nodo en underflow");
-
-//	if (carga == eEstadoCargaNodo_Overflow)
-//		Throw(" ", "Nodo en overflow");
-
-	pBloque = SerializarNodo(_pNodo);
-	archivoBloque->EscribirBloque(_nroNodo + 1, pBloque);
+	iBloquePtr pBloque = this->SerializarNodo(_pNodo);
+	this->archivoBloque->EscribirBloque(_nroNodo + 1, pBloque);
 
 	pBloque->Dispose();
-	pBloque = NULL;
 
-	if (!mapaDeBits->ObtenerBit(_nroNodo)) {
+	if (!this->mapaDeBits->ObtenerBit(_nroNodo)) {
 
-		mapaDeBits->SetearBit(_nroNodo, true);
+		this->mapaDeBits->SetearBit(_nroNodo, true);
 
-		pBloque = mapaDeBits->Leer();
-		archivoBloque->EscribirBloque(0, pBloque);
-
-		pBloque->Dispose();
+		this->archivoBloque->EscribirBloque(0, mapaDeBits->Leer());
 	}
 }
 
@@ -161,19 +142,15 @@ size_t ArchivoArbol::NuevoNodo(iNodoPtr *_ppNodo, size_t tipoNodo) {
 eEstadoCargaNodo ArchivoArbol::DeterminarEstadoNodo(iNodoPtr _pNodo) {
 
 	return DeterminarEstadoNodo(
-			serializadorNodo->CalcularEspacioSerializacion(_pNodo));
+			this->serializadorNodo->CalcularEspacioSerializacion(_pNodo));
 }
 
 void ArchivoArbol::LiberarNodo(size_t _nroNodo) {
 
-	if (_nroNodo < mapaDeBits->ObtenerTamanio()) {
+	if (_nroNodo >= mapaDeBits->ObtenerTamanio())
+		Throw(ExceptionType_ArrayIndexOutOfBounds, "Número de nodo inválido");
 
-		mapaDeBits->SetearBit(_nroNodo, false);
-
-		archivoBloque->EscribirBloque(0, mapaDeBits->Leer());
-
-		return;
-	}
-
-	Throw(" ", "Número de nodo inválido");
+	mapaDeBits->SetearBit(_nroNodo, false);
+	archivoBloque->EscribirBloque(0, mapaDeBits->Leer());
 }
+

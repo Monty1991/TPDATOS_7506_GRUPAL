@@ -18,7 +18,7 @@ Aplicacion::~Aplicacion()
 
 int Aplicacion::main(int argc, const char **argv)
 {
-	int result;
+	int result = 0;
 	
 	TryCatchBlock(
 	{

@@ -20,7 +20,7 @@ void Sistema_ExecuteSecure(ClosedProcedure closedProcedure, const char *fileName
 
 #define Sistema_DebugInfo(x) __FILE__, __LINE__ x, __PRETTY_FUNCTION__
 
-#define Sistema_Execute(closure) Sistema_ExecuteSecure([&](){ closure }, Sistema_DebugInfo(+1));
+#define Sistema_Execute(closure) Sistema_ExecuteSecure([&](){ closure }, Sistema_DebugInfo(+1))
 
 #define Sistema_Log(msg) Sistema_ObtenerEntorno()->ObtenerBitacora()->Log(msg);
 

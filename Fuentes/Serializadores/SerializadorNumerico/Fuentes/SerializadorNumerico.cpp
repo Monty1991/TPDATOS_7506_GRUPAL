@@ -15,7 +15,7 @@ SerializadorNumerico::~SerializadorNumerico()
 size_t SerializadorNumerico::CalcularEspacio(uNumber numero, eValueType tipo)
 {
 	// si tipo no tiene la mascara de numero => no es numero => error
-	if (tipo ^ Mascara_Numero)
+	if (!(tipo & Mascara_Numero))
 		Throw("InvalidArgumentTypeException", "Tipo numerico invalido");
 
 	switch(tipo & 3)

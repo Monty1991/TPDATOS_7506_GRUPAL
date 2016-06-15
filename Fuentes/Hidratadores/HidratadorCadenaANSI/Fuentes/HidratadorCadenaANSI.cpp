@@ -1,6 +1,7 @@
 #include "../Headers/HidratadorCadenaANSI.h"
 #include "../../HidratadorNumerico/HidratadorNumericoFactory.h"
 #include "../../HidratadorCadenaSinPrefijo/HidratadorCadenaSinPrefijoFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorCadenaANSI::HidratadorCadenaANSI()
 {
@@ -20,7 +21,9 @@ HidratadorCadenaANSI::~HidratadorCadenaANSI()
 size_t HidratadorCadenaANSI::Hidratar(char *buff, sCadenaANSI *cadena)
 {
 	uNumber largo;
-	size_t largoPrefijo = this->hidratadorNumerico->Hidratar(buff, &largo, eValueType::eValueType_U2);
+	size_t largoPrefijo = 0;
+
+	Sistema_Execute(largoPrefijo = this->hidratadorNumerico->Hidratar(buff, &largo, eValueType::eValueType_U2););
 	buff += largoPrefijo;
 
 	size_t largoCadena = largo.entero.enteroSinSigno.entero16SinSigno;
@@ -28,7 +31,8 @@ size_t HidratadorCadenaANSI::Hidratar(char *buff, sCadenaANSI *cadena)
 	cadena->cadena = new char[largoCadena];
 	cadena->largo = largoCadena;
 
-	size_t largoCadenaLeido = this->hidratadorCadenaSinPrefijo->Hidratar(buff, cadena->cadena, largoCadena);
+	size_t largoCadenaLeido = 0;
+	Sistema_Execute(largoCadenaLeido = this->hidratadorCadenaSinPrefijo->Hidratar(buff, cadena->cadena, largoCadena););
 
 	return largoPrefijo + largoCadenaLeido;
 }

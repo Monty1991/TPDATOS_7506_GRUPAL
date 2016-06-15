@@ -11,8 +11,8 @@
 #include "Headers/iNodoArbolPuntoOptimo.h"
 
 //	Devuelve un nodo vacio
-iNodoArbolPuntoOptimoNodoHojaPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo);
+iNodoArbolPuntoOptimoPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo);
 
-iNodoArbolPuntoOptimoNodoHojaPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
+iNodoArbolPuntoOptimoPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo, iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
 #endif /* NODOARBOLPUNTOOPTIMOFACTORY_H */

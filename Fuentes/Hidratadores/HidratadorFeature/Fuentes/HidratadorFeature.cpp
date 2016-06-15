@@ -3,6 +3,7 @@
 #include "../../HidratadorCadenaANSI/HidratadorCadenaANSIFactory.h"
 #include "../../HidratadorCadenaUNICODE/HidratadorCadenaUNICODEFactory.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorFeature::HidratadorFeature()
 {
@@ -26,17 +27,19 @@ HidratadorFeature::~HidratadorFeature()
 size_t HidratadorFeature::Hidratar(char *buff, iFeaturePtr *feature)
 {
 	uNumber number;
-	size_t leido = this->hidratadorNumerico->Hidratar(buff, &number, eValueType_U1);
+	size_t leido = 0;
+	
+	Sistema_Execute(leido += this->hidratadorNumerico->Hidratar(buff, &number, eValueType_U1););
 
 	eValueType tipo = (eValueType) number.entero.enteroSinSigno.entero8SinSigno;
 	uValue valor;
 
 	if (tipo & Mascara_Numero)
-		leido += this->hidratadorNumerico->Hidratar(buff, &(valor.primitivo.numero), tipo);
+		Sistema_Execute(leido += this->hidratadorNumerico->Hidratar(buff, &(valor.primitivo.numero), tipo););
 	else if (tipo & Mascara_Unicode)
-		leido += this->hidratadorCadenaUNICODE->Hidratar(buff, &(valor.primitivo.cadena.unicode));
+		Sistema_Execute(leido += this->hidratadorCadenaUNICODE->Hidratar(buff, &(valor.primitivo.cadena.unicode)););
 	else
-		leido += this->hidratadorCadenaANSI->Hidratar(buff, &(valor.primitivo.cadena.ansi));
+		Sistema_Execute(leido += this->hidratadorCadenaANSI->Hidratar(buff, &(valor.primitivo.cadena.ansi)););
 
 	*feature = FeatureFactory_Nuevo(valor, tipo);
 

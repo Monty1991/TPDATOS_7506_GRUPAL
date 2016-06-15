@@ -1,7 +1,7 @@
 #include "../NodoArbolPuntoOptimoFactory.h"
 #include "../Headers/NodoArbolPuntoOptimo.h"
 
-iNodoArbolPuntoOptimoNodoHojaPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo)
+iNodoArbolPuntoOptimoPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo)
 {
 	switch (tipoNodo)
 	{
@@ -15,7 +15,7 @@ iNodoArbolPuntoOptimoNodoHojaPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPun
 	return NULL;
 }
 
-iNodoArbolPuntoOptimoNodoHojaPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo, iRegistroPtr *listaRegistros, size_t cantidadRegistros)
+iNodoArbolPuntoOptimoPtr NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo tipoNodo, iRegistroPtr *listaRegistros, size_t cantidadRegistros)
 {
 	switch (tipoNodo)
 	{

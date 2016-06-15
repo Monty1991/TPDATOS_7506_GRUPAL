@@ -27,7 +27,7 @@ typedef class iNodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimo {
 
 }*iNodoArbolPuntoOptimoNodoHojaPtr;
 
-typedef class iNodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoHoja {
+typedef class iNodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimo {
 
 public:
 

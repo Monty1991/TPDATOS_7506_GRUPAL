@@ -25,6 +25,9 @@ SerializadorFeature::~SerializadorFeature()
 
 size_t SerializadorFeature::CalcularEspacio(const iFeaturePtr feature)
 {
+	if (!feature)
+		return 0;
+
 	eValueType tipo = feature->ObtenerTipo();
 
 	uNumber number;
@@ -41,6 +44,9 @@ size_t SerializadorFeature::CalcularEspacio(const iFeaturePtr feature)
 
 size_t SerializadorFeature::Serializar(char *buffer, const iFeaturePtr feature)
 {
+	if (!feature)
+		return 0;
+
 	eValueType tipo = feature->ObtenerTipo();
 
 	uNumber number;

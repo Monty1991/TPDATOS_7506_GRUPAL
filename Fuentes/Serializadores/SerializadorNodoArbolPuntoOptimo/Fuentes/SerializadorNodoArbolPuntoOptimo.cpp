@@ -2,14 +2,14 @@
 #include "../../SerializadorRegistro/SerializadorRegistroFactory.h"
 #include "../../SerializadorFeature/SerializadorFeatureFactory.h"
 #include "../../SerializadorNumerico/SerializadorNumericoFactory.h"
-
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
 
 SerializadorNodoArbolPuntoOptimo::SerializadorNodoArbolPuntoOptimo()
 {
-		this->serializadorNumerico = SerializadorNumericoFactory_Nuevo();
-		this->serializadorFeature = SerializadorFeatureFactory_Nuevo();
-		this->serializadorRegistro = SerializadorRegistroFactory_Nuevo();
+	this->serializadorNumerico = SerializadorNumericoFactory_Nuevo();
+	this->serializadorFeature = SerializadorFeatureFactory_Nuevo();
+	this->serializadorRegistro = SerializadorRegistroFactory_Nuevo();
 }
 
 SerializadorNodoArbolPuntoOptimo::~SerializadorNodoArbolPuntoOptimo()
@@ -53,8 +53,11 @@ size_t SerializadorNodoArbolPuntoOptimo::CalcularEspacioSerializacion(iNodoPtr n
 		espacio += this->serializadorNumerico->CalcularEspacio(number, eValueType::eValueType_U4);
 	}
 
+	number.entero.enteroSinSigno.entero8SinSigno = cantidadRegistros;
+	espacio += this->serializadorNumerico->CalcularEspacio(number, eValueType::eValueType_U1);
+
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		espacio += this->serializadorRegistro->CalcularEspacio(nodo->ObtenerRegistro(i));
+		Sistema_Execute(espacio += this->serializadorRegistro->CalcularEspacio(nodo->ObtenerRegistro(i)););
 
 	return espacio;
 }
@@ -88,8 +91,11 @@ size_t SerializadorNodoArbolPuntoOptimo::Serializar(char *buff, iNodoPtr nodo)
 		espacio += this->serializadorNumerico->Serializar(buff + espacio, number, eValueType::eValueType_U4);
 	}
 
+	number.entero.enteroSinSigno.entero8SinSigno = cantidadRegistros;
+	espacio += this->serializadorNumerico->Serializar(buff + espacio, number, eValueType::eValueType_U1);
+
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		espacio += this->serializadorRegistro->Serializar(buff + espacio, nodo->ObtenerRegistro(i));
+		Sistema_Execute(espacio += this->serializadorRegistro->Serializar(buff + espacio, nodo->ObtenerRegistro(i)););
 
 	return espacio;
 }

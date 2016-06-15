@@ -62,10 +62,6 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 		fprintf(salida, "ERROR!! El descriptor no tiene campos!!.\n");
 		return;
 	}
-
-	/*
-	Si, el codigo es asqueroso, pero pongo la primer version aqui
-	 */
 	
 	const char *cadenaRegistro = listaParametros[4];
 	iRegistroPtr registro = RegistroFactory_Nuevo(descRegistro->ObtenerCantidadCampos());
@@ -74,7 +70,6 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 		iFeaturePtr campo = FeatureFactory_Nuevo(descRegistro->ObtenerDescriptorCampo(i), cadenaRegistro, (char **)&cadenaRegistro);
 
 		Sistema_Execute(registro->SetFeature(i, campo););
-		campo->Dispose();
 		// llegados aquí, se leyo hasta la coma
 		cadenaRegistro++;
 	}
@@ -82,9 +77,10 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 
 	eResultadoVpTree_ABM resultado;
 
-	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(nombreArchivo, nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
+	iVpTree_ABMPtr vpTree = NULL;
+	Sistema_Execute(vpTree = VpTree_ABMFactory_Nuevo(nombreArchivo, nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16););
 
-	Sistema_Execute(resultado = vpTree->Alta(registro, true););
+	Sistema_Execute(resultado = vpTree->Alta(registro->Copiar(), true););
 
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
 		fprintf(salida, "La operacion se ha completado con exito.\n");

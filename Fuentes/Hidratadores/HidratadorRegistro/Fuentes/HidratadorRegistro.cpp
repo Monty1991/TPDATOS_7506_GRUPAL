@@ -2,6 +2,7 @@
 #include "../../HidratadorFeature/HidratadorFeatureFactory.h"
 #include "../../HidratadorNumerico/HidratadorNumericoFactory.h"
 #include "../../../Memoria/Registro/RegistroFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorRegistro::HidratadorRegistro()
 {
@@ -27,11 +28,11 @@ size_t HidratadorRegistro::Hidratar(char *buff, iRegistroPtr *registro)
 	size_t cantidadCampos = number.entero.enteroSinSigno.entero8SinSigno;
 	iRegistroPtr nuevoRegistro = RegistroFactory_Nuevo(cantidadCampos);
 
-	iFeaturePtr feature;
+	iFeaturePtr feature = NULL;
 	for (size_t i = 0; i < cantidadCampos; i++)
 	{
 		cantidadLeida += this->hidratadorFeature->Hidratar(buff +cantidadLeida, &feature);
-		nuevoRegistro->SetFeature(i, feature);
+		Sistema_Execute(nuevoRegistro->SetFeature(i, feature););
 	}
 
 	*registro = nuevoRegistro;

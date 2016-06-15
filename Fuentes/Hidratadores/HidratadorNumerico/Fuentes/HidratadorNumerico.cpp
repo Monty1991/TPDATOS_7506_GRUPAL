@@ -134,7 +134,7 @@ void HidratadorNumerico::Dispose()
 
 size_t HidratadorNumerico::CalcularEspacio(const char *buff, eValueType tipo)
 {
-	if (tipo ^ Mascara_Numero)
+	if (!(tipo & Mascara_Numero))
 		Throw("InvalidArgumentTypeException", "Tipo numerico invalido");
 
 	switch(tipo & 3)

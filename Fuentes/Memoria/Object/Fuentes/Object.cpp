@@ -1,6 +1,6 @@
 #include "../Headers/Object.h"
 
-Object::Object(): refCount(0)
+Object::Object(): refCount(1)
 {
 }
 

@@ -40,6 +40,9 @@ void Bitacora::Log(iExceptionPtr exception)
 	this->archivo->Printf(cadena);
 
 	iStackTracePtr stackTrace = exception->ObtenerStackTrace();
+	if (!stackTrace)
+		return;
+
 	iTraceEntryPtr entry = stackTrace->Pop();
 
 	while(entry)

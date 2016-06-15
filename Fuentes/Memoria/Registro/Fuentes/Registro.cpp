@@ -8,6 +8,7 @@
 #include "../Headers/Registro.h"
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../../Utils/StringUtils/Headers/StringUtils.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 Registro::Registro(size_t cantidadCampos): Object(), cantidadCampos(cantidadCampos)
 {
@@ -19,12 +20,12 @@ Registro::Registro(size_t cantidadCampos): Object(), cantidadCampos(cantidadCamp
 Registro::~Registro()
 {
 	for (size_t i = 0; i < this->cantidadCampos; i++)
-		if (this->tabla[i])
-		{
-			this->tabla[i]->Dispose();
-			this->tabla[i] = NULL;
-		}
+	{
+		iFeaturePtr feature = this->tabla[i];
 
+		if (feature)
+			feature->Dispose();
+	}
 	delete [] this->tabla;
 }
 
@@ -38,7 +39,12 @@ iRegistroPtr Registro::Clone()
 {
 	iRegistroPtr nuevaCopia = new Registro(this->cantidadCampos);
 	for (size_t i = 0; i < this->cantidadCampos; i++)
-		nuevaCopia->SetFeature(i, this->tabla[i]->Clone());
+	{
+		iFeaturePtr feature = this->tabla[i];
+		if (feature)
+			feature = feature->Clone();
+		Sistema_Execute(nuevaCopia->SetFeature(i, feature););
+	}
 
 	return nuevaCopia;
 }
@@ -79,7 +85,7 @@ void Registro::SetFeature(size_t posicion, iFeaturePtr feature)
 	}
 
 	if (feature)
-		this->tabla[posicion] = feature->Copiar();
+		this->tabla[posicion] = feature;
 }
 
 void Registro::Dispose()
