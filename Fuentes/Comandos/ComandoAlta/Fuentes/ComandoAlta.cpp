@@ -63,30 +63,22 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 		return;
 	}
 	
-	const char *cadenaRegistro = listaParametros[4];
-	iRegistroPtr registro = RegistroFactory_Nuevo(descRegistro->ObtenerCantidadCampos());
-	for (size_t i = 0; i < registro->ObtenerCantidadCampos(); i++)
-	{
-		iFeaturePtr campo = FeatureFactory_Nuevo(descRegistro->ObtenerDescriptorCampo(i), cadenaRegistro, (char **)&cadenaRegistro);
-
-		Sistema_Execute(registro->SetFeature(i, campo););
-		// llegados aquí, se leyo hasta la coma
-		cadenaRegistro++;
-	}
+	iRegistroPtr registro = RegistroFactory_Nuevo(descRegistro, listaParametros[4]);
 	descRegistro->Dispose();
-
-	eResultadoVpTree_ABM resultado;
 
 	iVpTree_ABMPtr vpTree = NULL;
 	Sistema_Execute(vpTree = VpTree_ABMFactory_Nuevo(nombreArchivo, nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16););
 
-	Sistema_Execute(resultado = vpTree->Alta(registro->Copiar(), true););
+	eResultadoVpTree_ABM resultado;
+	Sistema_Execute(resultado = vpTree->Alta(registro, true););
 
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
 		fprintf(salida, "La operacion se ha completado con exito.\n");
 	else if(resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Duplicado)
+	{
 		fprintf(salida, "ERROR!! Ya existe un registro con esa clave.\n");
+		registro->Dispose();
+	}
 
-	registro->Dispose();
 	vpTree->Dispose();
 }

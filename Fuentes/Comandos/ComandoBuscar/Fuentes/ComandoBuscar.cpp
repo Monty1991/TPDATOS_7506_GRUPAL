@@ -4,6 +4,7 @@
 #include "../../../TDA/VpTree_ABM/VpTree_ABMFactory.h"
 #include "../../../Memoria/DescriptorRegistro/DescriptorRegistroFactory.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
 #include <string.h>
 
 ComandoBuscar::ComandoBuscar()
@@ -53,8 +54,12 @@ void ComandoBuscar::Ejecutar(FILE *salida, const char **listaParametros, size_t 
 
 	iRegistroPtr registro = NULL;
 
-	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(listaParametros[0], nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
-	eResultadoVpTree_ABM resultado = vpTree->Buscar(clave, &registro);
+	iVpTree_ABMPtr vpTree = NULL;
+	eResultadoVpTree_ABM resultado;
+
+	Sistema_Execute(vpTree = VpTree_ABMFactory_Nuevo(listaParametros[0], nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16););
+
+	Sistema_Execute(resultado = vpTree->Buscar(clave, &registro););
 
 	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente)
 		fprintf(salida, "ERROR!! No existe un registro con esa clave.\n");
@@ -69,9 +74,9 @@ void ComandoBuscar::Ejecutar(FILE *salida, const char **listaParametros, size_t 
 				{
 					if (campo->ObtenerTipo() & Mascara_Flotante)
 						if (campo->ObtenerTipo() & Mascara_64Bits)
-							fprintf(salida, "%d", campo->AsNumber().flotante.flotante64);
+							fprintf(salida, "%f", campo->AsNumber().flotante.flotante64);
 						else
-							fprintf(salida, "%d", campo->AsNumber().flotante.flotante32);
+							fprintf(salida, "%f", campo->AsNumber().flotante.flotante32);
 					else
 						if (campo->ObtenerTipo() & Mascara_Signo)
 							fprintf(salida, "%i", campo->AsNumber().entero.enteroConSigno.entero32ConSigno);
@@ -88,7 +93,8 @@ void ComandoBuscar::Ejecutar(FILE *salida, const char **listaParametros, size_t 
 						putc(*punteroCadena++, salida);
 				}
 
-				fprintf(salida, ",");
+				if (i < registro->ObtenerCantidadCampos() - 1)
+					fprintf(salida, ",");
 			}
 	}
 	

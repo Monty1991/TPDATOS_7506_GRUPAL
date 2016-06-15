@@ -16,20 +16,20 @@ class Entorno: public iEntorno
 		iBitacoraPtr bitacora;
 		iStackTracePtr stackTrace;
 
+		virtual ~Entorno();
 	public:
 		Entorno();
-		~Entorno();
 		
-		const iBitacoraPtr ObtenerBitacora();
+		virtual const iBitacoraPtr ObtenerBitacora();
 
-		iStackTracePtr ObtenerStackTrace();
+		virtual iStackTracePtr ObtenerStackTrace();
 
-		void PushEntry(const char *fileName, int line, const char *functionName);
-		void PopEntry();
+		virtual void PushEntry(const char *fileName, int line, const char *functionName);
+		virtual void PopEntry();
 
-		const void Execute(ClosedProcedure closedProcedure, const char *fileName, int line, const char *functionName);
+		virtual const void Execute(ClosedProcedure closedProcedure, const char *fileName, int line, const char *functionName);
 		
-		void Dispose();
+		virtual void Dispose();
 };
 
 #endif	/* ENTORNO_H */

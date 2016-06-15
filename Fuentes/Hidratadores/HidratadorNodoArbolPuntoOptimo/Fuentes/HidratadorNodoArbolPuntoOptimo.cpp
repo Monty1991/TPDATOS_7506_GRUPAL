@@ -54,10 +54,10 @@ size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
 	leido += this->hidratadorNumerico->Hidratar(buff + leido, &numero, eValueType::eValueType_U1);
 	size_t cantidadRegistros = numero.entero.enteroSinSigno.entero8SinSigno;
 
-	iRegistroPtr *tablaRegistros = new iRegistroPtr[cantidadRegistros];
+	iRegistroPtr tablaRegistros[cantidadRegistros];
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		leido += this->hidratadorRegistro->Hidratar(buff + leido, tablaRegistros + i);
+		Sistema_Execute(leido += this->hidratadorRegistro->Hidratar(buff + leido, tablaRegistros + i););
 
 	*nodo = NodoArbolPuntoOptimoFactory_Nuevo(tipo, tablaRegistros, cantidadRegistros);
 
@@ -70,8 +70,6 @@ size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
 		nodoArbolPuntoOptimoNodoInternoPtr->EstablecerHijoDerecho(hijoDerecho);
 	}
 
-	delete [] tablaRegistros;
-	
 	return leido;
 }
 

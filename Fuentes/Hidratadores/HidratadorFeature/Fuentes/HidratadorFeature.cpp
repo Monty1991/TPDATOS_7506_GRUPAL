@@ -29,19 +29,30 @@ size_t HidratadorFeature::Hidratar(char *buff, iFeaturePtr *feature)
 	uNumber number;
 	size_t leido = 0;
 	
-	Sistema_Execute(leido += this->hidratadorNumerico->Hidratar(buff, &number, eValueType_U1););
+	Sistema_Execute(leido += this->hidratadorNumerico->Hidratar(buff + leido, &number, eValueType_U1););
 
 	eValueType tipo = (eValueType) number.entero.enteroSinSigno.entero8SinSigno;
 	uValue valor;
 
+	iFeaturePtr featureLeido = NULL;
 	if (tipo & Mascara_Numero)
-		Sistema_Execute(leido += this->hidratadorNumerico->Hidratar(buff, &(valor.primitivo.numero), tipo););
+	{
+		Sistema_Execute(leido += this->hidratadorNumerico->Hidratar(buff + leido, &(valor.primitivo.numero), tipo););
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+	}
 	else if (tipo & Mascara_Unicode)
-		Sistema_Execute(leido += this->hidratadorCadenaUNICODE->Hidratar(buff, &(valor.primitivo.cadena.unicode)););
+	{
+		Sistema_Execute(leido += this->hidratadorCadenaUNICODE->Hidratar(buff + leido, &(valor.primitivo.cadena.unicode)););
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+		delete [] valor.primitivo.cadena.unicode.cadena;
+	}
 	else
-		Sistema_Execute(leido += this->hidratadorCadenaANSI->Hidratar(buff, &(valor.primitivo.cadena.ansi)););
-
-	*feature = FeatureFactory_Nuevo(valor, tipo);
+	{
+		Sistema_Execute(leido += this->hidratadorCadenaANSI->Hidratar(buff + leido, &(valor.primitivo.cadena.ansi)););
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+		delete [] valor.primitivo.cadena.ansi.cadena;
+	}
+	*feature = featureLeido;
 
 	return leido;
 }

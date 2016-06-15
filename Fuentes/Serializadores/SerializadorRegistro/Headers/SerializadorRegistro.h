@@ -18,13 +18,13 @@ class SerializadorRegistro: public iSerializadorRegistro
 		iSerializadorNumericoPtr serializadorNumerico;
 		iSerializadorFeaturePtr serializadorFeature;
 
+		virtual ~SerializadorRegistro();
 	public:
 		SerializadorRegistro();
-		~SerializadorRegistro();
 
-		size_t CalcularEspacio(const iRegistroPtr registro);
+		virtual size_t CalcularEspacio(const iRegistroPtr registro);
 
-		size_t Serializar(char *buffer, const iRegistroPtr registro);
+		virtual size_t Serializar(char *buffer, const iRegistroPtr registro);
 
 		virtual void Dispose();
 };

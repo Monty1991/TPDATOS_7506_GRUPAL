@@ -23,7 +23,8 @@ size_t HidratadorRegistro::Hidratar(char *buff, iRegistroPtr *registro)
 {
 	uNumber number;
 
-	size_t cantidadLeida = this->hidratadorNumerico->Hidratar(buff, &number, eValueType_U1);
+	size_t cantidadLeida = 0;
+	cantidadLeida += this->hidratadorNumerico->Hidratar(buff + cantidadLeida, &number, eValueType_U1);
 	
 	size_t cantidadCampos = number.entero.enteroSinSigno.entero8SinSigno;
 	iRegistroPtr nuevoRegistro = RegistroFactory_Nuevo(cantidadCampos);
@@ -31,7 +32,7 @@ size_t HidratadorRegistro::Hidratar(char *buff, iRegistroPtr *registro)
 	iFeaturePtr feature = NULL;
 	for (size_t i = 0; i < cantidadCampos; i++)
 	{
-		cantidadLeida += this->hidratadorFeature->Hidratar(buff +cantidadLeida, &feature);
+		Sistema_Execute(cantidadLeida += this->hidratadorFeature->Hidratar(buff + cantidadLeida, &feature););
 		Sistema_Execute(nuevoRegistro->SetFeature(i, feature););
 	}
 

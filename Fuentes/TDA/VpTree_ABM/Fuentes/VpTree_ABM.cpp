@@ -82,13 +82,13 @@ VpTree_ABM::VpTree_ABM(const char* _fileName, size_t _nroCampoClave, size_t _tam
 {
 	this->espacioMetrico = EspacioMetricoFactory_Nuevo();
 
-	this->archivo = ArchivoArbolFactory_Nuevo(_fileName, _tamanioNodo, _cargaMinima, _tolerancia, eTipoArbol_ArbolPuntoOptimo);
+	this->archivo = ArchivoArbolFactory_Nuevo(_fileName, _tamanioNodo, _cargaMinima, _tolerancia, eTipoArbol::eTipoArbol_ArbolPuntoOptimo);
 
-	this->raiz = (iNodoArbolPuntoOptimoPtr) archivo->LeerNodo(0);
+	this->raiz = (iNodoArbolPuntoOptimoPtr) this->archivo->LeerNodo(0);
 
-	if (this->raiz == NULL) {
-
-		this->raiz = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo_Hoja);
+	if (this->raiz == NULL)
+	{
+		this->raiz = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
 		this->Escribir(0, raiz);
 	}
 }
@@ -222,7 +222,7 @@ float VpTree_ABM::Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, i
 		delete component;
 	}
 
-	delete heapMinimos;
+	heapMinimos->Dispose();
 
 	return radio;
 }
@@ -427,14 +427,14 @@ float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 		delete heapMinimos->Pop();
 
 	float radio = heapMinimos->Peek()->valor;
-	delete heapMinimos;	// borra el resto
+	heapMinimos->Dispose();	// borra el resto
 
 	return radio;
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodoPadre, iNodoArbolPuntoOptimoPtr _padre)
 {
-	Sistema_Execute(_padre->AgregarRegistro(_reg->Copiar()););
+	Sistema_Execute(_padre->AgregarRegistro(_reg););
 
 	if (archivo->DeterminarEstadoNodo(_padre) != eEstadoCargaNodo_Overflow)
 	{
@@ -480,8 +480,12 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodoPadre, i
 eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad)
 {
 	if (_unicidad)
-		if (Buscar(_reg->GetFeature(this->nroCampoClave), NULL) == eResultadoVpTree_ABM__Ok)
-			return eResultadoVpTree_ABM__Duplicado;
+	{
+		eResultadoVpTree_ABM resultado;
+		Sistema_Execute(resultado = Buscar(_reg->GetFeature(this->nroCampoClave), NULL););
+		if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
+			return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Duplicado;
+	}
 
 	return Alta(_reg, 0, this->raiz);
 }
@@ -489,20 +493,24 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad)
 size_t VpTree_ABM::Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo)
 {
 	float dist;
-	iFeaturePtr key;
-	iRegistroPtr reg;
+	iFeaturePtr key = NULL;
+	iRegistroPtr reg = NULL;
 
 	for (size_t i = 0; i < _nodo->ObtenerCantidadRegistros(); i++)
 	{
-		reg = _nodo->ObtenerRegistro(i);
-		key = reg->GetFeature(nroCampoClave);
-		dist = Distancia(key, clave);
+		Sistema_Execute(reg = _nodo->ObtenerRegistro(i););
+		if (!reg)
+			Throw("Referencia a registro nulo", "Reg == NULL");
+		Sistema_Execute(key = reg->GetFeature(this->nroCampoClave););
+		if (!key)
+			Throw("Referencia a campo nulo", "key == NULL");
+		Sistema_Execute(dist = this->Distancia(key, clave););
 
 		if (!dist)
 			return i;
 	}
 
-	return _nodo->ObtenerCantidadRegistros() + 1;
+	return _nodo->ObtenerCantidadRegistros();
 }
 
 eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre, iNodoArbolPuntoOptimoPtr _padre, size_t _nroNodoHijo, iNodoArbolPuntoOptimoPtr _hijo)
@@ -576,7 +584,9 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(const iFeaturePtr _key, iRegistroPtr *_r
 
 	while (true)
 	{
-		size_t posicionRegistro = this->Ubicar(_key, nodoActual);
+		size_t posicionRegistro = 0;
+		Sistema_Execute(posicionRegistro = this->Ubicar(_key, nodoActual););
+
 		if (posicionRegistro < nodoActual->ObtenerCantidadRegistros())
 		{
 			registro = nodoActual->ObtenerRegistro(posicionRegistro)->Copiar();
@@ -587,7 +597,10 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(const iFeaturePtr _key, iRegistroPtr *_r
 			return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente;
 
 		iNodoArbolPuntoOptimoNodoInternoPtr interno = (iNodoArbolPuntoOptimoNodoInternoPtr)nodoActual;
-		float distanciaAPivote = this->Distancia(_key, interno->ObtenerPivote());
+		float distanciaAPivote = 0;
+
+		Sistema_Execute(distanciaAPivote = this->Distancia(_key, interno->ObtenerPivote()););
+
 		size_t nodoALeer = 0;
 		if (distanciaAPivote < interno->ObtenerRadio())
 			nodoALeer = interno->ObtenerHijoIzquierdo();
@@ -600,20 +613,22 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(const iFeaturePtr _key, iRegistroPtr *_r
 		if (nodoActual && nodoActual != this->raiz)
 			nodoActual->Dispose();
 
-		nodoActual = (iNodoArbolPuntoOptimoPtr)this->archivo->LeerNodo(nodoALeer);
+		Sistema_Execute(nodoActual = (iNodoArbolPuntoOptimoPtr)this->archivo->LeerNodo(nodoALeer););
 
 		// por las dudas
 		if (!nodoActual)
 			break;
 	}
-	if (nodoActual && nodoActual != this->raiz)
+	if (nodoActual && (nodoActual != this->raiz))
 		nodoActual->Dispose();
 
 	if (_reg)
-		*_reg = registro;
+		*_reg = registro->Copiar();
 
 	if (!registro)
 		return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente;
+
+	registro->Dispose();
 
 	return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok;
 }

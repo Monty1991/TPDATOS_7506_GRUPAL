@@ -47,7 +47,7 @@ Feature::Feature(sCadenaANSI *cadena): Object(), tipo(eValueType::eValueType_CA)
 Feature::~Feature()
 {
 	if (this->tipo & Mascara_Registro)
-		delete this->AsRegistro();
+		this->AsRegistro()->Dispose();
 	else if (!(this->tipo & Mascara_Numero))
 	{
 		if (this->tipo & Mascara_Unicode)

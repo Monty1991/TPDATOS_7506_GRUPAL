@@ -96,7 +96,7 @@ iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro(size_t pos)
 	if (pos >= this->cantidadRegistros)
 		return NULL;
 
-	iRegistroPtr reg = reg = this->tablaRegistros[pos];
+	iRegistroPtr reg = this->tablaRegistros[pos];
 	this->cantidadRegistros--;
 	for (size_t i = pos; pos < this->cantidadRegistros; i++)
 		this->tablaRegistros[i] = this->tablaRegistros[i + 1];

@@ -28,8 +28,7 @@ StackTrace::~StackTrace()
 
 void StackTrace::Push(iTraceEntryPtr traceEntry)
 {
-	iLinkedListPtr currentStack = this->stack? this->stack->Copiar(): NULL;
-	this->stack = LinkedListFactory_Nuevo(traceEntry, currentStack);
+	this->stack = LinkedListFactory_Nuevo(traceEntry, this->stack);
 }
 
 iTraceEntryPtr StackTrace::Pop()

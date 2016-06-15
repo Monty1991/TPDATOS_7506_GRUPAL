@@ -30,12 +30,12 @@ size_t SerializadorCadenaANSI::CalcularEspacio(sCadenaANSI *cadena)
 
 size_t SerializadorCadenaANSI::Serializar(char *buff, sCadenaANSI *cadena)
 {
-	size_t espacioSerializacion = this->CalcularEspacio(cadena);
+	size_t espacioSerializacion = 0;
 
 	uNumber largo;
 	largo.entero.enteroSinSigno.entero16SinSigno = cadena->largo;
-	buff += this->serializadorNumerico->Serializar(buff, largo, eValueType::eValueType_U2);
-	this->serializadorCadenaSinPrefijo->Serializar(buff, cadena->cadena, cadena->largo);
+	espacioSerializacion += this->serializadorNumerico->Serializar(buff + espacioSerializacion, largo, eValueType::eValueType_U2);
+	espacioSerializacion += this->serializadorCadenaSinPrefijo->Serializar(buff + espacioSerializacion, cadena->cadena, cadena->largo);
 
 	return espacioSerializacion;
 }

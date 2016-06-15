@@ -75,17 +75,16 @@ void Registro::SetFeature(size_t posicion, iFeaturePtr feature)
 		Throw(ExceptionType_ArrayIndexOutOfBounds, msg);
 	}
 
-	if (this->tabla[posicion] == feature);
+	if (!feature)
+		Throw(ExceptionType_InvalidArg, "feature == NULL");
+
+	if (this->tabla[posicion] == feature)
 		return;
 
 	if (this->tabla[posicion] != NULL)
-	{
 		this->tabla[posicion]->Dispose();
-		this->tabla[posicion] = NULL;
-	}
 
-	if (feature)
-		this->tabla[posicion] = feature;
+	this->tabla[posicion] = feature;
 }
 
 void Registro::Dispose()

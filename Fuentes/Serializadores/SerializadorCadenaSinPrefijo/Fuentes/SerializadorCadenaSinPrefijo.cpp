@@ -19,6 +19,7 @@ size_t SerializadorCadenaSinPrefijo::CalcularEspacio(char *cadena, size_t tamani
 size_t SerializadorCadenaSinPrefijo::Serializar(char *buff, char *cadena, size_t tamanio)
 {
 	memcpy(buff, cadena, tamanio);
+	return tamanio;
 }
 
 void SerializadorCadenaSinPrefijo::Dispose()

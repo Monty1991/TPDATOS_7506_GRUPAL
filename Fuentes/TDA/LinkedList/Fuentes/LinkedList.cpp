@@ -9,8 +9,10 @@
 
 #include <stddef.h>
 
-LinkedList::LinkedList(iObjectPtr obj, iLinkedListPtr next): Object(), obj(obj), next(next)
+LinkedList::LinkedList(iObjectPtr obj, iLinkedListPtr next): Object(), obj(obj), next(NULL)
 {
+	if (next)
+		this->next = next->Copiar();
 }
 
 LinkedList::~LinkedList()

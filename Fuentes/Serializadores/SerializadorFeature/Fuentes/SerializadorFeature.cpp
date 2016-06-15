@@ -3,6 +3,8 @@
 #include "../../SerializadorNumerico/SerializadorNumericoFactory.h"
 #include "../../SerializadorCadenaANSI/SerializadorCadenaANSIFactory.h"
 #include "../../SerializadorCadenaUNICODE/SerializadorCadenaUNICODEFactory.h"
+#include "../../../Sistema/Sistema/Headers/Sistema.h"
+#include "../../../Exceptions/ExceptionFactory.h"
 
 SerializadorFeature::SerializadorFeature()
 {
@@ -26,12 +28,13 @@ SerializadorFeature::~SerializadorFeature()
 size_t SerializadorFeature::CalcularEspacio(const iFeaturePtr feature)
 {
 	if (!feature)
-		return 0;
+		Throw(ExceptionType_InvalidArg, "feature == NULL");
 
 	eValueType tipo = feature->ObtenerTipo();
 
 	uNumber number;
-	size_t espacio = this->serializadorNumerico->CalcularEspacio(number, eValueType_U1);
+	number.entero.enteroSinSigno.entero8SinSigno = tipo;
+	size_t espacio = this->serializadorNumerico->CalcularEspacio(number, eValueType::eValueType_U1);
 
 	if (tipo & Mascara_Numero)
 		return espacio + this->serializadorNumerico->CalcularEspacio(feature->AsNumber(), tipo);
@@ -45,21 +48,23 @@ size_t SerializadorFeature::CalcularEspacio(const iFeaturePtr feature)
 size_t SerializadorFeature::Serializar(char *buffer, const iFeaturePtr feature)
 {
 	if (!feature)
-		return 0;
+		Throw(ExceptionType_InvalidArg, "feature == NULL");
 
 	eValueType tipo = feature->ObtenerTipo();
 
+	size_t escrito = 0;
 	uNumber number;
 	number.entero.enteroSinSigno.entero8SinSigno = tipo;
-	size_t escrito = this->serializadorNumerico->Serializar(buffer, number, eValueType_U1);
+	escrito += this->serializadorNumerico->Serializar(buffer + escrito, number, eValueType::eValueType_U1);
 
 	if (tipo & Mascara_Numero)
-		return escrito + this->serializadorNumerico->Serializar(buffer, feature->AsNumber(), tipo);
+		Sistema_Execute(escrito += this->serializadorNumerico->Serializar(buffer + escrito, feature->AsNumber(), tipo););
+	else if (tipo & Mascara_Unicode)
+		Sistema_Execute(escrito += this->serializadorCadenaUNICODE->Serializar(buffer + escrito, feature->AsCadenaUNICODE()););
+	else
+		Sistema_Execute(escrito += this->serializadorCadenaANSI->Serializar(buffer + escrito, feature->AsCadenaANSI()););
 
-	if (tipo & Mascara_Unicode)
-		return escrito + this->serializadorCadenaUNICODE->Serializar(buffer, feature->AsCadenaUNICODE());
-
-	return escrito + this->serializadorCadenaANSI->Serializar(buffer, feature->AsCadenaANSI());	
+	return escrito;
 }
 
 void SerializadorFeature::Dispose()
