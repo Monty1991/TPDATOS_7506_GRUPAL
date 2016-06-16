@@ -308,6 +308,23 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 	hijos[DER]->Dispose();
 }
 
+void VpTree_ABM::AgregarHijo(iNodoArbolPuntoOptimoNodoInternoPtr _padre,
+		size_t _nroNodoHijo) {
+
+	if (!_nroNodoHijo)
+		Throw(" ", "La raiz no se puede agregar como hijo.");
+
+	if (!_padre->ObtenerHijoIzquierdo() && !_padre->ObtenerHijoDerecho())
+		Throw(" ", "Nodo interno sin hijos.");
+
+	if (!_padre->ObtenerHijoIzquierdo())
+		_padre->EstablecerHijoIzquierdo(_nroNodoHijo);
+	else if (!_padre->ObtenerHijoDerecho())
+		_padre->EstablecerHijoDerecho(_nroNodoHijo);
+	else
+		Throw(" ", "El padre ya cuenta con sus dos hjos.");
+}
+
 iNodoArbolPuntoOptimoPtr VpTree_ABM::Fusionar(iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo, iNodoArbolPuntoOptimoNodoHojaPtr _hijo)
 {
 	if (_nroNodoHijo == 0)
@@ -473,6 +490,8 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodoPadre, i
 		if (!nroNodoHijo)
 		{
 			nroNodoHijo = this->archivo->NuevoNodo(&hijo, eNodoArbolPuntoOptimo_Hoja);
+			AgregarHijo((iNodoArbolPuntoOptimoNodoInternoPtr)_padre,nroNodoHijo);
+			hijo->AgregarRegistro(_reg);
 			this->ResolverUnderflow(_nroNodoPadre, (iNodoArbolPuntoOptimoNodoInternoPtr) _padre, nroNodoHijo, (iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
 		}
 		else
