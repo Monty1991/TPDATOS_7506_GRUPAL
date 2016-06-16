@@ -24,8 +24,8 @@ class EspacioMetrico: public iEspacioMetrico, public Object
 		
 		virtual void Dispose();
 
-		virtual float CalcularDistancia(size_t clave2, size_t clave1);
-		virtual float CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2);
+		virtual double CalcularDistancia(size_t clave2, size_t clave1);
+		virtual double CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2);
 
 		virtual size_t CalcularPivote(size_t *listaClaves, size_t cantidadClaves);
 		virtual sCadenaANSI *CalcularPivote(sCadenaANSI **listaClaves, size_t cantidadClaves);

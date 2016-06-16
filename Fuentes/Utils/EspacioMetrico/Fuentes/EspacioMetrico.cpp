@@ -25,13 +25,13 @@ void EspacioMetrico::Dispose()
 	Object::Dispose();
 }
 
-float EspacioMetrico::CalcularDistancia(size_t clave1, size_t clave2)
+double EspacioMetrico::CalcularDistancia(size_t clave1, size_t clave2)
 {
 	size_t coord11, coord12, coord21, coord22;
 	this->SepararCoordenadas(clave1, &coord11, &coord12);
 	this->SepararCoordenadas(clave2, &coord21, &coord22);
 
-	size_t X, Y;
+	size_t X = 0, Y = 0;
 	
 	// Como son numeros sin signo, importa el orden
 	// para evitar valores incorrectos
@@ -49,7 +49,7 @@ float EspacioMetrico::CalcularDistancia(size_t clave1, size_t clave2)
 	return sqrt(X*X + Y*Y);
 }
 
-float EspacioMetrico::CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2)
+double EspacioMetrico::CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2)
 {
 	sCadenaANSI *coord11, *coord12, *coord21, *coord22;
 
@@ -160,22 +160,16 @@ sCadenaANSI *EspacioMetrico::CalcularPivote(sCadenaANSI **listaClaves, size_t ca
 
 void EspacioMetrico::SepararCoordenadas(size_t clave, size_t *coord1, size_t *coord2)
 {
-	unsigned short x = 0;
-	unsigned short y = 0;
+	size_t x = 0;
+	size_t y = 0;
 
 	for (size_t pos = 0; pos < sizeof(size_t); pos++)
 	{
-		bool value = clave >> ((sizeof(size_t) -1) - pos);
+		size_t value = clave & (1 << pos);
 		if (pos % 2)
-		{
-			y = y << 1;
-			y |= (value & 1);
-		}
+			y |= value >> (pos / 2);
 		else
-		{
-			x = x << 1;
-			x |= (value & 1);
-		}
+			x |= value >> (pos / 2);
 	}
 
 	*coord1 = x;

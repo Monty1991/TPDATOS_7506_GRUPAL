@@ -53,10 +53,10 @@ private:
 	iFeaturePtr GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
 	//PRE: llamar a GenerarPivote(_hoja)
-	float CalcularRadio(iFeaturePtr _pivote,
+	double CalcularRadio(iFeaturePtr _pivote,
 			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
 
-	float Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
+	double Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
 
 	//Obtiene el hermano del hijo pasado como parámetro
 	eHermanoVpTree_ABM ObtenerHermano(
@@ -70,7 +70,7 @@ private:
 			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
 
 	// Reparte los contenidos de un nodo entre 2 y devuelve el radio
-	float Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2);
+	double Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2);
 	
 	//Busca la clave dentro del nodo
 	//Si la encuentra devuelve su posición

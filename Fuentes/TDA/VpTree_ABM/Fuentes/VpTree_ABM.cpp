@@ -53,7 +53,7 @@ void VpTree_ABM::Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo)
 	this->archivo->EscribirNodo(_nroNodo, _nodo);
 }
 
-float VpTree_ABM::Distancia(iFeaturePtr _key1, iFeaturePtr _key2)
+double VpTree_ABM::Distancia(iFeaturePtr _key1, iFeaturePtr _key2)
 {
 	if (!_key1)
 		Throw(ExceptionType_InvalidArg, "_key1 == NULL");
@@ -190,7 +190,7 @@ void VpTree_ABM::ResolverUnderflow(size_t _nroNodoPadre, iNodoArbolPuntoOptimoNo
 }
 
 // Reparte los contenidos de un nodo entre 2 y devuelve el radio
-float VpTree_ABM::Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2)
+double VpTree_ABM::Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2)
 {
 	iHeapPtr heapMinimos = HeapFactory_Nuevo(eHeap::eHeap_Minimo);
 
@@ -214,7 +214,7 @@ float VpTree_ABM::Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, i
 		delete component;
 	}
 
-	float radio = heapMinimos->Peek()->valor;
+	double radio = heapMinimos->Peek()->valor;
 	for (size_t i = cantidadRegistros / 2; i < cantidadRegistros; i++)
 	{
 		sHeapComponentPtr component = heapMinimos->Pop();
@@ -244,7 +244,7 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 			eNodoArbolPuntoOptimo_Hoja);
 
 	iFeaturePtr pivote = GenerarPivote(_hijo);
-	float radio = Repartir(_hijo, pivote, hijos[IZQ], hijos[DER]);
+	double radio = Repartir(_hijo, pivote, hijos[IZQ], hijos[DER]);
 
 	padre =
 			(iNodoArbolPuntoOptimoNodoInternoPtr) NodoArbolPuntoOptimoFactory_Nuevo(
@@ -412,7 +412,7 @@ iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja)
 	return pivote;
 }
 
-float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
+double VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hoja)
 {
 
@@ -436,7 +436,7 @@ float VpTree_ABM::CalcularRadio(iFeaturePtr _pivote,
 	for (size_t i = 0; i < cantidadRegistros / 2; i++)
 		delete heapMinimos->Pop();
 
-	float radio = heapMinimos->Peek()->valor;
+	double radio = heapMinimos->Peek()->valor;
 	heapMinimos->Dispose();	// borra el resto
 
 	return radio;
@@ -502,7 +502,7 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, bool _unicidad)
 
 size_t VpTree_ABM::Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo)
 {
-	float dist;
+	double dist;
 	iFeaturePtr key = NULL;
 	iRegistroPtr reg = NULL;
 
@@ -516,7 +516,9 @@ size_t VpTree_ABM::Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo)
 			Throw("Referencia a campo nulo", "key == NULL");
 		Sistema_Execute(dist = this->Distancia(key, clave););
 
-		if (!dist)
+		// por ser un espacio de N^2, todas las distancias son >= 1
+		// y 0 unicamente si son el mismo punto.
+		if (dist <= 0.1f)
 			return i;
 	}
 
@@ -607,7 +609,7 @@ eResultadoVpTree_ABM VpTree_ABM::Buscar(const iFeaturePtr _key, iRegistroPtr *_r
 			return eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente;
 
 		iNodoArbolPuntoOptimoNodoInternoPtr interno = (iNodoArbolPuntoOptimoNodoInternoPtr)nodoActual;
-		float distanciaAPivote = 0;
+		double distanciaAPivote = 0;
 
 		Sistema_Execute(distanciaAPivote = this->Distancia(_key, interno->ObtenerPivote()););
 
