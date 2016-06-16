@@ -31,7 +31,7 @@ private:
 	
 	virtual ~ArchivoArbol();
 
-	size_t GetNodoLibre();
+	size_t GetNodoLibre(size_t origen);
 
 	eEstadoCargaNodo DeterminarEstadoNodo(size_t _tamanioSerializacion);
 
@@ -48,7 +48,7 @@ public:
 
 	void EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo);
 
-	size_t NuevoNodo(iNodoPtr *_ppNodo, size_t tipoNodo);
+	size_t NuevoNodo(size_t origen, iNodoPtr *_ppNodo, size_t tipoNodo);
 
 	eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _pNodo);
 

@@ -238,17 +238,13 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 	iNodoArbolPuntoOptimoNodoInternoPtr padre = NULL;
 	iNodoArbolPuntoOptimoNodoHojaPtr hijos[2] = { NULL, NULL };
 
-	nrosNodosHijos[IZQ] = archivo->NuevoNodo((iNodoPtr *) hijos,
-			eNodoArbolPuntoOptimo_Hoja);
-	nrosNodosHijos[DER] = archivo->NuevoNodo((iNodoPtr *) (hijos + 1),
-			eNodoArbolPuntoOptimo_Hoja);
+	nrosNodosHijos[IZQ] = archivo->NuevoNodo(1, (iNodoPtr *) hijos, eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
+	nrosNodosHijos[DER] = archivo->NuevoNodo(nrosNodosHijos[IZQ] + 1, (iNodoPtr *) (hijos + 1), eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
 
 	iFeaturePtr pivote = GenerarPivote(_hijo);
 	double radio = Repartir(_hijo, pivote, hijos[IZQ], hijos[DER]);
 
-	padre =
-			(iNodoArbolPuntoOptimoNodoInternoPtr) NodoArbolPuntoOptimoFactory_Nuevo(
-					eNodoArbolPuntoOptimo_Interno);
+	padre = (iNodoArbolPuntoOptimoNodoInternoPtr) NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno);
 	padre->EstablecerRadio(radio);
 	padre->EstablecerPivote(pivote);
 	padre->EstablecerHijoIzquierdo(nrosNodosHijos[IZQ]);
@@ -489,7 +485,7 @@ eResultadoVpTree_ABM VpTree_ABM::Alta(iRegistroPtr _reg, size_t _nroNodoPadre, i
 
 		if (!nroNodoHijo)
 		{
-			nroNodoHijo = this->archivo->NuevoNodo(&hijo, eNodoArbolPuntoOptimo_Hoja);
+			nroNodoHijo = this->archivo->NuevoNodo(0, &hijo, eNodoArbolPuntoOptimo_Hoja);
 			AgregarHijo((iNodoArbolPuntoOptimoNodoInternoPtr)_padre,nroNodoHijo);
 			hijo->AgregarRegistro(_reg);
 			this->ResolverUnderflow(_nroNodoPadre, (iNodoArbolPuntoOptimoNodoInternoPtr) _padre, nroNodoHijo, (iNodoArbolPuntoOptimoNodoHojaPtr) hijo);

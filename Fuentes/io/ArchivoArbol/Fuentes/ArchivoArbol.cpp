@@ -59,9 +59,9 @@ float ArchivoArbol::DeterminarPorcentajeCarga(iNodoPtr _pNodo){
     return (serializadorNodo->CalcularEspacioSerializacion(_pNodo) * 100) / tamanioNodo;
 }
 
-size_t ArchivoArbol::GetNodoLibre() {
+size_t ArchivoArbol::GetNodoLibre(size_t origen) {
 
-	for (size_t i = 0; i < mapaDeBits->ObtenerTamanio(); i++)
+	for (size_t i = origen; i < mapaDeBits->ObtenerTamanio(); i++)
 		if (!mapaDeBits->ObtenerBit(i))
 			return i;
 
@@ -133,10 +133,10 @@ void ArchivoArbol::EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo)
 	}
 }
 
-size_t ArchivoArbol::NuevoNodo(iNodoPtr *_ppNodo, size_t tipoNodo) {
+size_t ArchivoArbol::NuevoNodo(size_t origen, iNodoPtr *_ppNodo, size_t tipoNodo) {
 
 	*_ppNodo = NodoFactory_Nuevo(this->tipoArbol, tipoNodo);
-	return GetNodoLibre();
+	return GetNodoLibre(origen);
 }
 
 eEstadoCargaNodo ArchivoArbol::DeterminarEstadoNodo(iNodoPtr _pNodo) {
