@@ -132,7 +132,7 @@ size_t Heap::HijoDer(size_t obj)
 	return (obj + 1) * 2;
 }
 
-int Heap::func(float x, float y)
+int Heap::func(double x, double y)
 {
 	if (x < y)
 		return this->tipo == eHeap::eHeap_Minimo? -1 : 1;

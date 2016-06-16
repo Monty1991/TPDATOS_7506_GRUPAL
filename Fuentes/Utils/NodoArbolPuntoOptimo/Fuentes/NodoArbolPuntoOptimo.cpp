@@ -2,24 +2,17 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../StringUtils/Headers/StringUtils.h"
 
-NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros)
+NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros): cantidadRegistros(cantidadRegistros)
 {
 	this->tamanioTablaRegistros = 16;
 	// con esto nos aseguramos de que la tabla sea potencia de 2
 	while (this->tamanioTablaRegistros < cantidadRegistros)
 		this->tamanioTablaRegistros *= 2;
 
-	this->cantidadRegistros = cantidadRegistros;
-
 	this->tablaRegistros = new iRegistroPtr[this->tamanioTablaRegistros];
 
-	for (size_t i = 0; i < cantidadRegistros; i++)
-	{
-		if (listaRegistros[i])
-			this->tablaRegistros[i] = listaRegistros[i];
-		else
-			this->tablaRegistros[i] = NULL;
-	}
+	for (size_t i = 0; i < this->cantidadRegistros; i++)
+		this->tablaRegistros[i] = listaRegistros[i];
 }
 
 NodoArbolPuntoOptimoNodoHoja::~NodoArbolPuntoOptimoNodoHoja()
@@ -93,13 +86,13 @@ void NodoArbolPuntoOptimoNodoHoja::AgregarRegistro(iRegistroPtr reg)
 
 iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro(size_t pos)
 {
-	if (pos >= this->cantidadRegistros)
-		return NULL;
+	iRegistroPtr reg = NULL;
+	Sistema_Execute(reg = this->ObtenerRegistro(pos););
 
-	iRegistroPtr reg = this->tablaRegistros[pos];
+	for (size_t i = pos; i < (this->cantidadRegistros - 1); i++)
+		Sistema_Execute(this->tablaRegistros[i] = this->ObtenerRegistro(i + 1););
+
 	this->cantidadRegistros--;
-	for (size_t i = pos; pos < this->cantidadRegistros; i++)
-		this->tablaRegistros[i] = this->tablaRegistros[i + 1];
 
 	if (this->cantidadRegistros * 4 <= this->tamanioTablaRegistros)
 		this->RedimensionarTabla(this->tamanioTablaRegistros / 2);

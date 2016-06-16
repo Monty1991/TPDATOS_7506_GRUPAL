@@ -509,16 +509,18 @@ size_t VpTree_ABM::Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo)
 	for (size_t i = 0; i < _nodo->ObtenerCantidadRegistros(); i++)
 	{
 		Sistema_Execute(reg = _nodo->ObtenerRegistro(i););
-		if (!reg)
-			Throw("Referencia a registro nulo", "Reg == NULL");
+//		if (!reg)
+//			Throw("Referencia a registro nulo", "Reg == NULL");
 		Sistema_Execute(key = reg->GetFeature(this->nroCampoClave););
-		if (!key)
-			Throw("Referencia a campo nulo", "key == NULL");
+//		if (!key)
+//			Throw("Referencia a campo nulo", "key == NULL");
 		Sistema_Execute(dist = this->Distancia(key, clave););
 
 		// por ser un espacio de N^2, todas las distancias son >= 1
 		// y 0 unicamente si son el mismo punto.
-		if (dist <= 0.1f)
+		// Esta condicion es menos estricta, para absorber
+		// errores por redondeo.
+		if (dist <= 0.1)
 			return i;
 	}
 
@@ -527,7 +529,8 @@ size_t VpTree_ABM::Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo)
 
 eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre, iNodoArbolPuntoOptimoPtr _padre, size_t _nroNodoHijo, iNodoArbolPuntoOptimoPtr _hijo)
 {
-	size_t posicionRegistro = Ubicar(_key, _hijo);
+	size_t posicionRegistro = 0;
+	Sistema_Execute(posicionRegistro = Ubicar(_key, _hijo););
 
 	if (posicionRegistro >= _hijo->ObtenerCantidadRegistros())
 	{
@@ -548,22 +551,31 @@ eResultadoVpTree_ABM VpTree_ABM::Baja(iFeaturePtr _key, size_t _nroNodoPadre, iN
 			return eResultadoVpTree_ABM__Inexistente;
 
 		iNodoArbolPuntoOptimoPtr nieto = (iNodoArbolPuntoOptimoPtr) this->archivo->LeerNodo(nroNodoNieto);
-		eResultadoVpTree_ABM res = Baja(_key, _nroNodoHijo, _hijo, nroNodoNieto, nieto);
+		eResultadoVpTree_ABM res;
+		Sistema_Execute(res = Baja(_key, _nroNodoHijo, _hijo, nroNodoNieto, nieto););
 		nieto->Dispose();
 
 		return res;
 	}
 
-	(_hijo->QuitarRegistro(posicionRegistro))->Dispose();
+	iRegistroPtr reg = NULL;
+	Sistema_Execute(reg = _hijo->QuitarRegistro(posicionRegistro););
+	if (!reg)
+		Throw("Unexpected result", "Registro encontrado == NULL ?!")
 
-	if ((archivo->DeterminarEstadoNodo(_hijo) == eEstadoCargaNodo_Underflow) && (_hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Interno))
-		this->ResolverUnderflow(_nroNodoHijo,
-				(iNodoArbolPuntoOptimoNodoInternoPtr) _hijo);
+	reg->Dispose();
 
-	else if ((archivo->DeterminarEstadoNodo(_hijo) == eEstadoCargaNodo_Underflow) && (_hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Hoja) && _nroNodoHijo)
-		this->ResolverUnderflow(_nroNodoPadre, (iNodoArbolPuntoOptimoNodoInternoPtr) _padre, _nroNodoHijo, (iNodoArbolPuntoOptimoNodoHojaPtr) _hijo);
+	if (this->archivo->DeterminarEstadoNodo(_hijo) == eEstadoCargaNodo::eEstadoCargaNodo_Underflow)
+	{
+		if (_hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo_Interno)
+			Sistema_Execute(this->ResolverUnderflow(_nroNodoHijo, (iNodoArbolPuntoOptimoNodoInternoPtr) _hijo););
+		else if (_nroNodoHijo)
+			Sistema_Execute(this->ResolverUnderflow(_nroNodoPadre, (iNodoArbolPuntoOptimoNodoInternoPtr) _padre, _nroNodoHijo, (iNodoArbolPuntoOptimoNodoHojaPtr) _hijo););
+		else
+			Sistema_Execute(this->Escribir(_nroNodoHijo, _hijo););
+	}
 	else
-		this->Escribir(_nroNodoHijo, _hijo);
+		Sistema_Execute(this->Escribir(_nroNodoHijo, _hijo););
 
 	return eResultadoVpTree_ABM__Ok;
 }

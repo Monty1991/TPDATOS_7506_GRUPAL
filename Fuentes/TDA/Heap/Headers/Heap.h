@@ -41,7 +41,7 @@ class Heap: public iHeap
 		// para heap de minimo,
 		// devuelve < 0 si x < y, 0 si son iguales, > 0 si x > y
 		// para heap de maximo, hace lo contrario
-		virtual int func(float x, float y);
+		virtual int func(double x, double y);
 };
 
 #endif /* HEAP_H */

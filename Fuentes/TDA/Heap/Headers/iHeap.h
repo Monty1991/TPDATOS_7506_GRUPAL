@@ -18,7 +18,7 @@ enum eHeap
 
 typedef struct sHeapComponent
 {
-	float valor;
+	double valor;
 	iObjectPtr object;
 } *sHeapComponentPtr;
 
