@@ -85,13 +85,17 @@ void ComandoCarga::Ejecutar(FILE *salida, const char **listaParametros, size_t c
 	{
 		iRegistroPtr registro = NULL;
 		
+		bool continuar = true;
 		TryCatchBlock(
 		Sistema_Execute(registro = RegistroFactory_Nuevo(descriptorRegistro, linea););,
 		[&](iExceptionPtr e){
 			Sistema_Log(e);
-			break;	// una linea que no contiene un registro
+			continuar = false;	// una linea que no contiene un registro
 		}
-		)
+		);
+
+		if (!continuar)
+			break;
 
 		eResultadoVpTree_ABM resultado;
 		Sistema_Execute(resultado = vpTree->Alta(registro, true););			//insertamos el primero que aparezca

@@ -95,11 +95,11 @@ void Heap::OrdenarDescendente(size_t obj)
 	size_t hijoIzq = this->HijoIzq(obj);
 	size_t hijoDer = this->HijoDer(obj);
 
-	if (hijoIzq >= this->tamanio)
+	if (hijoIzq >= this->cantidadElementos)
 		return;
 
 	size_t hijoMayor = hijoIzq;
-	if (hijoDer < this->tamanio)
+	if (hijoDer < this->cantidadElementos)
 		if (this->func(this->tabla[hijoIzq]->valor, this->tabla[hijoDer]->valor) < 0)
 			hijoMayor = hijoDer;
 

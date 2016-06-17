@@ -3,7 +3,7 @@
 #include "../../ComandoBaja/ComandoBajaFactory.h"
 #include "../../ComandoBuscar/ComandoBuscarFactory.h"
 #include "../../ComandoModificacion/ComandoModificacionFactory.h"
-
+#include "../../ComandoCarga/ComandoCargaFactory.h"
 #include <string.h>
 #include <ctype.h>
 
@@ -25,6 +25,9 @@ iComandoPtr ComandoFactory_Nuevo(const char *nombreComando)
 
 	if (!strcmp("BUSCAR", nombreABuscar))
 		return ComandoBuscarFactory_Nuevo();
+
+	if (!strcmp("CARGAR", nombreABuscar))
+		return ComandoCargaFactory_Nuevo();
 
 	if (!strcmp("MODIFICACION", nombreABuscar))
 		return ComandoModificacionFactory_Nuevo();
