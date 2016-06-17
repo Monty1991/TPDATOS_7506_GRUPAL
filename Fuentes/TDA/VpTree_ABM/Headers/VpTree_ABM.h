@@ -63,7 +63,7 @@ private:
 			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
 			size_t* _nroNodoHermano, iNodoArbolPuntoOptimoPtr* _hermano);
 
-	//PRE: el padre tiene un único hijo
+	//Por default a la izquierda
 	void AgregarHijo(iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo);
 
 	//Devuelve el nodo fusión entre padre e hijo

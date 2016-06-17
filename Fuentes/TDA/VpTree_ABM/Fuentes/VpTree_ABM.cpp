@@ -318,10 +318,11 @@ void VpTree_ABM::AgregarHijo(iNodoArbolPuntoOptimoNodoInternoPtr _padre,
 		size_t _nroNodoHijo) {
 
 	if (!_nroNodoHijo)
-		Throw(" ", "La raiz no se puede agregar como hijo.");
+		Throw(" ", "La raiz no puede ser agregada como hijo.");
 
-	if (!_padre->ObtenerHijoIzquierdo() && !_padre->ObtenerHijoDerecho())
-		Throw(" ", "Nodo interno sin hijos.");
+	if ((_padre->ObtenerHijoIzquierdo() == _nroNodoHijo)
+			|| (_padre->ObtenerHijoDerecho() == _nroNodoHijo))
+		Throw(" ", "El hijo ya fué agregado con anterioridad.");
 
 	if (!_padre->ObtenerHijoIzquierdo())
 		_padre->EstablecerHijoIzquierdo(_nroNodoHijo);
