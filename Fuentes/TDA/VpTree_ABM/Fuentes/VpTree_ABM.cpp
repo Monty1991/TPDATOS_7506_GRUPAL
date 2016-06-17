@@ -230,10 +230,10 @@ double VpTree_ABM::Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, 
 void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 		iNodoArbolPuntoOptimoNodoHojaPtr _hijo) {
 
-	const char IZQ = 0;
-	const char DER = 1;
+	const unsigned IZQ = 0;
+	const unsigned DER = 1;
 
-	char hijoActual;
+	unsigned hijoActual;
 	size_t nrosNodosHijos[2] = { 0, 0 };
 	iNodoArbolPuntoOptimoPtr fusion = NULL;
 	iNodoArbolPuntoOptimoNodoInternoPtr padre = NULL;
@@ -263,7 +263,7 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 	if (estadoHijos[IZQ] != eEstadoCargaNodo_Underflow)
 		hijoActual = IZQ;
 	else
-		hijoActual = DER;
+		hijoActual = DER; //Luego de repartir, a lo sumo un hijo estará en underflow
 
 	while ((estadoHijos[hijoActual] != eEstadoCargaNodo_Underflow)
 			&& (estadoPadre != eEstadoCargaNodo_Overflow)) {
@@ -281,29 +281,26 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 	estadoPadre = archivo->DeterminarEstadoNodo(padre);
 	estadoHijos[hijoActual] = archivo->DeterminarEstadoNodo(hijos[hijoActual]);
 
-	if (estadoPadre == eEstadoCargaNodo_Underflow) {
+	if (estadoHijos[IZQ] == eEstadoCargaNodo_Underflow)
+		fusion = Fusionar(padre, nrosNodosHijos[IZQ], hijos[IZQ]);
+	else if (estadoHijos[IZQ] == eEstadoCargaNodo_Overflow)
+		ResolverOverflow(nrosNodosHijos[IZQ], hijos[IZQ]);
+	else
+		Escribir(nrosNodosHijos[IZQ], hijos[IZQ]);
 
-		fusion = Fusionar(padre, nrosNodosHijos[hijoActual], hijos[hijoActual]);
+	if (estadoHijos[DER] == eEstadoCargaNodo_Underflow)
+		fusion = Fusionar(padre, nrosNodosHijos[DER], hijos[DER]);
+	else if (estadoHijos[DER] == eEstadoCargaNodo_Overflow)
+		ResolverOverflow(nrosNodosHijos[DER], hijos[DER]);
+	else
+		Escribir(nrosNodosHijos[DER], hijos[DER]);
+
+	if (fusion) {    //A lo sumo ocurre una fusión
+
+		estadoPadre = archivo->DeterminarEstadoNodo(fusion);
 
 		padre->Dispose();
 		padre = (iNodoArbolPuntoOptimoNodoInternoPtr) fusion;
-		estadoPadre = archivo->DeterminarEstadoNodo(padre);
-	}
-
-	if (padre->ObtenerHijoIzquierdo()) {
-
-		if (estadoHijos[IZQ] == eEstadoCargaNodo_Overflow)
-			ResolverOverflow(nrosNodosHijos[IZQ], hijos[IZQ]);
-		else
-			Escribir(nrosNodosHijos[IZQ], hijos[IZQ]);
-	}
-
-	if (padre->ObtenerHijoDerecho()) {
-
-		if (estadoHijos[DER] == eEstadoCargaNodo_Overflow)
-			ResolverOverflow(nrosNodosHijos[DER], hijos[DER]);
-		else
-			Escribir(nrosNodosHijos[DER], hijos[DER]);
 	}
 
 	if (estadoPadre == eEstadoCargaNodo_Underflow)
