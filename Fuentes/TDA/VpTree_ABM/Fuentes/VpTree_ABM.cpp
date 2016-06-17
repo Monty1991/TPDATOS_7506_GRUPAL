@@ -233,18 +233,24 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 	const char IZQ = 0;
 	const char DER = 1;
 
+	char hijoActual;
 	size_t nrosNodosHijos[2] = { 0, 0 };
 	iNodoArbolPuntoOptimoPtr fusion = NULL;
 	iNodoArbolPuntoOptimoNodoInternoPtr padre = NULL;
 	iNodoArbolPuntoOptimoNodoHojaPtr hijos[2] = { NULL, NULL };
 
-	nrosNodosHijos[IZQ] = archivo->NuevoNodo(1, (iNodoPtr *) hijos, eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
-	nrosNodosHijos[DER] = archivo->NuevoNodo(nrosNodosHijos[IZQ] + 1, (iNodoPtr *) (hijos + 1), eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
+	nrosNodosHijos[IZQ] = archivo->NuevoNodo(1, (iNodoPtr *) hijos,
+			eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
+	nrosNodosHijos[DER] = archivo->NuevoNodo(nrosNodosHijos[IZQ] + 1,
+			(iNodoPtr *) (hijos + 1),
+			eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
 
 	iFeaturePtr pivote = GenerarPivote(_hijo);
 	double radio = Repartir(_hijo, pivote, hijos[IZQ], hijos[DER]);
 
-	padre = (iNodoArbolPuntoOptimoNodoInternoPtr) NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno);
+	padre =
+			(iNodoArbolPuntoOptimoNodoInternoPtr) NodoArbolPuntoOptimoFactory_Nuevo(
+					eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno);
 	padre->EstablecerRadio(radio);
 	padre->EstablecerPivote(pivote);
 	padre->EstablecerHijoIzquierdo(nrosNodosHijos[IZQ]);
@@ -254,7 +260,10 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 	eEstadoCargaNodo estadoHijos[2] = { archivo->DeterminarEstadoNodo(
 			hijos[IZQ]), archivo->DeterminarEstadoNodo(hijos[DER]) };
 
-	char hijoActual = DER;
+	if (estadoHijos[IZQ] != eEstadoCargaNodo_Underflow)
+		hijoActual = IZQ;
+	else
+		hijoActual = DER;
 
 	while ((estadoHijos[hijoActual] != eEstadoCargaNodo_Underflow)
 			&& (estadoPadre != eEstadoCargaNodo_Overflow)) {
@@ -277,7 +286,8 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 		fusion = Fusionar(padre, nrosNodosHijos[hijoActual], hijos[hijoActual]);
 
 		padre->Dispose();
-		padre = (iNodoArbolPuntoOptimoNodoInternoPtr)fusion;
+		padre = (iNodoArbolPuntoOptimoNodoInternoPtr) fusion;
+		estadoPadre = archivo->DeterminarEstadoNodo(padre);
 	}
 
 	if (padre->ObtenerHijoIzquierdo()) {
@@ -296,7 +306,10 @@ void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
 			Escribir(nrosNodosHijos[DER], hijos[DER]);
 	}
 
-	Escribir(_nroNodoHijo, padre);
+	if (estadoPadre == eEstadoCargaNodo_Underflow)
+		ResolverUnderflow(_nroNodoHijo, padre);
+	else
+		Escribir(_nroNodoHijo, padre);
 
 	padre->Dispose();
 	pivote->Dispose();
