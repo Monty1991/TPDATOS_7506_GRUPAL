@@ -105,7 +105,7 @@ iFeaturePtr FeatureFactory_Nuevo(const sDescriptorCampoPtr descCampo, const char
 			cadenaANSI.cadena = (char *)cadena;
 
 			size_t largoCadena = 0;
-			while ((cadena[largoCadena] != ',') && (cadena[largoCadena] != '\0'))
+			while ((cadena[largoCadena] != ',') && (cadena[largoCadena] != ';') && (cadena[largoCadena] != '\n') && (cadena[largoCadena] != '\0'))
 				largoCadena++;
 
 			cadenaANSI.largo = largoCadena;
@@ -121,7 +121,7 @@ iFeaturePtr FeatureFactory_Nuevo(const sDescriptorCampoPtr descCampo, const char
 			cadenaANSI.cadena = (char *)cadena;
 
 			size_t largoCadena = 0;
-			while ((cadena[largoCadena] != ',') && (cadena[largoCadena] != '\0'))
+			while ((cadena[largoCadena] != ',') && (cadena[largoCadena] != ';') && (cadena[largoCadena] != '\n') && (cadena[largoCadena] != '\0'))
 				largoCadena++;
 
 			cadenaANSI.largo = largoCadena;

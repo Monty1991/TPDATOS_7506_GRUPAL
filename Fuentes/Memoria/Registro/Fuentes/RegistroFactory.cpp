@@ -28,4 +28,3 @@ iRegistroPtr RegistroFactory_Nuevo(iDescriptorRegistroPtr descriptor, const char
 
 	return registro;
 }
-
