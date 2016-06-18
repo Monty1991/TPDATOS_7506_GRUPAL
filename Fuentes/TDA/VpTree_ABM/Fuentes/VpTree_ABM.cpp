@@ -579,35 +579,31 @@ void VpTree_ABM::ResolverUnderflow(size_t nroNodo, iNodoArbolPuntoOptimoNodoInte
 
 	iNodoArbolPuntoOptimoPtr hijo = (iNodoArbolPuntoOptimoPtr) this->archivo->LeerNodo(nroNodoHijo);
 
-	if (hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja)
+	while (this->archivo->DeterminarEstadoNodo(nodo) == eEstadoCargaNodo_Underflow)
+		nodo->AgregarRegistro(hijo->QuitarRegistro());
+
+	// En este punto, nodo tiene carga minima
+	// Si el otro nodo esta bien, terminamos
+	if (this->archivo->DeterminarEstadoNodo(hijo) != eEstadoCargaNodo_Underflow)
 	{
-		if (this->archivo->DeterminarEstadoNodo(hijo) == eEstadoCargaNodo::eEstadoCargaNodo_CargaMinima)
-		{
-			iNodoArbolPuntoOptimoPtr padreNuevo = this->Fusionar(nodo, nroNodoHijo, (iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
+		this->Escribir(nroNodo, nodo);
+		this->Escribir(nroNodoHijo, hijo);
+	}
+	else if (hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja)
+	{
+		// Si es una hoja en underflow, cabe dentro del nodo, por lo que lo traemos al nodo
+		iNodoArbolPuntoOptimoPtr padreNuevo = this->Fusionar(nodo, nroNodoHijo, (iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
+		this->archivo->LiberarNodo(nroNodoHijo);
+		this->Escribir(nroNodo, padreNuevo);
 
-			this->archivo->LiberarNodo(nroNodoHijo);
-			this->Escribir(nroNodo, padreNuevo);
-
-			padreNuevo->Dispose();
-		}
+		padreNuevo->Dispose();
 	}
 	else
 	{
-		while (this->archivo->DeterminarEstadoNodo(nodo) == eEstadoCargaNodo_Underflow)
-			nodo->AgregarRegistro(hijo->QuitarRegistro());
+		// Solucionado para nodo, queda el hijo (que es interno en underflow, mismo problema -> recursion).
+		this->Escribir(nroNodo, nodo);
 
-		if (this->archivo->DeterminarEstadoNodo(hijo) != eEstadoCargaNodo_Underflow)
-		{
-			this->Escribir(nroNodo, nodo);
-			this->Escribir(nroNodoHijo, hijo);
-		}
-		else if (hijo->ObtenerTipoNodo() == eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno)	// Observacion: Siempre da verdadero
-		{
-			this->Escribir(nroNodo, nodo);
-			this->ResolverUnderflow(nroNodoHijo, (iNodoArbolPuntoOptimoNodoInternoPtr) hijo);
-		}
-		else // Observacion: Por lo anterior, nunca se llega aqui
-			ResolverUnderflow(nroNodo, nodo, nroNodoHijo, (iNodoArbolPuntoOptimoNodoHojaPtr) hijo);
+		this->ResolverUnderflow(nroNodoHijo, (iNodoArbolPuntoOptimoNodoInternoPtr) hijo);
 	}
 
 	if (hijo)
