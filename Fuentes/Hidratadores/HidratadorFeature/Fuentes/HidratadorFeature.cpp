@@ -1,23 +1,15 @@
 #include "../Headers/HidratadorFeature.h"
 #include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
-#include "../../HidratadorCadenaANSI/HidratadorCadenaANSIFactory.h"
-#include "../../HidratadorCadenaUNICODE/HidratadorCadenaUNICODEFactory.h"
+#include "../../../Utils/StringUtils/Headers/StringUtils.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorFeature::HidratadorFeature()
 {
-	this->hidratadorCadenaANSI = HidratadorCadenaANSIFactory_Nuevo();
-	this->hidratadorCadenaUNICODE = HidratadorCadenaUNICODEFactory_Nuevo();
 }
 
 HidratadorFeature::~HidratadorFeature()
 {
-	if (this->hidratadorCadenaANSI)
-		this->hidratadorCadenaANSI->Dispose();
-
-	if (this->hidratadorCadenaUNICODE)
-		this->hidratadorCadenaUNICODE->Dispose();
 }
 
 size_t HidratadorFeature::Hidratar(char *buff, iFeaturePtr *feature)
@@ -42,13 +34,13 @@ size_t HidratadorFeature::Hidratar(char *buff, iFeaturePtr *feature)
 	}
 	else if (tipo & Mascara_Unicode)
 	{
-		Sistema_Execute(leido += this->hidratadorCadenaUNICODE->Hidratar(buff + leido, &(valor.primitivo.cadena.unicode)););
+		Sistema_Execute(leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.unicode)););
 		featureLeido = FeatureFactory_Nuevo(valor, tipo);
 		delete [] valor.primitivo.cadena.unicode.cadena;
 	}
 	else
 	{
-		Sistema_Execute(leido += this->hidratadorCadenaANSI->Hidratar(buff + leido, &(valor.primitivo.cadena.ansi)););
+		Sistema_Execute(leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.ansi)););
 		featureLeido = FeatureFactory_Nuevo(valor, tipo);
 		delete [] valor.primitivo.cadena.ansi.cadena;
 	}

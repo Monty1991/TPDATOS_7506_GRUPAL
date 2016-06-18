@@ -9,14 +9,10 @@
 #define HIDRATADORFEATURE_H
 
 #include "iHidratadorFeature.h"
-#include "../../HidratadorCadenaANSI/Headers/iHidratadorCadenaANSI.h"
-#include "../../HidratadorCadenaUNICODE/Headers/iHidratadorCadenaUNICODE.h"
 
 class HidratadorFeature: public iHidratadorFeature
 {
 	private:
-		iHidratadorCadenaANSIPtr hidratadorCadenaANSI;
-		iHidratadorCadenaUNICODEPtr hidratadorCadenaUNICODE;
 
 		virtual ~HidratadorFeature();
 	public:
