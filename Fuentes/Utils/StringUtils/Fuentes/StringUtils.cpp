@@ -16,7 +16,7 @@ size_t StringUtils_CalcularEspacioSerializacion(const sCadenaANSI *cadena)
 {
 	size_t espacioSerializacion = 0;
 
-	Sistema_Execute(espacioSerializacion += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U2););
+	espacioSerializacion += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U2);
 	espacioSerializacion += cadena->largo;
 
 	return espacioSerializacion;
@@ -26,7 +26,7 @@ size_t StringUtils_CalcularEspacioSerializacion(const sCadenaUNICODE *cadena)
 {
 	size_t espacioSerializacion = 0;
 
-	Sistema_Execute(espacioSerializacion += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U2););
+	espacioSerializacion += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U2);
 	espacioSerializacion += cadena->largo * sizeof(wchar_t);
 
 	return espacioSerializacion;
@@ -44,7 +44,7 @@ size_t StringUtils_Serializar(char *buff, const sCadenaANSI *cadena)
 
 	uNumber largo;
 	largo.entero.enteroSinSigno.entero16SinSigno = cadena->largo;
-	Sistema_Execute(espacioSerializacion += NumberUtils_Serializar(buff + espacioSerializacion, largo, eValueType::eValueType_U2););
+	espacioSerializacion += NumberUtils_Serializar(buff + espacioSerializacion, largo, eValueType::eValueType_U2);
 	espacioSerializacion += StringUtils_Serializar(buff + espacioSerializacion, cadena->cadena, cadena->largo);
 
 	return espacioSerializacion;
@@ -56,7 +56,7 @@ size_t StringUtils_Serializar(char *buff, const sCadenaUNICODE *cadena)
 
 	uNumber largo;
 	largo.entero.enteroSinSigno.entero16SinSigno = cadena->largo;
-	Sistema_Execute(espacioSerializacion += NumberUtils_Serializar(buff + espacioSerializacion, largo, eValueType::eValueType_U2););
+	espacioSerializacion += NumberUtils_Serializar(buff + espacioSerializacion, largo, eValueType::eValueType_U2);
 	espacioSerializacion += StringUtils_Serializar(buff + espacioSerializacion, (char *)cadena->cadena, cadena->largo * sizeof(wchar_t));
 
 	return espacioSerializacion;
@@ -74,7 +74,7 @@ size_t StringUtils_Hidratar(const char *buff, sCadenaANSI *cadena)
 	largo.entero.enteroSinSigno.entero64SinSigno = 0;
 	size_t leido = 0;
 
-	Sistema_Execute(leido = NumberUtils_Hidratar(buff + leido, &largo, eValueType::eValueType_U2););
+	leido = NumberUtils_Hidratar(buff + leido, &largo, eValueType::eValueType_U2);
 	size_t largoCadena = largo.entero.enteroSinSigno.entero16SinSigno;
 
 	cadena->cadena = new char[largoCadena];
@@ -91,7 +91,7 @@ size_t StringUtils_Hidratar(const char *buff, sCadenaUNICODE *cadena)
 	largo.entero.enteroSinSigno.entero64SinSigno = 0;
 	size_t leido = 0;
 
-	Sistema_Execute(leido = NumberUtils_Hidratar(buff + leido, &largo, eValueType::eValueType_U2););
+	leido = NumberUtils_Hidratar(buff + leido, &largo, eValueType::eValueType_U2);
 	size_t largoCadena = largo.entero.enteroSinSigno.entero16SinSigno;
 
 	cadena->cadena = new wchar_t[largoCadena];

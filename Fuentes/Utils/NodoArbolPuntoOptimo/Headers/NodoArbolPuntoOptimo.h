@@ -10,10 +10,14 @@
 
 #include "iNodoArbolPuntoOptimo.h"
 #include "../../../Memoria/Object/Headers/Object.h"
+#include "../../../TDA/LinkedList/Headers/iLinkedList.h"
 
 class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja, public Object
 {
 	private:
+		iLinkedListPtr listaRegistros;
+		iLinkedListPtr finalLista;
+	
 		size_t tamanioTablaRegistros;
 		size_t cantidadRegistros;
 		iRegistroPtr *tablaRegistros;
@@ -35,6 +39,10 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja, public
 		virtual void AgregarRegistro(iRegistroPtr reg);
 		virtual iRegistroPtr QuitarRegistro(size_t pos);
 		virtual iRegistroPtr QuitarRegistro();
+
+		virtual size_t BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave);
+
+		virtual void Iterar(IteratorFunction iterador);
 
 	private:
 		void RedimensionarTabla(size_t nuevoTamanio);
@@ -83,6 +91,9 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno, 
 		virtual iRegistroPtr QuitarRegistro(size_t pos);
 		virtual iRegistroPtr QuitarRegistro();
 
+		virtual size_t BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave);
+
+		virtual void Iterar(IteratorFunction iterador);
 };
 
 #endif /* NODOARBOLPUNTOOPTIMO_H */

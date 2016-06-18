@@ -156,14 +156,14 @@ size_t FeatureFactory_CalcularEspacioSerializacion(const iFeaturePtr feature)
 	eValueType tipo = feature->ObtenerTipo();
 
 	size_t espacio = 0;
-	Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1););
+	espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1);
 
 	if (tipo & Mascara_Numero)
-		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(tipo););
+		espacio += NumberUtils_CalcularEspacioSerializacion(tipo);
 	else if (tipo & Mascara_Unicode)
-		Sistema_Execute(espacio += StringUtils_CalcularEspacioSerializacion(feature->AsCadenaUNICODE()););
+		espacio += StringUtils_CalcularEspacioSerializacion(feature->AsCadenaUNICODE());
 	else
-		Sistema_Execute(espacio += StringUtils_CalcularEspacioSerializacion(feature->AsCadenaANSI()););
+		espacio += StringUtils_CalcularEspacioSerializacion(feature->AsCadenaANSI());
 
 	return espacio;
 }
@@ -178,14 +178,17 @@ size_t FeatureFactory_Serializar(char *buffer, const iFeaturePtr feature)
 	size_t escrito = 0;
 	uNumber number;
 	number.entero.enteroSinSigno.entero8SinSigno = tipo;
-	Sistema_Execute(escrito += NumberUtils_Serializar(buffer + escrito, number, eValueType::eValueType_U1););
+	escrito += NumberUtils_Serializar(buffer + escrito, number, eValueType::eValueType_U1);
 
-	if (tipo & Mascara_Numero)
-		Sistema_Execute(escrito += NumberUtils_Serializar(buffer + escrito, feature->AsNumber(), tipo););
-	else if (tipo & Mascara_Unicode)
-		Sistema_Execute(escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaUNICODE()););
-	else
-		Sistema_Execute(escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaANSI()););
+	if (!(tipo & Mascara_Registro))
+	{
+		if (tipo & Mascara_Numero)
+			escrito += NumberUtils_Serializar(buffer + escrito, feature->AsNumber(), tipo);
+		else if (tipo & Mascara_Unicode)
+			escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaUNICODE());
+		else
+			escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaANSI());
+	}
 
 	return escrito;
 }
@@ -196,28 +199,31 @@ size_t FeatureFactory_Hidratar(const char *buff, iFeaturePtr *feature)
 	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
 	size_t leido = 0;
 	
-	Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &valor.primitivo.numero, eValueType_U1););
+	leido += NumberUtils_Hidratar(buff + leido, &valor.primitivo.numero, eValueType_U1);
 
 	eValueType tipo = (eValueType) valor.primitivo.numero.entero.enteroSinSigno.entero8SinSigno;
 
 	iFeaturePtr featureLeido = NULL;
 	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
-	if (tipo & Mascara_Numero)
+	if (!(tipo & Mascara_Registro))
 	{
-		Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &(valor.primitivo.numero), tipo););
-		featureLeido = FeatureFactory_Nuevo(valor, tipo);
-	}
-	else if (tipo & Mascara_Unicode)
-	{
-		Sistema_Execute(leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.unicode)););
-		featureLeido = FeatureFactory_Nuevo(valor, tipo);
-		delete [] valor.primitivo.cadena.unicode.cadena;
-	}
-	else
-	{
-		Sistema_Execute(leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.ansi)););
-		featureLeido = FeatureFactory_Nuevo(&valor.primitivo.cadena.ansi);
-		delete [] valor.primitivo.cadena.ansi.cadena;
+		if (tipo & Mascara_Numero)
+		{
+			leido += NumberUtils_Hidratar(buff + leido, &(valor.primitivo.numero), tipo);
+			featureLeido = FeatureFactory_Nuevo(valor, tipo);
+		}
+		else if (tipo & Mascara_Unicode)
+		{
+			leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.unicode));
+			featureLeido = FeatureFactory_Nuevo(valor, tipo);
+			delete [] valor.primitivo.cadena.unicode.cadena;
+		}
+		else
+		{
+			leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.ansi));
+			featureLeido = FeatureFactory_Nuevo(&valor.primitivo.cadena.ansi);
+			delete [] valor.primitivo.cadena.ansi.cadena;
+		}
 	}
 	*feature = featureLeido;
 

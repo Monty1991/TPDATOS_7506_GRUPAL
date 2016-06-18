@@ -37,7 +37,7 @@ size_t RegistroFactory_CalcularEspacioSerializacion(const iRegistroPtr registro)
 
 	size_t espacio = 0;
 	
-	Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1););
+	espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1);
 
 	size_t cantCampos = registro->ObtenerCantidadCampos();
 	for (size_t i = 0; i < cantCampos; i++)
@@ -56,7 +56,7 @@ size_t RegistroFactory_Serializar(char *buffer, const iRegistroPtr registro)
 
 	uNumber number;
 	number.entero.enteroSinSigno.entero8SinSigno = cantCampos;
-	Sistema_Execute(cantidadEscrita += NumberUtils_Serializar(buffer + cantidadEscrita, number, eValueType::eValueType_U1););
+	cantidadEscrita += NumberUtils_Serializar(buffer + cantidadEscrita, number, eValueType::eValueType_U1);
 
 	for (size_t i = 0; i < cantCampos; i++)
 		Sistema_Execute(cantidadEscrita += FeatureFactory_Serializar(buffer + cantidadEscrita, registro->GetFeature(i)););
@@ -70,7 +70,7 @@ size_t RegistroFactory_Hidratar(const char *buff, iRegistroPtr *registro)
 	number.entero.enteroSinSigno.entero64SinSigno = 0;
 
 	size_t cantidadLeida = 0;
-	Sistema_Execute(cantidadLeida += NumberUtils_Hidratar(buff + cantidadLeida, &number, eValueType_U1););
+	cantidadLeida += NumberUtils_Hidratar(buff + cantidadLeida, &number, eValueType_U1);
 	
 	size_t cantidadCampos = number.entero.enteroSinSigno.entero8SinSigno;
 	iRegistroPtr nuevoRegistro = RegistroFactory_Nuevo(cantidadCampos);

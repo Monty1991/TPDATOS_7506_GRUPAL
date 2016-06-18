@@ -83,15 +83,6 @@ class VpTree_ABM: public iVpTree_ABM
 			Auxiliares de nodo
 		**************************/
 
-		// Compara 2 claves, devuelve verdadero si son iguales.
-		// Falso en caso contrario.
-		virtual bool CompararClaves(iFeaturePtr clave1, iFeaturePtr clave2);
-
-		// Busca un registro por clave dentro de un nodo
-		// Si la encuentra devuelve su posición
-		// Caso contrario devuelve nodo->ObtenerCantidadRegistros
-		virtual size_t UbicarRegistro(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr nodo);
-
 		// Obtiene el hermano del hijo pasado como parámetro
 		virtual eHermanoVpTree_ABM ObtenerHermano(iNodoArbolPuntoOptimoNodoInternoPtr nodoPadre, size_t nroNodoHijo, size_t *nroNodoHermano, iNodoArbolPuntoOptimoPtr *nodoHermano);
 

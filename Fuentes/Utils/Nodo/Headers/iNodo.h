@@ -10,6 +10,12 @@
 
 #include "../../../Memoria/Registro/Headers/iRegistro.h"
 
+#include <functional>
+
+// Funcion que recibe un registro y decide si avanzar o no
+// Sirve para implementar iteradores
+typedef std::function<bool(iRegistroPtr)> IteratorFunction;
+
 enum eEstadoCargaNodo
 {
 	eEstadoCargaNodo_Underflow,
@@ -37,6 +43,11 @@ typedef class iNodo: public iObject
 		virtual void AgregarRegistro(iRegistroPtr reg) = 0;
 		virtual iRegistroPtr QuitarRegistro(size_t pos) = 0;
 		virtual iRegistroPtr QuitarRegistro() = 0;
+
+		virtual size_t BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave) = 0;
+		
+		// Itera por los registros;
+		virtual void Iterar(IteratorFunction iterador) = 0;
 
 		virtual void Dispose() = 0;
 } *iNodoPtr;

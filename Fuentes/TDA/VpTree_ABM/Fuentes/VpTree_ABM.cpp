@@ -160,7 +160,7 @@ eResultadoABM VpTree_ABM::Alta(iRegistroPtr registro, size_t nroNodo, iNodoArbol
 eResultadoABM VpTree_ABM::Baja(iFeaturePtr clave, size_t nroNodo, iNodoArbolPuntoOptimoPtr nodo, size_t nroNodoHijo, iNodoArbolPuntoOptimoPtr hijo)
 {
 	size_t posicionRegistro = 0;
-	Sistema_Execute(posicionRegistro = this->UbicarRegistro(clave, hijo););
+	Sistema_Execute(posicionRegistro = nodo->BuscarRegistro(clave, this->nroCampoClave););
 
 	if (posicionRegistro >= hijo->ObtenerCantidadRegistros())
 	{
@@ -220,7 +220,7 @@ eResultadoABM VpTree_ABM::Buscar(const iFeaturePtr clave, iRegistroPtr *registro
 		return eResultadoABM::eResultadoABM_ClaveNoEncontrada;
 
 	size_t posicionRegistro = 0;
-	Sistema_Execute(posicionRegistro = this->UbicarRegistro(clave, nodo););
+	Sistema_Execute(posicionRegistro = nodo->BuscarRegistro(clave, this->nroCampoClave););
 	if (posicionRegistro < nodo->ObtenerCantidadRegistros())
 	{
 		if (registro)
@@ -427,52 +427,6 @@ double VpTree_ABM::Partir(iNodoArbolPuntoOptimoPtr nodo, iFeaturePtr pivote, iNo
 /**************************
 	Auxiliares de nodo
 **************************/
-bool VpTree_ABM::CompararClaves(iFeaturePtr clave1, iFeaturePtr clave2)
-{
-	if (clave1 == clave2)
-		return true;
-
-	if (clave1->ObtenerTipo() != clave2->ObtenerTipo())
-		Throw(ExceptionType_InvalidArg, "clave1->Tipo != clave2->Tipo");
-
-	if (clave1->ObtenerTipo() & Mascara_Numero)
-	{
-		size_t valorClave1 = clave1->AsNumber().entero.enteroSinSigno.entero32SinSigno;
-		size_t valorClave2 = clave2->AsNumber().entero.enteroSinSigno.entero32SinSigno;
-
-		return (valorClave1 == valorClave2);
-	}
-	else
-	{
-		if (clave1->AsCadenaANSI()->largo != clave2->AsCadenaANSI()->largo)
-			return false;
-
-		return !memcmp(clave1->AsCadenaANSI()->cadena, clave2->AsCadenaANSI()->cadena, clave1->AsCadenaANSI()->largo);
-	}
-
-	Throw("Unexpected Error", "Ehm, shouldn't get here");
-}
-
-size_t VpTree_ABM::UbicarRegistro(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr nodo)
-{
-	for (size_t i = 0; i < nodo->ObtenerCantidadRegistros(); i++)
-	{
-		iRegistroPtr registro = NULL;
-		Sistema_Execute(registro = nodo->ObtenerRegistro(i););
-
-		iFeaturePtr key = NULL;
-		Sistema_Execute(key = registro->GetFeature(this->nroCampoClave););
-
-		bool resultado;
-		Sistema_Execute(resultado = this->CompararClaves(key, clave););
-
-		if (resultado)
-			return i;
-	}
-
-	return nodo->ObtenerCantidadRegistros();
-}
-
 eHermanoVpTree_ABM VpTree_ABM::ObtenerHermano(iNodoArbolPuntoOptimoNodoInternoPtr nodoPadre, size_t nroNodoHijo, size_t *nroNodoHermano, iNodoArbolPuntoOptimoPtr *nodoHermano)
 {
 	if (!nroNodoHijo)

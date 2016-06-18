@@ -9,6 +9,7 @@
 #include <wchar.h>
 
 #include "../Headers/Feature.h"
+#include "../../../Exceptions/ExceptionFactory.h"
 
 Feature::Feature(uValue valor, eValueType tipo): Object(), contenido(valor), tipo(tipo)
 {
@@ -97,6 +98,32 @@ sCadenaUNICODE *Feature::AsCadenaUNICODE()
 iObjectPtr Feature::AsRegistro()
 {
 	return this->contenido.registro;
+}
+
+bool Feature::Comparar(iFeature *feature)
+{
+	if (this == feature)
+		return true;
+
+	if (this->ObtenerTipo() != feature->ObtenerTipo())
+		Throw(ExceptionType_InvalidArg, "clave1->Tipo != clave2->Tipo");
+
+	if (this->ObtenerTipo() & Mascara_Numero)
+	{
+		size_t valorClave1 = this->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+		size_t valorClave2 = feature->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+
+		return (valorClave1 == valorClave2);
+	}
+	else
+	{
+		if (this->AsCadenaANSI()->largo != feature->AsCadenaANSI()->largo)
+			return false;
+
+		return !memcmp(this->AsCadenaANSI()->cadena, feature->AsCadenaANSI()->cadena, this->AsCadenaANSI()->largo);
+	}
+
+	Throw("Unexpected Error", "Ehm, shouldn't get here");
 }
 
 void Feature::Dispose()

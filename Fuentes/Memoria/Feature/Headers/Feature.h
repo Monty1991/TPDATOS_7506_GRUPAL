@@ -32,6 +32,8 @@ class Feature: public iFeature, public Object
 		virtual sCadenaUNICODE *AsCadenaUNICODE();
 		virtual iObjectPtr AsRegistro();
 
+		virtual bool Comparar(iFeature *feature);
+
 		virtual void Dispose();
 
 	private:

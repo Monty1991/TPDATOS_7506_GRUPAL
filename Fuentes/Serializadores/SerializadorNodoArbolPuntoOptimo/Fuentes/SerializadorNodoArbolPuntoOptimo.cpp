@@ -30,12 +30,12 @@ size_t SerializadorNodoArbolPuntoOptimo::CalcularEspacioSerializacion(iNodoPtr n
 		iFeaturePtr pivote = nodoArbolPuntoOptimoNodoInterno->ObtenerPivote();
 
 		Sistema_Execute(espacio += FeatureFactory_CalcularEspacioSerializacion(pivote););
-		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_F32););
-		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U4););
-		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U4););
+		espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_F32);
+		espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U4);
+		espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U4);
 	}
 
-	Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1););
+	espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1);
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
 		Sistema_Execute(espacio += RegistroFactory_CalcularEspacioSerializacion(nodo->ObtenerRegistro(i)););
@@ -53,7 +53,7 @@ size_t SerializadorNodoArbolPuntoOptimo::Serializar(char *buff, iNodoPtr nodo)
 	eNodoArbolPuntoOptimo tipoNodo = nodoArbolPuntoOptimoNodoHoja->ObtenerTipoNodo();
 	uNumber number;
 	number.entero.enteroSinSigno.entero8SinSigno = tipoNodo;
-	Sistema_Execute(espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U1););
+	espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U1);
 
 	if (tipoNodo == eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno)
 	{
@@ -63,17 +63,17 @@ size_t SerializadorNodoArbolPuntoOptimo::Serializar(char *buff, iNodoPtr nodo)
 		Sistema_Execute(espacio += FeatureFactory_Serializar(buff + espacio, pivote););
 
 		number.flotante.flotante32 = nodoArbolPuntoOptimoNodoInterno->ObtenerRadio();
-		Sistema_Execute(espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_F32););
+		espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_F32);
 
 		number.entero.enteroSinSigno.entero32SinSigno = nodoArbolPuntoOptimoNodoInterno->ObtenerHijoIzquierdo();
-		Sistema_Execute(espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U4););
+		espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U4);
 
 		number.entero.enteroSinSigno.entero32SinSigno = nodoArbolPuntoOptimoNodoInterno->ObtenerHijoDerecho();
-		Sistema_Execute(espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U4););
+		espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U4);
 	}
 
 	number.entero.enteroSinSigno.entero8SinSigno = cantidadRegistros;
-	Sistema_Execute(espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U1););
+	espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U1);
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
 		Sistema_Execute(espacio += RegistroFactory_Serializar(buff + espacio, nodo->ObtenerRegistro(i)););

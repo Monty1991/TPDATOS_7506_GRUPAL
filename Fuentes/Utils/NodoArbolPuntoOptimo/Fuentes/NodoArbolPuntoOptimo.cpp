@@ -2,7 +2,7 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../StringUtils/Headers/StringUtils.h"
 
-NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros): Object(), cantidadRegistros(cantidadRegistros)
+NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros): Object(), cantidadRegistros(cantidadRegistros), listaRegistros(NULL), finalLista(NULL)
 {
 	this->tamanioTablaRegistros = 16;
 	// con esto nos aseguramos de que la tabla sea potencia de 2
@@ -109,6 +109,37 @@ iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro(size_t pos)
 iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro()
 {
 	return this->QuitarRegistro(0);
+}
+
+size_t NodoArbolPuntoOptimoNodoHoja::BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave)
+{
+	for (size_t i = 0; i < this->ObtenerCantidadRegistros(); i++)
+	{
+		iRegistroPtr registro = this->tablaRegistros[i];
+
+		iFeaturePtr key = NULL;
+		Sistema_Execute(key = registro->GetFeature(nroCampoClave););
+
+		bool resultado;
+		Sistema_Execute(resultado = clave->Comparar(key););
+
+		if (resultado)
+			return i;
+	}
+
+	return this->ObtenerCantidadRegistros();
+}
+
+void NodoArbolPuntoOptimoNodoHoja::Iterar(IteratorFunction iterador)
+{
+	iLinkedListPtr listItem = this->listaRegistros;
+	while (listItem)
+	{
+		if (!iterador((iRegistroPtr)listItem->Value()));
+			break;
+
+		listItem = listItem->Next();
+	}
 }
 
 void NodoArbolPuntoOptimoNodoHoja::RedimensionarTabla(size_t nuevoTamanio)
@@ -245,3 +276,12 @@ iRegistroPtr NodoArbolPuntoOptimoNodoInterno::QuitarRegistro()
 	return this->nodoHoja->QuitarRegistro();
 }
 
+size_t NodoArbolPuntoOptimoNodoInterno::BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave)
+{
+	return this->BuscarRegistro(clave, nroCampoClave);
+}
+
+void NodoArbolPuntoOptimoNodoInterno::Iterar(IteratorFunction iterador)
+{
+	this->nodoHoja->Iterar(iterador);
+}
