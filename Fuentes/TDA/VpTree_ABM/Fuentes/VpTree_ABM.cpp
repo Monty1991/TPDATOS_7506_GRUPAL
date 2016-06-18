@@ -445,10 +445,6 @@ bool VpTree_ABM::CompararClaves(iFeaturePtr clave1, iFeaturePtr clave2)
 		size_t valorClave1 = clave1->AsNumber().entero.enteroSinSigno.entero32SinSigno;
 		size_t valorClave2 = clave2->AsNumber().entero.enteroSinSigno.entero32SinSigno;
 
-		char msg[200];
-		StringUtils_Concatenar(msg, "clave1 = %lu, clave2 = %lu\n", valorClave1, valorClave2);
-		Sistema_Log(msg);
-	
 		return (valorClave1 == valorClave2);
 	}
 	else
