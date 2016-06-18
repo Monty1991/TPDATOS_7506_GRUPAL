@@ -1,19 +1,16 @@
 #include "../Headers/SerializadorNodoArbolPuntoOptimo.h"
-#include "../../SerializadorRegistro/SerializadorRegistroFactory.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
+#include "../../../Memoria/Registro/RegistroFactory.h"
 #include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
 
 SerializadorNodoArbolPuntoOptimo::SerializadorNodoArbolPuntoOptimo()
 {
-	this->serializadorRegistro = SerializadorRegistroFactory_Nuevo();
 }
 
 SerializadorNodoArbolPuntoOptimo::~SerializadorNodoArbolPuntoOptimo()
 {
-	if (this->serializadorRegistro)
-		this->serializadorRegistro->Dispose();	
 }
 
 size_t SerializadorNodoArbolPuntoOptimo::CalcularEspacioSerializacion(iNodoPtr nodo)
@@ -41,7 +38,7 @@ size_t SerializadorNodoArbolPuntoOptimo::CalcularEspacioSerializacion(iNodoPtr n
 	Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1););
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		Sistema_Execute(espacio += this->serializadorRegistro->CalcularEspacio(nodo->ObtenerRegistro(i)););
+		Sistema_Execute(espacio += RegistroFactory_CalcularEspacioSerializacion(nodo->ObtenerRegistro(i)););
 
 	return espacio;
 }
@@ -79,7 +76,7 @@ size_t SerializadorNodoArbolPuntoOptimo::Serializar(char *buff, iNodoPtr nodo)
 	Sistema_Execute(espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_U1););
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		Sistema_Execute(espacio += this->serializadorRegistro->Serializar(buff + espacio, nodo->ObtenerRegistro(i)););
+		Sistema_Execute(espacio += RegistroFactory_Serializar(buff + espacio, nodo->ObtenerRegistro(i)););
 
 	return espacio;
 }

@@ -14,4 +14,8 @@
 iRegistroPtr RegistroFactory_Nuevo(size_t cantidadCampos);
 iRegistroPtr RegistroFactory_Nuevo(iDescriptorRegistroPtr descriptor, const char *cadena);
 
+size_t RegistroFactory_CalcularEspacioSerializacion(const iRegistroPtr registro);
+size_t RegistroFactory_Serializar(char *buffer, const iRegistroPtr registro);
+size_t RegistroFactory_Hidratar(const char *buff, iRegistroPtr *registro);
+
 #endif /* REGISTROFACTORY_H */

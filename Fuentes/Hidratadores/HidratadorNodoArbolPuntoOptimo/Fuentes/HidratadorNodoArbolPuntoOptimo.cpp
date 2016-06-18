@@ -1,19 +1,16 @@
 #include "../Headers/HidratadorNodoArbolPuntoOptimo.h"
 #include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
-#include "../../HidratadorRegistro/HidratadorRegistroFactory.h"
+#include "../../../Memoria/Registro/RegistroFactory.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorNodoArbolPuntoOptimo::HidratadorNodoArbolPuntoOptimo()
 {
-	this->hidratadorRegistro = HidratadorRegistroFactory_Nuevo();
 }
 
 HidratadorNodoArbolPuntoOptimo::~HidratadorNodoArbolPuntoOptimo()
 {
-	if (this->hidratadorRegistro)
-		this->hidratadorRegistro->Dispose();	
 }
 
 size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
@@ -51,7 +48,7 @@ size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
 	iRegistroPtr tablaRegistros[cantidadRegistros];
 
 	for (size_t i = 0; i < cantidadRegistros; i++)
-		Sistema_Execute(leido += this->hidratadorRegistro->Hidratar(buff + leido, tablaRegistros + i););
+		Sistema_Execute(leido += RegistroFactory_Hidratar(buff + leido, tablaRegistros + i););
 
 	*nodo = NodoArbolPuntoOptimoFactory_Nuevo(tipo, tablaRegistros, cantidadRegistros);
 

@@ -9,12 +9,10 @@
 #define HIDRATADORNODOARBOLPUNTOOPTIMO_H
 
 #include "../../HidratadorNodo/Headers/iHidratadorNodo.h"
-#include "../../HidratadorRegistro/Headers/iHidratadorRegistro.h"
 
 class HidratadorNodoArbolPuntoOptimo: public iHidratadorNodo
 {
 	private:
-		iHidratadorRegistroPtr hidratadorRegistro;
 
 		virtual ~HidratadorNodoArbolPuntoOptimo();
 	public:
