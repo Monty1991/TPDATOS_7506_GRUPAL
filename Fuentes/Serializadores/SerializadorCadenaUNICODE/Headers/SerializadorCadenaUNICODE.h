@@ -9,18 +9,16 @@
 #define	SERIALIZADORCADENAUNICODE_H
 
 #include "iSerializadorCadenaUNICODE.h"
-#include "../../SerializadorNumerico/Headers/iSerializadorNumerico.h"
 #include "../../SerializadorCadenaSinPrefijo/Headers/iSerializadorCadenaSinPrefijo.h"
 
 class SerializadorCadenaUNICODE: public iSerializadorCadenaUNICODE
 {
 	private:
-		iSerializadorNumericoPtr serializadorNumerico;
 		iSerializadorCadenaSinPrefijoPtr serializadorCadenaSinPrefijo;
 
+		virtual ~SerializadorCadenaUNICODE();
 	public:
 		SerializadorCadenaUNICODE();
-		virtual ~SerializadorCadenaUNICODE();
 
 		virtual size_t CalcularEspacio(sCadenaUNICODE *cadena);
 

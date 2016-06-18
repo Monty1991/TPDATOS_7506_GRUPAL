@@ -9,13 +9,11 @@
 #define	HIDRATADORCADENAANSI_H
 
 #include "iHidratadorCadenaANSI.h"
-#include "../../HidratadorNumerico/Headers/iHidratadorNumerico.h"
 #include "../../HidratadorCadenaSinPrefijo/Headers/iHidratadorCadenaSinPrefijo.h"
 
 class HidratadorCadenaANSI: public iHidratadorCadenaANSI
 {
 	private:
-		iHidratadorNumericoPtr hidratadorNumerico;
 		iHidratadorCadenaSinPrefijoPtr hidratadorCadenaSinPrefijo;
 
 	public:

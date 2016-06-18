@@ -1,20 +1,16 @@
 #include "../Headers/HidratadorRegistro.h"
 #include "../../HidratadorFeature/HidratadorFeatureFactory.h"
-#include "../../HidratadorNumerico/HidratadorNumericoFactory.h"
+#include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
 #include "../../../Memoria/Registro/RegistroFactory.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorRegistro::HidratadorRegistro()
 {
-	this->hidratadorNumerico = HidratadorNumericoFactory_Nuevo();
 	this->hidratadorFeature = HidratadorFeatureFactory_Nuevo();
 }
 
 HidratadorRegistro::~HidratadorRegistro()
 {
-	if (this->hidratadorNumerico)
-		this->hidratadorNumerico->Dispose();
-
 	if (this->hidratadorFeature)
 		this->hidratadorFeature->Dispose();
 }
@@ -22,9 +18,10 @@ HidratadorRegistro::~HidratadorRegistro()
 size_t HidratadorRegistro::Hidratar(char *buff, iRegistroPtr *registro)
 {
 	uNumber number;
+	number.entero.enteroSinSigno.entero64SinSigno = 0;
 
 	size_t cantidadLeida = 0;
-	cantidadLeida += this->hidratadorNumerico->Hidratar(buff + cantidadLeida, &number, eValueType_U1);
+	Sistema_Execute(cantidadLeida += NumberUtils_Hidratar(buff + cantidadLeida, &number, eValueType_U1););
 	
 	size_t cantidadCampos = number.entero.enteroSinSigno.entero8SinSigno;
 	iRegistroPtr nuevoRegistro = RegistroFactory_Nuevo(cantidadCampos);

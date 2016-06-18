@@ -10,17 +10,15 @@
 
 #include "iSerializadorCadenaANSI.h"
 #include "../../SerializadorCadenaSinPrefijo/Headers/iSerializadorCadenaSinPrefijo.h"
-#include "../../SerializadorNumerico/Headers/iSerializadorNumerico.h"
 
 class SerializadorCadenaANSI: public iSerializadorCadenaANSI
 {
 	private:
-		iSerializadorNumericoPtr serializadorNumerico;
 		iSerializadorCadenaSinPrefijoPtr serializadorCadenaSinPrefijo;
 
+		virtual ~SerializadorCadenaANSI();
 	public:
 		SerializadorCadenaANSI();
-		virtual ~SerializadorCadenaANSI();
 	
 		virtual size_t CalcularEspacio(sCadenaANSI *cadena);
 

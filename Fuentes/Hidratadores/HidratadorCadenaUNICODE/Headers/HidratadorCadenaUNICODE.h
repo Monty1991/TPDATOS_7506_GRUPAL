@@ -9,13 +9,11 @@
 #define	HIDRATADORCADENAUNICODE_H
 
 #include "iHidratadorCadenaUNICODE.h"
-#include "../../HidratadorNumerico/Headers/iHidratadorNumerico.h"
 #include "../../HidratadorCadenaSinPrefijo/Headers/iHidratadorCadenaSinPrefijo.h"
 
 class HidratadorCadenaUNICODE: public iHidratadorCadenaUNICODE
 {
 	private:
-		iHidratadorNumericoPtr hidratadorNumerico;
 		iHidratadorCadenaSinPrefijoPtr hidratadorCadenaSinPrefijo;
 
 	public:

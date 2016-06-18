@@ -9,7 +9,6 @@
 #define SERIALIZADORFEATURE_H
 
 #include "iSerializadorFeature.h"
-#include "../../SerializadorNumerico/Headers/SerializadorNumerico.h"
 #include "../../SerializadorCadenaANSI/Headers/iSerializadorCadenaANSI.h"
 #include "../../SerializadorCadenaUNICODE/Headers/iSerializadorCadenaUNICODE.h"
 
@@ -18,11 +17,10 @@ class SerializadorFeature: public iSerializadorFeature
 	private:
 		iSerializadorCadenaANSIPtr serializadorCadenaANSI;
 		iSerializadorCadenaUNICODEPtr serializadorCadenaUNICODE;
-		iSerializadorNumericoPtr serializadorNumerico;
 
+		virtual ~SerializadorFeature();
 	public:
 		SerializadorFeature();
-		virtual ~SerializadorFeature();
 
 		virtual size_t CalcularEspacio(const iFeaturePtr feature);
 
