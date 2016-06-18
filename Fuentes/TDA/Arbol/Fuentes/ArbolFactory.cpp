@@ -1,7 +1,7 @@
 #include "../ArbolFactory.h"
 #include "../Headers/Arbol.h"
 
-iArbolPtr ArbolFactory_Nuevo(int key, iObjectPtr valor)
+iArbolPtr ArbolFactory_Nuevo(iFeaturePtr clave, iObjectPtr valor)
 {
-	return new Arbol(key, valor);
+	return new Arbol(clave, valor);
 }

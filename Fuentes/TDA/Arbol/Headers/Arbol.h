@@ -15,37 +15,37 @@
 class Arbol: public iArbol
 {
 	private:
-		int clave;
+		iFeaturePtr clave;
 		iObjectPtr valor;
 		size_t altura;
 		Arbol *izq;
 		Arbol *der;
 	
-	public:
-		Arbol(int clave, iObjectPtr valor);
 		virtual ~Arbol();
+	public:
+		Arbol(iFeaturePtr clave, iObjectPtr valor);
 
-		Arbol *Add(int key, iObjectPtr *valor);
-		int GetKey();
-		iObjectPtr GetValue();
-		iObjectPtr GetValue(int key);
-		Arbol *Remove(int key, iObjectPtr *valor);
+		virtual Arbol *Add(iFeaturePtr clave, iObjectPtr *valor);
+		virtual iFeaturePtr GetKey();
+		virtual iObjectPtr GetValue();
+		virtual iObjectPtr GetValue(iFeaturePtr key);
+		virtual Arbol *Remove(iFeaturePtr key, iObjectPtr *valor);
 
-		void Dispose();
+		virtual void Dispose();
 
 		// Estos metodos se usan internamente, y por tanto, no 
 		// se encuentran declarados en la interfaz
-		Arbol *NodoIzq();
-		Arbol *NodoDer();
-		size_t GetAltura();
+		virtual Arbol *NodoIzq();
+		virtual Arbol *NodoDer();
+		virtual size_t GetAltura();
 
 		// metodos de rebalanceo del arbol
-		Arbol *Rebalancear();
-		Arbol *RotarIzquierda();
-		Arbol *RotarDerecha();
+		virtual Arbol *Rebalancear();
+		virtual Arbol *RotarIzquierda();
+		virtual Arbol *RotarDerecha();
 
-		int CalcularPendiente();
-		void RecalcularAltura();
+		virtual int CalcularPendiente();
+		virtual void RecalcularAltura();
 };
 
 #endif	/* ARBOL_H */

@@ -8,7 +8,7 @@
 #ifndef IARBOL_H
 #define	IARBOL_H
 
-#include "../../../Memoria/Object/Headers/iObject.h"
+#include "../../../Memoria/Feature/Headers/iFeature.h"
 
 typedef class iArbol
 {
@@ -16,14 +16,14 @@ typedef class iArbol
 		// Guarda un valor con la clave. Si ya existe la clave, se
 		// devuelve a traves del parametro valor.
 		// Devuelve la nueva raiz del arbol
-		virtual iArbol *Add(int key, iObjectPtr *valor) = 0;
-		virtual int GetKey() = 0;
-		virtual iObjectPtr GetValue(int key) = 0;
+		virtual iArbol *Add(iFeaturePtr clave, iObjectPtr *valor) = 0;
+		virtual iFeaturePtr GetKey() = 0;
+		virtual iObjectPtr GetValue(iFeaturePtr clave) = 0;
 
 		// Remueve el valor almacenado bajo la clave key.
 		// En valor se devuelve el dato guardado, o NULL si no existe
 		// Devuelve la nueva raiz del arbol
-		virtual iArbol *Remove(int key, iObjectPtr *valor) = 0;
+		virtual iArbol *Remove(iFeaturePtr clave, iObjectPtr *valor) = 0;
 
 		// destruye la totalidad del arbol, incluyendo los datos.
 		virtual void Dispose() = 0;

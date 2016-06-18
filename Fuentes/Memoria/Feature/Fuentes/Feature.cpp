@@ -100,7 +100,7 @@ iObjectPtr Feature::AsRegistro()
 	return this->contenido.registro;
 }
 
-bool Feature::Comparar(iFeature *feature)
+int Feature::Comparar(iFeature *feature)
 {
 	if (this == feature)
 		return true;
@@ -113,14 +113,38 @@ bool Feature::Comparar(iFeature *feature)
 		size_t valorClave1 = this->AsNumber().entero.enteroSinSigno.entero32SinSigno;
 		size_t valorClave2 = feature->AsNumber().entero.enteroSinSigno.entero32SinSigno;
 
-		return (valorClave1 == valorClave2);
+		if (valorClave1 < valorClave2)
+			return -1;
+
+		if (valorClave1 > valorClave2)
+			return 1;
+
+		return 0;
 	}
 	else
 	{
 		if (this->AsCadenaANSI()->largo != feature->AsCadenaANSI()->largo)
 			return false;
 
-		return !memcmp(this->AsCadenaANSI()->cadena, feature->AsCadenaANSI()->cadena, this->AsCadenaANSI()->largo);
+		return memcmp(this->AsCadenaANSI()->cadena, feature->AsCadenaANSI()->cadena, this->AsCadenaANSI()->largo);
+	}
+
+	Throw("Unexpected Error", "Ehm, shouldn't get here");
+}
+
+size_t Feature::GenerarHash()
+{
+	if (this->ObtenerTipo() & Mascara_Numero)
+	{
+		return this->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+	}
+	else
+	{
+		size_t valor = 0;
+		for (size_t i = 0; i < this->AsCadenaANSI()->largo; i++)
+			valor += this->AsCadenaANSI()->cadena[i] * 31;
+
+		return valor;
 	}
 
 	Throw("Unexpected Error", "Ehm, shouldn't get here");

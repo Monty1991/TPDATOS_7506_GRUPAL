@@ -23,7 +23,9 @@ typedef class iFeature: public iObject
 		virtual sCadenaUNICODE *AsCadenaUNICODE() = 0;
 		virtual iObjectPtr AsRegistro() = 0;
 
-		virtual bool Comparar(iFeature *feature) = 0;
+		virtual int Comparar(iFeature *feature) = 0;
+
+		virtual size_t GenerarHash() = 0;
 		
 		virtual void Dispose() = 0;
 } *iFeaturePtr;

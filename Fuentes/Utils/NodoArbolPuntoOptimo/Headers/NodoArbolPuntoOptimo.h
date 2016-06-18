@@ -10,15 +10,14 @@
 
 #include "iNodoArbolPuntoOptimo.h"
 #include "../../../Memoria/Object/Headers/Object.h"
-#include "../../../TDA/LinkedList/Headers/iLinkedList.h"
+#include "../../../Memoria/ContenedorRegistro/ContenedorRegistroFactory.h"
 
 class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja, public Object
 {
 	private:
-		iRegistroPtr *tablaRegistros;
-		size_t tamanioTablaRegistros;
-		size_t cantidadRegistros;
+		iContenedorRegistroPtr contenedorRegistros;
 
+		virtual ~NodoArbolPuntoOptimoNodoHoja();
 	public:
 		NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
@@ -38,14 +37,6 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja, public
 		virtual iRegistroPtr QuitarRegistro();
 
 		virtual size_t BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave);
-
-		virtual void Iterar(IteratorFunction iterador);
-
-	private:
-		void RedimensionarTabla(size_t nuevoTamanio);
-
-	protected:
-		virtual ~NodoArbolPuntoOptimoNodoHoja();
 };
 
 class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno, public Object
@@ -56,8 +47,8 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno, 
 		
 		size_t hijoIzquierdo;
 		size_t hijoDerecho;
-		// El compilador protesta si hereda, por "ambiguo" >:(
-		iNodoArbolPuntoOptimoNodoHojaPtr nodoHoja;
+
+		iContenedorRegistroPtr contenedorRegistros;
 
 		virtual ~NodoArbolPuntoOptimoNodoInterno();
 	public:
@@ -65,9 +56,11 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno, 
 
 		virtual iNodoArbolPuntoOptimo *Copiar();
 		virtual iNodoArbolPuntoOptimo *Clone();
+
 		virtual void Dispose();
+
 		virtual eTipoArbol ObtenerTipoArbol();
-		// Se reescribe el metodo, para mostrar el tipo correcto de nodo
+
 		virtual eNodoArbolPuntoOptimo ObtenerTipoNodo();
 
 		virtual iFeaturePtr ObtenerPivote();
@@ -89,8 +82,6 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno, 
 		virtual iRegistroPtr QuitarRegistro();
 
 		virtual size_t BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave);
-
-		virtual void Iterar(IteratorFunction iterador);
 };
 
 #endif /* NODOARBOLPUNTOOPTIMO_H */

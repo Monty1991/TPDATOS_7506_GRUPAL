@@ -7,32 +7,40 @@
 
 #include "../Headers/Arbol.h"
 
-Arbol::Arbol(int clave, iObjectPtr valor): clave(clave), valor(valor), altura(1), der(0), izq(0)
+Arbol::Arbol(iFeaturePtr clave, iObjectPtr valor)
 {
+	this->clave = clave;
+	this->valor = valor;
+	this->altura = 1;
+	this->izq = 0;
+	this->der = 0;
 }
 
 Arbol::~Arbol()
 {
+	this->clave->Dispose();
 }
 
-Arbol *Arbol::Add(int key, iObjectPtr *valor)
+Arbol *Arbol::Add(iFeaturePtr clave, iObjectPtr *valor)
 {
-	if (key < this->clave)
+	int comparacion = this->clave->Comparar(clave);
+
+	if (comparacion > 0)
 	{
 		if (this->izq)
-			this->izq = this->izq->Add(key, valor);
+			this->izq = this->izq->Add(clave, valor);
 		else
-			this->izq = new Arbol(key, *valor);
+			this->izq = new Arbol(clave, *valor);
 
 		this->RecalcularAltura();
 		return this->Rebalancear();
 	}
-	else if (key > this->clave)
+	else if (comparacion < 0)
 	{
 		if (this->der)
-			this->der = this->der->Add(key, valor);
+			this->der = this->der->Add(clave, valor);
 		else
-			this->der = new Arbol(key, *valor);
+			this->der = new Arbol(clave, *valor);
 
 		this->RecalcularAltura();
 		return this->Rebalancear();
@@ -47,24 +55,26 @@ Arbol *Arbol::Add(int key, iObjectPtr *valor)
 	return this;
 }
 
-int Arbol::GetKey()
+iFeaturePtr Arbol::GetKey()
 {
 	return this->clave;
 }
 
-iObjectPtr Arbol::GetValue(int key)
+iObjectPtr Arbol::GetValue(iFeaturePtr clave)
 {
-	if (key < this->clave)
+	int comparacion = this->clave->Comparar(clave);
+	
+	if (comparacion > 0)
 	{
 		if (this->izq)
-			return this->izq->GetValue(key);
+			return this->izq->GetValue(clave);
 
 		return NULL;
 	}
-	else if (key > this->clave)
+	else if (comparacion < 0)
 	{
 		if (this->der)
-			return this->der->GetValue(key);
+			return this->der->GetValue(clave);
 
 		return NULL;
 	}
@@ -72,22 +82,49 @@ iObjectPtr Arbol::GetValue(int key)
 	return this->valor;
 }
 
-Arbol *Arbol::Remove(int key, iObjectPtr *valor)
+Arbol *Arbol::Remove(iFeaturePtr clave, iObjectPtr *valor)
 {
-	if (key == this->clave)
+	int comparacion = this->clave->Comparar(clave);
+	if (!comparacion)
 	{
 		*valor = this->valor;
 
-		return NULL; // el padre se encarga de borrarlo
+		if (!this->izq && ! this->der)
+		{
+			return NULL; // el padre se encarga de borrarlo
+		}
+		else if (!this->der)
+		{
+			iArbolPtr heredero = this->izq;
+			this->izq = NULL;
+			return heredero;
+		}
+		else if (!this->izq)
+		{
+			iArbolPtr heredero = this->izq;
+			this->izq = NULL;
+			return heredero;
+		}
+		else
+		{
+			int pendiente = this->CalcularPendiente();
+			
+			if (pendiente > 0)
+			{
+				Arbol *sucesor = this->izq;
+				sucesor->der = this->der;
+			}
+		}
+		
 	}
 
 	Arbol *arbol;
-	if (key < this->clave)
+	if (comparacion > 0)
 	{
-		arbol = this->izq->Remove(key, valor);
+		arbol = this->izq->Remove(clave, valor);
 		if (arbol == NULL)
 		{
-			delete this->izq;
+			this->izq->Dispose();
 			this->izq = NULL;
 		}
 
@@ -96,10 +133,10 @@ Arbol *Arbol::Remove(int key, iObjectPtr *valor)
 	}
 	else
 	{
-		arbol = this->der->Remove(key, valor);
+		arbol = this->der->Remove(clave, valor);
 		if (arbol == NULL)
 		{
-			delete this->der;
+			this->der->Dispose();
 			this->der = NULL;
 		}
 

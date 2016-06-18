@@ -10,7 +10,6 @@
 
 #include "Headers/iArbol.h"
 
-iArbolPtr ArbolFactory_Nuevo(int key, iObjectPtr valor);
+iArbolPtr ArbolFactory_Nuevo(iFeaturePtr clave, iObjectPtr valor);
 
 #endif	/* ARBOLFACTORY_H */
-

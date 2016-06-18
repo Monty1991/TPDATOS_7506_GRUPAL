@@ -1,16 +1,22 @@
 #include "../Headers/Heap.h"
 
-Heap::Heap(eHeap tipo): tipo(tipo), tamanio(16), cantidadElementos(0)
+Heap::Heap(eHeap tipo)
 {
+	this->tipo = tipo;
+	this->cantidadElementos = 0;
+	this->tamanio = 16;
+
 	this->tabla = new sHeapComponentPtr[this->tamanio];
+	for (size_t i = 0; i < this->tamanio; i++)
+		this->tabla[i] = NULL;
 }
 
 Heap::~Heap()
 {
 	for(size_t i = 0; i < this->cantidadElementos; i++)
 	{
-		delete this->tabla[i];
-		this->tabla[i] = NULL;
+		if (this->tabla[i])
+			delete this->tabla[i];
 	}
 
 	delete [] this->tabla;
