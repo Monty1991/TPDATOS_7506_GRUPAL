@@ -52,57 +52,53 @@ void ComandoBuscar::Ejecutar(FILE *salida, const char **listaParametros, size_t 
 	iFeaturePtr clave = FeatureFactory_Nuevo(descRegistro->ObtenerDescriptorCampo(0), listaParametros[4], NULL);
 	descRegistro->Dispose();
 
-	iRegistroPtr registro = NULL;
-
 	iVpTree_ABMPtr vpTree = NULL;
-	eResultadoVpTree_ABM resultado;
-
 	Sistema_Execute(vpTree = VpTree_ABMFactory_Nuevo(listaParametros[0], nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16););
 
+	iRegistroPtr registro = NULL;
+	eResultadoABM resultado;
 	Sistema_Execute(resultado = vpTree->Buscar(clave, &registro););
 
-	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente)
+	if (resultado == eResultadoABM::eResultadoABM_ClaveNoEncontrada)
 		fprintf(salida, "ERROR!! No existe un registro con esa clave.\n");
-	else if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
+	else if (registro)
 	{
-		if (registro)
-			for (size_t i = 0; i < registro->ObtenerCantidadCampos(); i++)
+		for (size_t i = 0; i < registro->ObtenerCantidadCampos(); i++)
+		{
+			iFeaturePtr campo = NULL;
+			Sistema_Execute(campo = registro->GetFeature(i););
+
+			if (campo->ObtenerTipo() & Mascara_Numero)
 			{
-				iFeaturePtr campo = NULL;
-				Sistema_Execute(campo = registro->GetFeature(i););
-
-				if (campo->ObtenerTipo() & Mascara_Numero)
-				{
-					if (campo->ObtenerTipo() & Mascara_Flotante)
-						if (campo->ObtenerTipo() & Mascara_64Bits)
-							fprintf(salida, "%f", campo->AsNumber().flotante.flotante64);
-						else
-							fprintf(salida, "%f", campo->AsNumber().flotante.flotante32);
+				if (campo->ObtenerTipo() & Mascara_Flotante)
+					if (campo->ObtenerTipo() & Mascara_64Bits)
+						fprintf(salida, "%lf", campo->AsNumber().flotante.flotante64);
 					else
-						if (campo->ObtenerTipo() & Mascara_Signo)
-							fprintf(salida, "%i", campo->AsNumber().entero.enteroConSigno.entero32ConSigno);
-						else
-							fprintf(salida, "%u", campo->AsNumber().entero.enteroSinSigno.entero32SinSigno);
-				}
+						fprintf(salida, "%f", campo->AsNumber().flotante.flotante32);
 				else
-				{
-					sCadenaANSI *cadena = campo->AsCadenaANSI();
-
-					// recordemos que las cadenas son pascal, y por ende, no tienen terminador de cadena
-					char *punteroCadena = cadena->cadena;
-					for (size_t i = 0; i < cadena->largo; i++)
-						putc(*punteroCadena++, salida);
-				}
-
-				if (i < registro->ObtenerCantidadCampos() - 1)
-					fprintf(salida, ",");
-				else
-					fprintf(salida, ";\n");
+					if (campo->ObtenerTipo() & Mascara_Signo)
+						fprintf(salida, "%li", campo->AsNumber().entero.enteroConSigno.entero32ConSigno);
+					else
+						fprintf(salida, "%lu", campo->AsNumber().entero.enteroSinSigno.entero32SinSigno);
 			}
-	}
-	
-	if (registro)
+			else
+			{
+				sCadenaANSI *cadena = campo->AsCadenaANSI();
+
+				// recordemos que las cadenas son pascal, y por ende, no tienen terminador de cadena
+				char *punteroCadena = cadena->cadena;
+				for (size_t i = 0; i < cadena->largo; i++)
+					putc(*punteroCadena++, salida);
+			}
+
+			if (i < registro->ObtenerCantidadCampos() - 1)
+				fprintf(salida, ",");
+			else
+				fprintf(salida, ";\n");
+		}
+
 		registro->Dispose();
+	}
 	
 	if (clave)
 		clave->Dispose();

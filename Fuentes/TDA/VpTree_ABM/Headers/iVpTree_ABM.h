@@ -10,26 +10,27 @@
 
 #include "../../../Memoria/Registro/Headers/iRegistro.h"
 
-enum eResultadoVpTree_ABM {
-	eResultadoVpTree_ABM__Ok,
-	eResultadoVpTree_ABM__Duplicado,
-	eResultadoVpTree_ABM__Inexistente,
+enum eResultadoABM
+{
+	eResultadoABM_NoErr,
+	eResultadoABM_ClaveDuplicada,
+	eResultadoABM_ClaveNoEncontrada,
 };
 
-typedef class iVpTree_ABM {
+typedef class iVpTree_ABM
+{
+	public:
 
-public:
+		virtual eResultadoABM Alta(const  iRegistroPtr registro, bool comprobarUnicidad) = 0;
 
-	virtual eResultadoVpTree_ABM Alta(const  iRegistroPtr _reg, bool _unicidad)=0;
+		virtual eResultadoABM Baja(const iFeaturePtr clave) = 0;
 
-	virtual eResultadoVpTree_ABM Baja(const iFeaturePtr _key)=0;
+		virtual eResultadoABM Modificacion(const iRegistroPtr registro) = 0;
 
-	virtual eResultadoVpTree_ABM Modificacion(const iRegistroPtr _reg)=0;
+		virtual eResultadoABM Buscar(const iFeaturePtr clave, iRegistroPtr *registro) = 0;
 
-	virtual eResultadoVpTree_ABM Buscar(const iFeaturePtr _key, iRegistroPtr *_reg) = 0;
+		virtual void Dispose() = 0;
 
-	virtual void Dispose() = 0;
-
-}*iVpTree_ABMPtr;
+} *iVpTree_ABMPtr;
 
 #endif /* IVPTREE_ABM_H_ */

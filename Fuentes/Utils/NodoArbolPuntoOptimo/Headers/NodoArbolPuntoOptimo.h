@@ -9,8 +9,9 @@
 #define NODOARBOLPUNTOOPTIMO_H
 
 #include "iNodoArbolPuntoOptimo.h"
+#include "../../../Memoria/Object/Headers/Object.h"
 
-class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
+class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja, public Object
 {
 	private:
 		size_t tamanioTablaRegistros;
@@ -20,6 +21,7 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
 	public:
 		NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
+		virtual iNodoArbolPuntoOptimo *Copiar();
 		virtual iNodoArbolPuntoOptimo *Clone();
 		virtual void Dispose();
 
@@ -41,7 +43,7 @@ class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja
 		virtual ~NodoArbolPuntoOptimoNodoHoja();
 };
 
-class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
+class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno, public Object
 {
 	private:
 		iFeaturePtr pivote;
@@ -56,6 +58,7 @@ class NodoArbolPuntoOptimoNodoInterno: public iNodoArbolPuntoOptimoNodoInterno
 	public:
 		NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros);
 
+		virtual iNodoArbolPuntoOptimo *Copiar();
 		virtual iNodoArbolPuntoOptimo *Clone();
 		virtual void Dispose();
 		virtual eTipoArbol ObtenerTipoArbol();

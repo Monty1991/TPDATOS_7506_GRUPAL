@@ -2,7 +2,7 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../StringUtils/Headers/StringUtils.h"
 
-NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros): cantidadRegistros(cantidadRegistros)
+NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros): Object(), cantidadRegistros(cantidadRegistros)
 {
 	this->tamanioTablaRegistros = 16;
 	// con esto nos aseguramos de que la tabla sea potencia de 2
@@ -31,6 +31,12 @@ NodoArbolPuntoOptimoNodoHoja::~NodoArbolPuntoOptimoNodoHoja()
 	this->tablaRegistros = NULL;
 }
 
+iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoHoja::Copiar()
+{
+	Object::IncrementarContador();
+	return this;
+}
+
 iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoHoja::Clone()
 {
 	iNodoArbolPuntoOptimoNodoHojaPtr copia = new NodoArbolPuntoOptimoNodoHoja(NULL, 0);
@@ -47,7 +53,7 @@ iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoHoja::Clone()
 
 void NodoArbolPuntoOptimoNodoHoja::Dispose()
 {
-	delete this;
+	Object::Dispose();
 }
 
 eTipoArbol NodoArbolPuntoOptimoNodoHoja::ObtenerTipoArbol()
@@ -117,7 +123,7 @@ void NodoArbolPuntoOptimoNodoHoja::RedimensionarTabla(size_t nuevoTamanio)
 	this->tamanioTablaRegistros = nuevoTamanio;
 }
 
-NodoArbolPuntoOptimoNodoInterno::NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros): pivote(NULL), radio(0), hijoIzquierdo(0), hijoDerecho(0)
+NodoArbolPuntoOptimoNodoInterno::NodoArbolPuntoOptimoNodoInterno(iRegistroPtr *listaRegistros, size_t cantidadRegistros): Object(), pivote(NULL), radio(0), hijoIzquierdo(0), hijoDerecho(0)
 {
 	this->nodoHoja = new NodoArbolPuntoOptimoNodoHoja(listaRegistros, cantidadRegistros);
 }
@@ -130,6 +136,13 @@ NodoArbolPuntoOptimoNodoInterno::~NodoArbolPuntoOptimoNodoInterno()
 	if (this->pivote)
 		this->pivote->Dispose();
 }
+
+iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoInterno::Copiar()
+{
+	Object::IncrementarContador();
+	return this;
+}
+
 
 iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoInterno::Clone()
 {
@@ -147,7 +160,7 @@ iNodoArbolPuntoOptimo *NodoArbolPuntoOptimoNodoInterno::Clone()
 
 void NodoArbolPuntoOptimoNodoInterno::Dispose()
 {
-	delete this;
+	Object::Dispose();
 }
 
 eTipoArbol NodoArbolPuntoOptimoNodoInterno::ObtenerTipoArbol()

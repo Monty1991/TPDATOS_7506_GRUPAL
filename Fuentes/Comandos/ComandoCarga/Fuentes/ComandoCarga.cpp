@@ -77,9 +77,9 @@ void ComandoCarga::Ejecutar(FILE *salida, const char **listaParametros, size_t c
 	largo = ObtenerSiguienteLinea(archivoCSV, linea, tamanioBloque);
 
 	iDescriptorRegistroPtr descriptorRegistro = NULL;
-	
 	Sistema_Execute(descriptorRegistro = DescriptorRegistroFactory_Nuevo(linea););
 
+	size_t nroLinea = 2;
 	largo = ObtenerSiguienteLinea(archivoCSV, linea, tamanioBloque);
 	while (largo != 0)	// o sea, hasta la primer linea en blanco (o fin de archivo)
 	{
@@ -88,21 +88,28 @@ void ComandoCarga::Ejecutar(FILE *salida, const char **listaParametros, size_t c
 		bool continuar = true;
 		TryCatchBlock(
 		Sistema_Execute(registro = RegistroFactory_Nuevo(descriptorRegistro, linea););,
-		[&](iExceptionPtr e){
+		[&](iExceptionPtr e)
+		{
 			Sistema_Log(e);
 			continuar = false;	// una linea que no contiene un registro
-		}
-		);
+		});
 
 		if (!continuar)
 			break;
 
-		eResultadoVpTree_ABM resultado;
-		Sistema_Execute(resultado = vpTree->Alta(registro, true););			//insertamos el primero que aparezca
-		if (resultado != eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)	// borramos los siguientes
+		eResultadoABM resultado;
+		Sistema_Execute(resultado = vpTree->Alta(registro, true););
+
+		if (resultado == eResultadoABM::eResultadoABM_NoErr)
+			fprintf(salida, "El registro de la linea %lu, se ha agregado correctamente.\n", nroLinea);
+		else
+		{
+			fprintf(salida, "ERROR!!, registro de la linea %lu, clave duplicada.\n", nroLinea);
 			registro->Dispose();
+		}
 		
 		largo = ObtenerSiguienteLinea(archivoCSV, linea, tamanioBloque);
+		nroLinea++;
 	}
 	descriptorRegistro->Dispose();
 

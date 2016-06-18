@@ -63,15 +63,12 @@ void ComandoModificacion::Ejecutar(FILE *salida, const char **listaParametros, s
 		return;
 	}
 
-	/*
-	Si, el codigo es asqueroso, pero pongo la primer version aqui
-	 */
-	
 	const char *cadenaRegistro = listaParametros[4];
 	iRegistroPtr registro = RegistroFactory_Nuevo(descRegistro->ObtenerCantidadCampos());
 	for (size_t i = 0; i < registro->ObtenerCantidadCampos(); i++)
 	{
-		iFeaturePtr campo = FeatureFactory_Nuevo(descRegistro->ObtenerDescriptorCampo(i), cadenaRegistro, (char **)&cadenaRegistro);
+		iFeaturePtr campo = NULL;
+		Sistema_Execute(campo = FeatureFactory_Nuevo(descRegistro->ObtenerDescriptorCampo(i), cadenaRegistro, (char **)&cadenaRegistro););
 
 		Sistema_Execute(registro->SetFeature(i, campo););
 		campo->Dispose();
@@ -80,15 +77,15 @@ void ComandoModificacion::Ejecutar(FILE *salida, const char **listaParametros, s
 	}
 	descRegistro->Dispose();
 
-	eResultadoVpTree_ABM resultado;
+	iVpTree_ABMPtr vpTree = NULL;
+	Sistema_Execute(vpTree = VpTree_ABMFactory_Nuevo(nombreArchivo, nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16););
 
-	iVpTree_ABMPtr vpTree = VpTree_ABMFactory_Nuevo(nombreArchivo, nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16);
-
+	eResultadoABM resultado;
 	Sistema_Execute(resultado = vpTree->Modificacion(registro););
 
-	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
+	if (resultado == eResultadoABM::eResultadoABM_NoErr)
 		fprintf(salida, "La operacion se ha completado con exito.\n");
-	else if(resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Inexistente)
+	else
 		fprintf(salida, "ERROR!! No existe una version previa del registro.\n");
 
 	registro->Dispose();

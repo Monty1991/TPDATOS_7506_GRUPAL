@@ -13,103 +13,113 @@
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
 #include "../../../Utils/EspacioMetrico/Headers/iEspacioMetrico.h"
 
-enum eHermanoVpTree_ABM {
-	eHermanoVpTree_ABM__Hoja,
-	eHermanoVpTree_ABM__NodoInterno,
-	eHermanoVpTree_ABM__Inexistente
+enum eHermanoVpTree_ABM
+{
+	eHermanoVpTree_ABM_Hoja,
+	eHermanoVpTree_ABM_NodoInterno,
+	eHermanoVpTree_ABM_Inexistente
 };
 
-class VpTree_ABM: public iVpTree_ABM {
+class VpTree_ABM: public iVpTree_ABM
+{
+	private:
+		size_t nroCampoClave;
+		iArchivoArbolPtr archivo;
+		iNodoArbolPuntoOptimoPtr raiz;
+		iEspacioMetricoPtr espacioMetrico;
 
-private:
+		virtual ~VpTree_ABM();
 
-	size_t nroCampoClave;
-	iArchivoArbolPtr archivo;
-	iNodoArbolPuntoOptimoPtr raiz;
-	iEspacioMetricoPtr espacioMetrico;
+	public:
+		VpTree_ABM(const char *archivo, size_t nroCampoClave, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia);
 
-	virtual ~VpTree_ABM();
+		virtual eResultadoABM Alta(const iRegistroPtr registro, bool comprobarUnicidad);
 
-	//Resuelve el underflow de un nodo interno
-	//Todos los nodos actualizados son escritos a disco
-	//Luego de la invocación los nodos pasados como parámetro contienen basura
-	void ResolverUnderflow(size_t _nroNodoPadre,
-			iNodoArbolPuntoOptimoNodoInternoPtr _padre);
+		virtual eResultadoABM Baja(const iFeaturePtr clave);
 
-	//Resuelve el underflow de un nodo hoja
-	//Todos los nodos actualizados son escritos a disco
-	//Luego de la invocación los nodos pasados como parámetro contienen basura
-	void ResolverUnderflow(size_t _nroNodoPadre,
-			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
+		virtual eResultadoABM Modificacion(const iRegistroPtr registro);
 
-	//Resuelve el overflow de un nodo hoja
-	//Todos los nodos actualizados son escritos a disco
-	//Luego de la invocación los nodos pasados como parámetro contienen basura
-	void ResolverOverflow(size_t _nroNodoHijo,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
+		virtual eResultadoABM Buscar(const iFeaturePtr clave, iRegistroPtr *registro);
 
-	//Genera un nuevo pivote a partir del conjunto de registros en la hoja
-	iFeaturePtr GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+		virtual void Dispose();
 
-	//PRE: llamar a GenerarPivote(_hoja)
-	double CalcularRadio(iFeaturePtr _pivote,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hoja);
+	private:
+		/****************************
+			Persistencia a disco
+		****************************/
 
-	double Distancia(iFeaturePtr _key1, iFeaturePtr _key2);
+		// Escribe un nodo a disco
+		virtual void Escribir(size_t nroNodo, iNodoArbolPuntoOptimoPtr nodo);
 
-	//Obtiene el hermano del hijo pasado como parámetro
-	eHermanoVpTree_ABM ObtenerHermano(
-			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
-			size_t* _nroNodoHermano, iNodoArbolPuntoOptimoPtr* _hermano);
-
-	//Por default a la izquierda
-	void AgregarHijo(iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo);
-
-	//Devuelve el nodo fusión entre padre e hijo
-	//Luego de la invocación los nodos pasados como parámetro contienen basura
-	iNodoArbolPuntoOptimoPtr Fusionar(
-			iNodoArbolPuntoOptimoNodoInternoPtr _padre, size_t _nroNodoHijo,
-			iNodoArbolPuntoOptimoNodoHojaPtr _hijo);
-
-	// Reparte los contenidos de un nodo entre 2 y devuelve el radio
-	double Repartir(iNodoArbolPuntoOptimoPtr padre, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2);
+		/******************************
+			Metodos ABM recursivos
+		******************************/
 	
-	//Busca la clave dentro del nodo
-	//Si la encuentra devuelve su posición
-	//Caso contrario devuelve NULL
-	size_t Ubicar(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr _nodo);
+		// Procedimiento de alta recursivo
+		virtual eResultadoABM Alta(iRegistroPtr registro, size_t nroNodo, iNodoArbolPuntoOptimoPtr nodo);
 
-	//Escribe un nodo a disco
-	//Usar este método garantiza que la raiz esté siempre bufferizada
-	void Escribir(size_t _nroNodo, iNodoArbolPuntoOptimoPtr _nodo);
+		// Procedimiento de baja recursivo
+		virtual eResultadoABM Baja(iFeaturePtr clave, size_t nroNodo, iNodoArbolPuntoOptimoPtr nodo, size_t nroNodoHijo, iNodoArbolPuntoOptimoPtr nodoHijo);
 
-	//Procedimiento de alta recursivo
-	//Luego de la invocación los nodos pasados como parámetro contienen basura
-	eResultadoVpTree_ABM Alta(iRegistroPtr _reg, size_t _nroNodoPadre,
-			iNodoArbolPuntoOptimoPtr _padre);
+		// Procedimiento de busqueda recursivo
+		virtual eResultadoABM Buscar(const iFeaturePtr clave, iRegistroPtr *registro, iNodoArbolPuntoOptimoPtr nodo);
 
-	//Procedimiento de baja recursivo
-	//Luego de la invocación los nodos pasados como parámetro contienen basura
-	eResultadoVpTree_ABM Baja(iFeaturePtr _key, size_t _nroNodoPadre,
-			iNodoArbolPuntoOptimoPtr _padre, size_t _nroNodoHijo,
-			iNodoArbolPuntoOptimoPtr _hijo);
+		/**************************
+			De Espacio Metrico
+		**************************/
 
-public:
+		// Calcula la distancia entre 2 claves.
+		// Pre: Ambas claves tienen que ser del mismo tipo, distintas de NULL
+		virtual double Distancia(iFeaturePtr clave1, iFeaturePtr clave2);
 
-	VpTree_ABM(const char* _fileName, size_t _nroCampoClave,
-			size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia);
+		// Genera un nuevo pivote a partir del conjunto de registros en la hoja
+		virtual iFeaturePtr GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr nodo);
 
-	virtual eResultadoVpTree_ABM Alta(const iRegistroPtr _reg, bool _unicidad);
+		// Dado un pivote, calcula el radio que separa en 2 el contenido de una hoja
+		virtual double CalcularRadio(iFeaturePtr pivote, iNodoArbolPuntoOptimoNodoHojaPtr nodo);
 
-	virtual eResultadoVpTree_ABM Baja(const iFeaturePtr _key);
+		// Dado un pivote, reparte los contenidos de un nodo entre otros 2 y devuelve el radio
+		virtual double Partir(iNodoArbolPuntoOptimoPtr nodo, iFeaturePtr pivote, iNodoArbolPuntoOptimoPtr hijo1, iNodoArbolPuntoOptimoPtr hijo2);
 
-	virtual eResultadoVpTree_ABM Modificacion(const iRegistroPtr _reg);
+		/**************************
+			Auxiliares de nodo
+		**************************/
 
-	virtual eResultadoVpTree_ABM Buscar(const iFeaturePtr _key, iRegistroPtr *_reg);
+		// Compara 2 claves, devuelve verdadero si son iguales.
+		// Falso en caso contrario.
+		virtual bool CompararClaves(iFeaturePtr clave1, iFeaturePtr clave2);
 
-	virtual void Dispose();
+		// Busca un registro por clave dentro de un nodo
+		// Si la encuentra devuelve su posición
+		// Caso contrario devuelve nodo->ObtenerCantidadRegistros
+		virtual size_t UbicarRegistro(iFeaturePtr clave, iNodoArbolPuntoOptimoPtr nodo);
 
+		// Obtiene el hermano del hijo pasado como parámetro
+		virtual eHermanoVpTree_ABM ObtenerHermano(iNodoArbolPuntoOptimoNodoInternoPtr nodoPadre, size_t nroNodoHijo, size_t *nroNodoHermano, iNodoArbolPuntoOptimoPtr *nodoHermano);
+
+		// Por default a la izquierda
+		virtual void AgregarHijo(iNodoArbolPuntoOptimoNodoInternoPtr nodoPadre, size_t nroNodoHijo);
+
+		// Devuelve el nodo fusión entre padre e hijo
+		virtual iNodoArbolPuntoOptimoPtr Fusionar(iNodoArbolPuntoOptimoNodoInternoPtr nodoPadre, size_t nroNodoHijo, iNodoArbolPuntoOptimoNodoHojaPtr nodoHijo);
+
+		/********************************************
+			Resolucion de overflows y underflows
+		********************************************/
+
+		// Resuelve el underflow de un nodo interno
+		// Todos los nodos actualizados son escritos a disco
+		// Luego de la invocación los nodos pasados como parámetro contienen basura
+		virtual void ResolverUnderflow(size_t nroNodo, iNodoArbolPuntoOptimoNodoInternoPtr nodo);
+
+		// Resuelve el underflow de un nodo hoja
+		// Todos los nodos actualizados son escritos a disco
+		// Luego de la invocación los nodos pasados como parámetro contienen basura
+		virtual void ResolverUnderflow(size_t nroNodoPadre, iNodoArbolPuntoOptimoNodoInternoPtr padre, size_t nroNodoHijo, iNodoArbolPuntoOptimoNodoHojaPtr hijo);
+
+		// Resuelve el overflow de un nodo hoja
+		// Todos los nodos actualizados son escritos a disco
+		virtual void ResolverOverflow(size_t nroNodo, iNodoArbolPuntoOptimoNodoHojaPtr nodo);
 };
 
 #endif /* VPTREE_ABM_H_ */

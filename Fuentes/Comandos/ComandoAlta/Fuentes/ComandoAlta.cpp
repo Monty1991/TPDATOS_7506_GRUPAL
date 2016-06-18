@@ -69,15 +69,15 @@ void ComandoAlta::Ejecutar(FILE *salida, const char **listaParametros, size_t ca
 	iVpTree_ABMPtr vpTree = NULL;
 	Sistema_Execute(vpTree = VpTree_ABMFactory_Nuevo(nombreArchivo, nroCampo, tamanioBloque, (tamanioBloque * 3)/10, 16););
 
-	eResultadoVpTree_ABM resultado;
+	eResultadoABM resultado;
 	Sistema_Execute(resultado = vpTree->Alta(registro, true););
 
-	if (resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Ok)
+	if (resultado == eResultadoABM::eResultadoABM_NoErr)
 		fprintf(salida, "La operacion se ha completado con exito.\n");
-	else if(resultado == eResultadoVpTree_ABM::eResultadoVpTree_ABM__Duplicado)
+	else
 	{
-		fprintf(salida, "ERROR!! Ya existe un registro con esa clave.\n");
 		registro->Dispose();
+		fprintf(salida, "ERROR!! Ya existe un registro con esa clave.\n");
 	}
 
 	vpTree->Dispose();

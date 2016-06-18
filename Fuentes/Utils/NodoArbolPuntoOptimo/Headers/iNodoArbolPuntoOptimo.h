@@ -18,6 +18,7 @@ typedef class iNodoArbolPuntoOptimo: public iNodo {
 
 public:
 
+	virtual iNodoArbolPuntoOptimo *Copiar() = 0;
 	virtual iNodoArbolPuntoOptimo *Clone() = 0;
 	virtual eNodoArbolPuntoOptimo ObtenerTipoNodo() = 0;
 

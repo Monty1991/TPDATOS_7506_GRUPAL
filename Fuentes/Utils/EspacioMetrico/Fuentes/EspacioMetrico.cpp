@@ -27,23 +27,23 @@ void EspacioMetrico::Dispose()
 
 double EspacioMetrico::CalcularDistancia(size_t clave1, size_t clave2)
 {
-	size_t coord11, coord12, coord21, coord22;
+	size_t coord11 = 0, coord12 = 0, coord21 = 0, coord22 = 0;
 	this->SepararCoordenadas(clave1, &coord11, &coord12);
 	this->SepararCoordenadas(clave2, &coord21, &coord22);
 
-	size_t X = 0, Y = 0;
+	double X = 0, Y = 0;
 	
 	// Como son numeros sin signo, importa el orden
 	// para evitar valores incorrectos
 	if (coord11 > coord21)
-		X = coord11 - coord21;
+		X = (coord11 - coord21) * 1.0;
 	else
-		X = coord21 - coord11;
+		X = (coord21 - coord11) * 1.0;
 
 	if (coord12 > coord22)
-		Y = coord12 - coord22;
+		Y = (coord12 - coord22) * 1.0;
 	else
-		Y = coord22 - coord12;
+		Y = (coord22 - coord12) * 1.0;
 
 	// Devolvemos la norma euclideana
 	return sqrt(X*X + Y*Y);

@@ -23,9 +23,10 @@ enum eTipoArbol
 	eTipoArbol_ArbolPuntoOptimo
 };
 
-typedef class iNodo
+typedef class iNodo: public iObject
 {
 	public:
+		virtual iNodo *Copiar() = 0;
 		virtual iNodo *Clone() = 0;
 
 		virtual eTipoArbol ObtenerTipoArbol() = 0;
