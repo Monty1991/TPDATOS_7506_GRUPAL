@@ -11,7 +11,6 @@
 #include "iVpTree_ABM.h"
 #include "../../../io/ArchivoArbol/Headers/iArchivoArbol.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
-#include "../../../Utils/EspacioMetrico/Headers/iEspacioMetrico.h"
 
 enum eHermanoVpTree_ABM
 {
@@ -26,7 +25,6 @@ class VpTree_ABM: public iVpTree_ABM
 		size_t nroCampoClave;
 		iArchivoArbolPtr archivo;
 		iNodoArbolPuntoOptimoPtr raiz;
-		iEspacioMetricoPtr espacioMetrico;
 
 		virtual ~VpTree_ABM();
 

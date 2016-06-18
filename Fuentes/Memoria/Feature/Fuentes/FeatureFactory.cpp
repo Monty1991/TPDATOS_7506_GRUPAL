@@ -192,17 +192,16 @@ size_t FeatureFactory_Serializar(char *buffer, const iFeaturePtr feature)
 
 size_t FeatureFactory_Hidratar(const char *buff, iFeaturePtr *feature)
 {
-	uNumber number;
-	number.entero.enteroSinSigno.entero64SinSigno = 0;
-	size_t leido = 0;
-	
-	Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &number, eValueType_U1););
-
-	eValueType tipo = (eValueType) number.entero.enteroSinSigno.entero8SinSigno;
 	uValue valor;
 	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
+	size_t leido = 0;
+	
+	Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &valor.primitivo.numero, eValueType_U1););
+
+	eValueType tipo = (eValueType) valor.primitivo.numero.entero.enteroSinSigno.entero8SinSigno;
 
 	iFeaturePtr featureLeido = NULL;
+	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
 	if (tipo & Mascara_Numero)
 	{
 		Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &(valor.primitivo.numero), tipo););
@@ -217,7 +216,7 @@ size_t FeatureFactory_Hidratar(const char *buff, iFeaturePtr *feature)
 	else
 	{
 		Sistema_Execute(leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.ansi)););
-		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+		featureLeido = FeatureFactory_Nuevo(&valor.primitivo.cadena.ansi);
 		delete [] valor.primitivo.cadena.ansi.cadena;
 	}
 	*feature = featureLeido;

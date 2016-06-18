@@ -15,7 +15,6 @@ class Bloque: public iBloque, public Object
 {
 	private:
 		size_t tamanioBloque;
-		bool modificado;
 		char *buff;
 	
 		virtual ~Bloque();
@@ -25,9 +24,6 @@ class Bloque: public iBloque, public Object
 		virtual iBloquePtr Copiar();
 		virtual iBloquePtr Clone();
 		virtual size_t ObtenerTamanioBloque();
-
-		virtual bool FueModificado();
-		virtual void BorrarBitModificacion();
 
 		virtual const char *ObtenerContenido();
 

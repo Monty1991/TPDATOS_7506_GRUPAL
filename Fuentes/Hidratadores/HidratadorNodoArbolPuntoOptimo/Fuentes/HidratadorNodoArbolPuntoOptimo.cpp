@@ -13,7 +13,7 @@ HidratadorNodoArbolPuntoOptimo::~HidratadorNodoArbolPuntoOptimo()
 {
 }
 
-size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
+size_t HidratadorNodoArbolPuntoOptimo::Hidratar(const char *buff, iNodoPtr *nodo)
 {
 	size_t leido = 0;
 

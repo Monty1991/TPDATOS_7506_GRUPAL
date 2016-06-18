@@ -7,43 +7,91 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../../Utils/Nodo/NodoFactory.h"
 
-ArchivoArbol::ArchivoArbol(const char *_nombreArchivo, size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia, eTipoArbol tipoArbol) : tamanioNodo(_tamanioNodo), cargaMinima(_cargaMinima), tolerancia(_tolerancia), tipoArbol(tipoArbol)
+ArchivoArbol::ArchivoArbol(const char *nombreArchivo, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia, eTipoArbol tipoArbol): tamanioNodo(tamanioNodo), cargaMinima(cargaMinima), tolerancia(tolerancia), tipoArbol(tipoArbol)
 {
-	this->archivoBloque = ArchivoBloqueFactory_Nuevo(_nombreArchivo, tamanioNodo);
-	this->serializadorNodo = SerializadorNodoFactory_Nuevo(tipoArbol);
-	this->hidratadorNodo = HidratadorNodoFactory_Nuevo(tipoArbol);
+	this->archivoBloque = ArchivoBloqueFactory_Nuevo(nombreArchivo, this->tamanioNodo);
+	this->serializadorNodo = SerializadorNodoFactory_Nuevo(this->tipoArbol);
+	this->hidratadorNodo = HidratadorNodoFactory_Nuevo(this->tipoArbol);
 
-	this->mapaDeBits = MapaDeBitsFactory_Nuevo(archivoBloque->LeerBloque(0));
+	this->mapaDeBits = MapaDeBitsFactory_Nuevo(this->archivoBloque->LeerBloque(0));
 }
 
 ArchivoArbol::~ArchivoArbol()
 {
 	// El mapa de bits se actualiza en disco siempre que se modifica
 	// Por eso es seguro liberarlo en memoria
-	if (mapaDeBits)
-	{
-		mapaDeBits->Dispose();
-		mapaDeBits = NULL;
-	}
+	if (this->mapaDeBits)
+		this->mapaDeBits->Dispose();
 
-	if (archivoBloque)
-	{
-		archivoBloque->Close();
-		archivoBloque = NULL;
-	}
+	if (this->archivoBloque)
+		this->archivoBloque->Close();
 
-	if (hidratadorNodo)
-	{
-		hidratadorNodo->Dispose();
-		hidratadorNodo = NULL;
-	}
+	if (this->hidratadorNodo)
+		this->hidratadorNodo->Dispose();
 
-	if (serializadorNodo)
-	{
-		serializadorNodo->Dispose();
-		serializadorNodo = NULL;
-	}
+	if (this->serializadorNodo)
+		this->serializadorNodo->Dispose();
+}
 
+
+iNodoPtr ArchivoArbol::LeerNodo(size_t nroNodo)
+{
+	if (nroNodo < this->mapaDeBits->ObtenerTamanio())
+		if (this->mapaDeBits->ObtenerBit(nroNodo))
+		{
+			iBloquePtr bloque = this->archivoBloque->LeerBloque(nroNodo + 1);
+			iNodoPtr nodo = this->HidratarNodo(bloque);
+
+			bloque->Dispose();
+			return nodo;
+		}
+
+	return NULL;
+}
+
+void ArchivoArbol::EscribirNodo(size_t nroNodo, iNodoPtr nodo)
+{
+	if (nroNodo >= this->mapaDeBits->ObtenerTamanio())
+		Throw(ExceptionType_ArrayIndexOutOfBounds, "Numero de nodo invalido");
+
+	iBloquePtr bloque = this->SerializarNodo(nodo);
+	this->archivoBloque->EscribirBloque(nroNodo + 1, bloque);
+
+	bloque->Dispose();
+
+	if (!this->mapaDeBits->ObtenerBit(nroNodo))
+	{
+		this->mapaDeBits->SetearBit(nroNodo, true);
+		this->archivoBloque->EscribirBloque(0, this->mapaDeBits->Leer());
+	}
+}
+
+size_t ArchivoArbol::NuevoNodo(size_t origen, iNodoPtr *nodo, size_t tipoNodo)
+{
+	*nodo = NodoFactory_Nuevo(this->tipoArbol, tipoNodo);
+	return this->GetNodoLibre(origen);
+}
+
+eEstadoCargaNodo ArchivoArbol::DeterminarEstadoNodo(iNodoPtr nodo)
+{
+	return this->DeterminarEstadoNodo(this->serializadorNodo->CalcularEspacioSerializacion(nodo));
+}
+
+float ArchivoArbol::DeterminarPorcentajeCarga(iNodoPtr nodo)
+{
+    return (this->serializadorNodo->CalcularEspacioSerializacion(nodo) * 100.0) / this->tamanioNodo;
+}
+
+void ArchivoArbol::LiberarNodo(size_t nroNodo)
+{
+	if (nroNodo >= this->mapaDeBits->ObtenerTamanio())
+		Throw(ExceptionType_ArrayIndexOutOfBounds, "Numero de nodo invalido");
+
+	if (this->mapaDeBits->ObtenerBit(nroNodo))
+	{
+		this->mapaDeBits->SetearBit(nroNodo, false);
+		this->archivoBloque->EscribirBloque(0, this->mapaDeBits->Leer());
+	}
 }
 
 void ArchivoArbol::Close()
@@ -51,105 +99,44 @@ void ArchivoArbol::Close()
 	delete this;
 }
 
-float ArchivoArbol::DeterminarPorcentajeCarga(iNodoPtr _pNodo)
-{
-    return (serializadorNodo->CalcularEspacioSerializacion(_pNodo) * 100) / tamanioNodo;
-}
-
 size_t ArchivoArbol::GetNodoLibre(size_t origen)
 {
-	for (size_t i = origen; i < mapaDeBits->ObtenerTamanio(); i++)
-		if (!mapaDeBits->ObtenerBit(i))
+	for (size_t i = origen; i < this->mapaDeBits->ObtenerTamanio(); i++)
+		if (!this->mapaDeBits->ObtenerBit(i))
 			return i;
 
-	Throw(" ", "No hay nodos libres");
+	Throw("Out of storage", "No hay nodos libres");
 }
 
-eEstadoCargaNodo ArchivoArbol::DeterminarEstadoNodo(size_t _tamanioSerializacion)
+eEstadoCargaNodo ArchivoArbol::DeterminarEstadoNodo(size_t tamanioSerializacion)
 {
-	if (_tamanioSerializacion > tamanioNodo)
-		return eEstadoCargaNodo_Overflow;
+	if (tamanioSerializacion > this->tamanioNodo)
+		return eEstadoCargaNodo::eEstadoCargaNodo_Overflow;
 
-	if (_tamanioSerializacion > cargaMinima)
-		return eEstadoCargaNodo_NoCargaMinima;
+	if (tamanioSerializacion > this->cargaMinima)
+		return eEstadoCargaNodo::eEstadoCargaNodo_NoCargaMinima;
 
-	if (_tamanioSerializacion > (cargaMinima - tolerancia))
-		return eEstadoCargaNodo_CargaMinima;
+	if (tamanioSerializacion > (this->cargaMinima - this->tolerancia))
+		return eEstadoCargaNodo::eEstadoCargaNodo_CargaMinima;
 
-	return eEstadoCargaNodo_Underflow;
+	return eEstadoCargaNodo::eEstadoCargaNodo_Underflow;
 }
 
-iBloquePtr ArchivoArbol::SerializarNodo(iNodoPtr _pNodo)
+iBloquePtr ArchivoArbol::SerializarNodo(iNodoPtr nodo)
 {
 	char buffer[this->tamanioNodo];
 	for (size_t i = 0; i < this->tamanioNodo; i++)
 		buffer[i] = 0;
 
-	this->serializadorNodo->Serializar(buffer, _pNodo);
+	this->serializadorNodo->Serializar(buffer, nodo);
 	return BloqueFactory_Nuevo(buffer, this->tamanioNodo);
 }
 
-iNodoPtr ArchivoArbol::HidratarNodo(iBloquePtr _pBloque)
+iNodoPtr ArchivoArbol::HidratarNodo(iBloquePtr bloque)
 {
-	iNodoPtr pNodo = NULL;
+	iNodoPtr nodo = NULL;
 
-	this->hidratadorNodo->Hidratar((char*) _pBloque->ObtenerContenido(), &pNodo);
+	this->hidratadorNodo->Hidratar(bloque->ObtenerContenido(), &nodo);
 
-	return pNodo;
+	return nodo;
 }
-
-iNodoPtr ArchivoArbol::LeerNodo(size_t _nroNodo)
-{
-	if (_nroNodo < this->mapaDeBits->ObtenerTamanio())
-		if (this->mapaDeBits->ObtenerBit(_nroNodo))
-		{
-			iBloquePtr pBloque = archivoBloque->LeerBloque(_nroNodo + 1);
-			iNodoPtr pNodo = this->HidratarNodo(pBloque);
-
-			pBloque->Dispose();
-			return pNodo;
-		}
-
-	return NULL;
-}
-
-void ArchivoArbol::EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo)
-{
-	if (_nroNodo >= mapaDeBits->ObtenerTamanio())
-		Throw(ExceptionType_ArrayIndexOutOfBounds, "Número de nodo inválido");
-
-	iBloquePtr pBloque = this->SerializarNodo(_pNodo);
-	this->archivoBloque->EscribirBloque(_nroNodo + 1, pBloque);
-
-	pBloque->Dispose();
-
-	if (!this->mapaDeBits->ObtenerBit(_nroNodo))
-	{
-		this->mapaDeBits->SetearBit(_nroNodo, true);
-		this->archivoBloque->EscribirBloque(0, mapaDeBits->Leer());
-	}
-}
-
-size_t ArchivoArbol::NuevoNodo(size_t origen, iNodoPtr *_ppNodo, size_t tipoNodo)
-{
-	*_ppNodo = NodoFactory_Nuevo(this->tipoArbol, tipoNodo);
-	return GetNodoLibre(origen);
-}
-
-eEstadoCargaNodo ArchivoArbol::DeterminarEstadoNodo(iNodoPtr _pNodo)
-{
-	return DeterminarEstadoNodo(this->serializadorNodo->CalcularEspacioSerializacion(_pNodo));
-}
-
-void ArchivoArbol::LiberarNodo(size_t _nroNodo)
-{
-	if (_nroNodo >= mapaDeBits->ObtenerTamanio())
-		Throw(ExceptionType_ArrayIndexOutOfBounds, "Número de nodo inválido");
-
-	if (this->mapaDeBits->ObtenerBit(_nroNodo))
-	{
-		mapaDeBits->SetearBit(_nroNodo, false);
-		archivoBloque->EscribirBloque(0, mapaDeBits->Leer());
-	}
-}
-

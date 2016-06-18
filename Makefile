@@ -1,7 +1,7 @@
 CC = g++
 CXXFLAGS = -std=c++11 -g -Wall
 MODULOIO = Archivo.o ArchivoFactory.o Bitacora.o BitacoraFactory.o ArchivoBloque.o ArchivoBloqueFactory.o ArchivoArbol.o ArchivoArbolFactory.o
-UTILS = StringUtils.o Bloque.o BloqueFactory.o MapaDeBits.o MapaDeBitsFactory.o NodoFactory.o NodoArbolPuntoOptimo.o NodoArbolPuntoOptimoFactory.o EspacioMetrico.o EspacioMetricoFactory.o NumberUtils.o
+UTILS = StringUtils.o NumberUtils.o Bloque.o BloqueFactory.o MapaDeBits.o MapaDeBitsFactory.o NodoFactory.o NodoArbolPuntoOptimo.o NodoArbolPuntoOptimoFactory.o EspacioMetrico.o
 MEMORY = Object.o Pointer.o Feature.o FeatureFactory.o Registro.o RegistroFactory.o DescriptorRegistro.o DescriptorRegistroFactory.o
 TDA = LinkedList.o LinkedListFactory.o Arbol.o ArbolFactory.o VpTree_ABM.o VpTree_ABMFactory.o Heap.o HeapFactory.o
 SYSTEM = Sistema.o TraceEntry.o TraceEntryFactory.o StackTrace.o StackTraceFactory.o Entorno.o EntornoFactory.o

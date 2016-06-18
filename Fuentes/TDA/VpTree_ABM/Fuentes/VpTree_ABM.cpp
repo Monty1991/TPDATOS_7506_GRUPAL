@@ -9,7 +9,7 @@
 #include "../../../io/ArchivoArbol/ArchivoArbolFactory.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
 #include "../../../Memoria/Feature/FeatureFactory.h"
-#include "../../../Utils/EspacioMetrico/EspacioMetricoFactory.h"
+#include "../../../Utils/EspacioMetrico/Headers/EspacioMetrico.h"
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../Heap/HeapFactory.h"
 #include "../../../Utils/StringUtils/Headers/StringUtils.h"
@@ -17,8 +17,6 @@
 
 VpTree_ABM::VpTree_ABM(const char *archivo, size_t nroCampoClave, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia): nroCampoClave(nroCampoClave)
 {
-	this->espacioMetrico = EspacioMetricoFactory_Nuevo();
-
 	this->archivo = ArchivoArbolFactory_Nuevo(archivo, tamanioNodo, cargaMinima, tolerancia, eTipoArbol::eTipoArbol_ArbolPuntoOptimo);
 
 	this->raiz = (iNodoArbolPuntoOptimoPtr) this->archivo->LeerNodo(0);
@@ -37,9 +35,6 @@ VpTree_ABM::~VpTree_ABM()
 
 	if (this->archivo)
 		this->archivo->Close();
-
-	if (this->espacioMetrico)
-		this->espacioMetrico->Dispose();
 }
 
 eResultadoABM VpTree_ABM::Alta(iRegistroPtr registro, bool comprobarUnicidad)
@@ -282,11 +277,11 @@ double VpTree_ABM::Distancia(iFeaturePtr clave1, iFeaturePtr clave2)
 
 	// numerico -> usar claves numericas
 	if (clave1->ObtenerTipo() & Mascara_Numero)
-		return this->espacioMetrico->CalcularDistancia(clave1->AsNumber().entero.enteroSinSigno.entero32SinSigno, clave2->AsNumber().entero.enteroSinSigno.entero32SinSigno);
+		return EspacioMetrico_CalcularDistancia(clave1->AsNumber().entero.enteroSinSigno.entero32SinSigno, clave2->AsNumber().entero.enteroSinSigno.entero32SinSigno);
 
 	// no numerico -> usar claves de cadenas
 	if (!(clave1->ObtenerTipo() & Mascara_Numero))
-		return this->espacioMetrico->CalcularDistancia(clave1->AsCadenaANSI(), clave2->AsCadenaANSI());
+		return EspacioMetrico_CalcularDistancia(clave1->AsCadenaANSI(), clave2->AsCadenaANSI());
 
 	Throw(ExceptionType_InvalidArg, "clave1->Tipo not supported");
 }
@@ -321,7 +316,7 @@ iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr nodo)
 		}
 
 		uValue number;
-		number.primitivo.numero.entero.enteroSinSigno.entero32SinSigno = this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
+		number.primitivo.numero.entero.enteroSinSigno.entero32SinSigno = EspacioMetrico_CalcularPivote(listaClaves, cantidad);
 		pivote = FeatureFactory_Nuevo(number, eValueType::eValueType_U4);
 	}
 	else
@@ -339,7 +334,7 @@ iFeaturePtr VpTree_ABM::GenerarPivote(iNodoArbolPuntoOptimoNodoHojaPtr nodo)
 			listaClaves[i] = clave->AsCadenaANSI();
 		}
 
-		sCadenaANSI *cadena = this->espacioMetrico->CalcularPivote(listaClaves, cantidad);
+		sCadenaANSI *cadena = EspacioMetrico_CalcularPivote(listaClaves, cantidad);
 		pivote = FeatureFactory_Nuevo(cadena);
 
 		if (cadena->cadena)
@@ -729,4 +724,3 @@ void VpTree_ABM::ResolverOverflow(size_t nroNodo, iNodoArbolPuntoOptimoNodoHojaP
 
 	padre->Dispose();
 }
-

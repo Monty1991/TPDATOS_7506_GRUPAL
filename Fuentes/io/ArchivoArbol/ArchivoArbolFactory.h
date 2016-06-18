@@ -10,9 +10,7 @@
 
 #include "Headers/iArchivoArbol.h"
 
-iArchivoArbolPtr ArchivoArbolFactory_Nuevo(const char *_nombreArchivo,
-		size_t _tamanioNodo, size_t _cargaMinima, size_t _tolerancia,
-		eTipoArbol tipoArbol);
+iArchivoArbolPtr ArchivoArbolFactory_Nuevo(const char *nombreArchivo, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia, eTipoArbol tipoArbol);
 
 #endif	/* ARCHIVOARBOLFACTORY_H */
 

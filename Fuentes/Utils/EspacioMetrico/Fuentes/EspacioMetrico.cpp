@@ -1,35 +1,17 @@
 #include "../Headers/EspacioMetrico.h"
 #include <math.h>
 
-EspacioMetrico::EspacioMetrico(): Object()
-{
-}
+void EspacioMetrico_SepararCoordenadas(size_t clave, size_t *coord1, size_t *coord2);
+void EspacioMetrico_SepararCoordenadas(sCadenaANSI *clave, sCadenaANSI **coord1, sCadenaANSI **coord2);
+size_t EspacioMetrico_JuntarCoordenadas(size_t coord1, size_t coord2);
+sCadenaANSI *EspacioMetrico_JuntarCoordenadas(sCadenaANSI *coord1, sCadenaANSI *coord2);
+size_t EspacioMetrico_DistanciaLevenshtein(sCadenaANSI *coord1, sCadenaANSI *coord2);
 
-EspacioMetrico::~EspacioMetrico()
-{
-}
-
-iEspacioMetrico *EspacioMetrico::Copiar()
-{
-	Object::IncrementarContador();
-	return this;
-}
-
-iEspacioMetrico *EspacioMetrico::Clone()
-{
-	return new EspacioMetrico();
-}
-
-void EspacioMetrico::Dispose()
-{
-	Object::Dispose();
-}
-
-double EspacioMetrico::CalcularDistancia(size_t clave1, size_t clave2)
+double EspacioMetrico_CalcularDistancia(size_t clave1, size_t clave2)
 {
 	size_t coord11 = 0, coord12 = 0, coord21 = 0, coord22 = 0;
-	this->SepararCoordenadas(clave1, &coord11, &coord12);
-	this->SepararCoordenadas(clave2, &coord21, &coord22);
+	EspacioMetrico_SepararCoordenadas(clave1, &coord11, &coord12);
+	EspacioMetrico_SepararCoordenadas(clave2, &coord21, &coord22);
 
 	double X = 0, Y = 0;
 	
@@ -49,15 +31,15 @@ double EspacioMetrico::CalcularDistancia(size_t clave1, size_t clave2)
 	return sqrt(X*X + Y*Y);
 }
 
-double EspacioMetrico::CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2)
+double EspacioMetrico_CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave2)
 {
 	sCadenaANSI *coord11, *coord12, *coord21, *coord22;
 
-	this->SepararCoordenadas(clave1, &coord11, &coord12);
-	this->SepararCoordenadas(clave2, &coord21, &coord22);
+	EspacioMetrico_SepararCoordenadas(clave1, &coord11, &coord12);
+	EspacioMetrico_SepararCoordenadas(clave2, &coord21, &coord22);
 
-	size_t X = this->DistanciaLevenshtein(coord11, coord21);
-	size_t Y = this->DistanciaLevenshtein(coord12, coord22);
+	size_t X = EspacioMetrico_DistanciaLevenshtein(coord11, coord21);
+	size_t Y = EspacioMetrico_DistanciaLevenshtein(coord12, coord22);
 
 	// limpiamos
 	delete[] coord11->cadena;
@@ -72,7 +54,7 @@ double EspacioMetrico::CalcularDistancia(sCadenaANSI *clave1, sCadenaANSI *clave
 	return sqrt(X*X + Y*Y);
 }
 
-size_t EspacioMetrico::CalcularPivote(size_t *listaClaves, size_t cantidadClaves)
+size_t EspacioMetrico_CalcularPivote(size_t *listaClaves, size_t cantidadClaves)
 {
 	// Para cada componente de min, se asigna el menor valor del componente correspondiente de todas las claves
 	size_t minCoordX = (size_t)(-1ull), minCoordY = (size_t)(-1ull);
@@ -81,7 +63,7 @@ size_t EspacioMetrico::CalcularPivote(size_t *listaClaves, size_t cantidadClaves
 	{
 		size_t coordX, coordY;
 
-		this->SepararCoordenadas(listaClaves[i], &coordX, &coordY);
+		EspacioMetrico_SepararCoordenadas(listaClaves[i], &coordX, &coordY);
 		if (coordX < minCoordX)
 			minCoordX = coordX;
 
@@ -89,10 +71,10 @@ size_t EspacioMetrico::CalcularPivote(size_t *listaClaves, size_t cantidadClaves
 			minCoordY = coordY;
 	}
 
-	return this->JuntarCoordenadas(minCoordX, minCoordY);
+	return EspacioMetrico_JuntarCoordenadas(minCoordX, minCoordY);
 }
 
-sCadenaANSI *EspacioMetrico::CalcularPivote(sCadenaANSI **listaClaves, size_t cantidadClaves)
+sCadenaANSI *EspacioMetrico_CalcularPivote(sCadenaANSI **listaClaves, size_t cantidadClaves)
 {
 	// Para cada componente de min, se asigna la cadena de menor long del componente correspondiente de todas las claves
 
@@ -102,7 +84,7 @@ sCadenaANSI *EspacioMetrico::CalcularPivote(sCadenaANSI **listaClaves, size_t ca
 	for (size_t i = 0; i < cantidadClaves; i++)
 	{
 		sCadenaANSI *coord1, *coord2;
-		this->SepararCoordenadas(listaClaves[i], &coord1, &coord2);
+		EspacioMetrico_SepararCoordenadas(listaClaves[i], &coord1, &coord2);
 		
 		if (!minCoord1)
 			minCoord1 = coord1;
@@ -141,7 +123,7 @@ sCadenaANSI *EspacioMetrico::CalcularPivote(sCadenaANSI **listaClaves, size_t ca
 		}
 	}
 	
-	pivote = this->JuntarCoordenadas(minCoord1, minCoord2);
+	pivote = EspacioMetrico_JuntarCoordenadas(minCoord1, minCoord2);
 
 	if (minCoord1)
 	{
@@ -158,7 +140,7 @@ sCadenaANSI *EspacioMetrico::CalcularPivote(sCadenaANSI **listaClaves, size_t ca
 	return pivote;
 }
 
-void EspacioMetrico::SepararCoordenadas(size_t clave, size_t *coord1, size_t *coord2)
+void EspacioMetrico_SepararCoordenadas(size_t clave, size_t *coord1, size_t *coord2)
 {
 	size_t x = 0;
 	size_t y = 0;
@@ -176,7 +158,7 @@ void EspacioMetrico::SepararCoordenadas(size_t clave, size_t *coord1, size_t *co
 	*coord2 = y;
 }
 
-void EspacioMetrico::SepararCoordenadas(sCadenaANSI *clave, sCadenaANSI **coord1, sCadenaANSI **coord2)
+void EspacioMetrico_SepararCoordenadas(sCadenaANSI *clave, sCadenaANSI **coord1, sCadenaANSI **coord2)
 {
 	sCadenaANSI *X = new sCadenaANSI();
 	X->largo = clave->largo / 2 + (clave->largo % 2);
@@ -198,7 +180,7 @@ void EspacioMetrico::SepararCoordenadas(sCadenaANSI *clave, sCadenaANSI **coord1
 	*coord2 = Y;
 }
 
-size_t EspacioMetrico::JuntarCoordenadas(size_t coord1, size_t coord2)
+size_t EspacioMetrico_JuntarCoordenadas(size_t coord1, size_t coord2)
 {
 	size_t clave = 0;
 	for (size_t i = 0; i < (sizeof(size_t) / 2); i++)
@@ -213,7 +195,7 @@ size_t EspacioMetrico::JuntarCoordenadas(size_t coord1, size_t coord2)
 
 // solo funciona correctamente si 0 <= long(coord1) - long(coord2) <= 1
 // en otras palablas, si todas las claves son de la misma long
-sCadenaANSI *EspacioMetrico::JuntarCoordenadas(sCadenaANSI *coord1, sCadenaANSI *coord2)
+sCadenaANSI *EspacioMetrico_JuntarCoordenadas(sCadenaANSI *coord1, sCadenaANSI *coord2)
 {
 	sCadenaANSI *clave = new sCadenaANSI();
 	clave->largo = coord1->largo + coord2->largo;
@@ -225,7 +207,7 @@ sCadenaANSI *EspacioMetrico::JuntarCoordenadas(sCadenaANSI *coord1, sCadenaANSI 
 	return clave;
 }
 
-size_t EspacioMetrico::DistanciaLevenshtein(sCadenaANSI *coord1, sCadenaANSI *coord2)
+size_t EspacioMetrico_DistanciaLevenshtein(sCadenaANSI *coord1, sCadenaANSI *coord2)
 {
 	// por las dudas
 	if (!coord1->largo)

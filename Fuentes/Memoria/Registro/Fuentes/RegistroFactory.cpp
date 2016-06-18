@@ -36,10 +36,10 @@ size_t RegistroFactory_CalcularEspacioSerializacion(const iRegistroPtr registro)
 		Throw(ExceptionType_InvalidArg, "registro == NULL");
 
 	size_t espacio = 0;
-	size_t cantCampos = registro->ObtenerCantidadCampos();
 	
 	Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1););
 
+	size_t cantCampos = registro->ObtenerCantidadCampos();
 	for (size_t i = 0; i < cantCampos; i++)
 		Sistema_Execute(espacio += FeatureFactory_CalcularEspacioSerializacion(registro->GetFeature(i)););
 

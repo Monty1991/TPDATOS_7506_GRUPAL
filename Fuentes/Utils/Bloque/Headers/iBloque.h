@@ -18,8 +18,6 @@ typedef class iBloque: public iObject
 		virtual iBloque *Clone() = 0;
 
 		virtual size_t ObtenerTamanioBloque() = 0;
-		virtual bool FueModificado() = 0;
-		virtual void BorrarBitModificacion() = 0;
 
 		virtual const char *ObtenerContenido() = 0;
 		// si offset + length > ObtenerTamanioBloque() -> tira excepcion

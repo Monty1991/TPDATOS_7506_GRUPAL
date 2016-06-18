@@ -11,7 +11,7 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 
-Bloque::Bloque(const char *buffer, size_t tamanioBloque): Object(), tamanioBloque(tamanioBloque), buff(NULL)
+Bloque::Bloque(const char *buffer, size_t tamanioBloque): Object(), tamanioBloque(tamanioBloque)
 {
 	this->buff = new char[this->tamanioBloque];
 
@@ -20,8 +20,6 @@ Bloque::Bloque(const char *buffer, size_t tamanioBloque): Object(), tamanioBloqu
 		this->buff[i] = 0;
 
 	Sistema_Execute(this->EscribirBloque(buffer, 0, this->tamanioBloque););
-
-	this->BorrarBitModificacion();
 }
 
 Bloque::~Bloque()
@@ -47,16 +45,6 @@ iBloquePtr Bloque::Clone()
 size_t Bloque::ObtenerTamanioBloque()
 {
 	return this->tamanioBloque;
-}
-
-bool Bloque::FueModificado()
-{
-	return this->modificado;
-}
-
-void Bloque::BorrarBitModificacion()
-{
-	this->modificado = false;
 }
 
 const char *Bloque::ObtenerContenido()
@@ -86,7 +74,6 @@ void Bloque::EscribirBloque(const char *buff, size_t offset, size_t length)
 	}
 	
 	memcpy(this->buff + offset, buff, length);
-	this->modificado = true;
 }
 
 void Bloque::Dispose()

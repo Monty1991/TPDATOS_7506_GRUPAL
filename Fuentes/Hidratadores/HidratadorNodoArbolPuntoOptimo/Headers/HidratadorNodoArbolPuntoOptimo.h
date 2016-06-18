@@ -18,7 +18,7 @@ class HidratadorNodoArbolPuntoOptimo: public iHidratadorNodo
 	public:
 		HidratadorNodoArbolPuntoOptimo();
 
-		virtual size_t Hidratar(char *buff, iNodoPtr *nodo);
+		virtual size_t Hidratar(const char *buff, iNodoPtr *nodo);
 
 		virtual void Dispose();
 };

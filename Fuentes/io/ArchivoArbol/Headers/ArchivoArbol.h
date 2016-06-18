@@ -14,50 +14,46 @@
 #include "../../../Serializadores/SerializadorNodo/Headers/iSerializadorNodo.h"
 #include "../../../Hidratadores/HidratadorNodo/Headers/iHidratadorNodo.h"
 
-class ArchivoArbol: public iArchivoArbol {
+class ArchivoArbol: public iArchivoArbol
+{
+	private:
+		size_t tolerancia;			// Tolerancia a la carga mínima en bytes
+		size_t tamanioNodo;			// Define el tamanio del bloque en bytes
+		size_t cargaMinima;			// Carga mínima por nodo        en bytes
+		iMapaDeBitsPtr mapaDeBits;
+		iArchivoBloquePtr archivoBloque;
+		iHidratadorNodoPtr hidratadorNodo;
+		iSerializadorNodoPtr serializadorNodo;
 
-private:
+		// Necesario para fabricar nodos nuevos
+		eTipoArbol tipoArbol;
 
-	size_t tolerancia;  // Tolerancia a la carga mínima en bytes
-	size_t tamanioNodo; // Define el tamanio del bloque en bytes
-	size_t cargaMinima; // Carga mínima por nodo        en bytes
-	iMapaDeBitsPtr mapaDeBits;
-	iArchivoBloquePtr archivoBloque;
-	iHidratadorNodoPtr hidratadorNodo;
-	iSerializadorNodoPtr serializadorNodo;
+		virtual ~ArchivoArbol();
+	public:
+		ArchivoArbol(const char *nombreArchivo, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia, eTipoArbol tipoArbol);
 
-	// Necesario para fabricar nodos nuevos
-	eTipoArbol tipoArbol;
-	
-	virtual ~ArchivoArbol();
+		iNodoPtr LeerNodo(size_t nroNodo);
 
-	size_t GetNodoLibre(size_t origen);
+		void EscribirNodo(size_t nroNodo, iNodoPtr pNodo);
 
-	eEstadoCargaNodo DeterminarEstadoNodo(size_t _tamanioSerializacion);
+		size_t NuevoNodo(size_t origen, iNodoPtr *nodo, size_t tipoNodo);
 
-	iBloquePtr SerializarNodo(iNodoPtr _pNodo);
+		eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr nodo);
 
-	iNodoPtr HidratarNodo(iBloquePtr _pBloque);
+		float DeterminarPorcentajeCarga(iNodoPtr nodo);
 
-public:
+		void LiberarNodo(size_t nroNodo);
 
-	ArchivoArbol(const char *_nombreArchivo, size_t _tamanioNodo,
-			size_t _cargaMinima, size_t _tolerancia, eTipoArbol tipoArbol);
+		void Close();
 
-	iNodoPtr LeerNodo(size_t _nroNodo);
+	private:
+		virtual size_t GetNodoLibre(size_t origen);
 
-	void EscribirNodo(size_t _nroNodo, iNodoPtr _pNodo);
+		virtual eEstadoCargaNodo DeterminarEstadoNodo(size_t tamanioSerializacion);
 
-	size_t NuevoNodo(size_t origen, iNodoPtr *_ppNodo, size_t tipoNodo);
+		virtual iBloquePtr SerializarNodo(iNodoPtr nodo);
 
-	eEstadoCargaNodo DeterminarEstadoNodo(iNodoPtr _pNodo);
-
-	float DeterminarPorcentajeCarga(iNodoPtr _pNodo);
-
-	void LiberarNodo(size_t _nroNodo);
-
-	void Close();
-
+		virtual iNodoPtr HidratarNodo(iBloquePtr bloque);
 };
 
 #endif	/* ARCHIVOARBOL_H */

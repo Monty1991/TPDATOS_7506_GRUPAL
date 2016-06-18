@@ -13,7 +13,7 @@
 typedef class iHidratadorNodo
 {
 	public:
-		virtual size_t Hidratar(char *buff, iNodoPtr *nodo) = 0;
+		virtual size_t Hidratar(const char *buff, iNodoPtr *nodo) = 0;
 		
 		virtual void Dispose() = 0;
 
