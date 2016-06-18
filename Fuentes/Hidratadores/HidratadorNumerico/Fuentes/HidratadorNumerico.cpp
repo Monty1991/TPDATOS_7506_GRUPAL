@@ -1,5 +1,6 @@
 #include "../Headers/HidratadorNumerico.h"
 #include "../../../Exceptions/ExceptionFactory.h"
+#include <string.h>
 
 HidratadorNumerico::HidratadorNumerico()
 {
@@ -24,13 +25,27 @@ size_t HidratadorNumerico::Hidratar(const char *buff, uNumber *numero, eValueTyp
 			if (tipo & Mascara_Signo)
 			{
 				INT8 value;
-				value = *buff++;
+
+				for (size_t i = 0; i < size; i++)
+				{
+					value = value << 8;
+					unsigned char x = *buff++;
+					value |= x;
+				}
+
 				numero->entero.enteroConSigno.entero8ConSigno = value;
 			}
 			else
 			{
 				unsigned INT8 value;
-				value = *buff++;
+
+				for (size_t i = 0; i < size; i++)
+				{
+					value = value << 8;
+					unsigned char x = *buff++;
+					value |= x;
+				}
+
 				numero->entero.enteroSinSigno.entero8SinSigno = value;
 			}		
 		}
@@ -45,7 +60,8 @@ size_t HidratadorNumerico::Hidratar(const char *buff, uNumber *numero, eValueTyp
 				for (size_t i = 0; i < size; i++)
 				{
 					value = value << 8;
-					value |= *buff++;
+					unsigned char x = *buff++;
+					value |= x;
 				}
 
 				numero->entero.enteroConSigno.entero16ConSigno = value;
@@ -57,7 +73,8 @@ size_t HidratadorNumerico::Hidratar(const char *buff, uNumber *numero, eValueTyp
 				for (size_t i = 0; i < size; i++)
 				{
 					value = value << 8;
-					value |= *buff++;
+					unsigned char x = *buff++;
+					value |= x;
 				}
 
 				numero->entero.enteroSinSigno.entero16SinSigno = value;
@@ -74,7 +91,8 @@ size_t HidratadorNumerico::Hidratar(const char *buff, uNumber *numero, eValueTyp
 				for (size_t i = 0; i < size; i++)
 				{
 					value = value << 8;
-					value |= *buff++;
+					unsigned char x = *buff++;
+					value |= x;
 				}
 
 				numero->entero.enteroConSigno.entero32ConSigno = value;
@@ -86,7 +104,8 @@ size_t HidratadorNumerico::Hidratar(const char *buff, uNumber *numero, eValueTyp
 				for (size_t i = 0; i < size; i++)
 				{
 					value = value << 8;
-					value |= *buff++;
+					unsigned char x = *buff++;
+					value |= x;
 				}
 
 				numero->entero.enteroSinSigno.entero32SinSigno = value;
@@ -103,7 +122,8 @@ size_t HidratadorNumerico::Hidratar(const char *buff, uNumber *numero, eValueTyp
 				for (size_t i = 0; i < size; i++)
 				{
 					value = value << 8;
-					value |= *buff++;
+					unsigned char x = *buff++;
+					value |= x;
 				}
 
 				numero->entero.enteroConSigno.entero64ConSigno = value;
@@ -115,7 +135,8 @@ size_t HidratadorNumerico::Hidratar(const char *buff, uNumber *numero, eValueTyp
 				for (size_t i = 0; i < size; i++)
 				{
 					value = value << 8;
-					value |= *buff++;
+					unsigned char x = *buff++;
+					value |= x;
 				}
 
 				numero->entero.enteroSinSigno.entero64SinSigno = value;

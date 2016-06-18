@@ -34,6 +34,9 @@ size_t HidratadorFeature::Hidratar(char *buff, iFeaturePtr *feature)
 	eValueType tipo = (eValueType) number.entero.enteroSinSigno.entero8SinSigno;
 	uValue valor;
 
+	// limpiamos por las dudas
+	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
+
 	iFeaturePtr featureLeido = NULL;
 	if (tipo & Mascara_Numero)
 	{

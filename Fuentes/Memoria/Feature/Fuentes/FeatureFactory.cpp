@@ -27,6 +27,7 @@ iFeaturePtr FeatureFactory_Nuevo(const sDescriptorCampoPtr descCampo, const char
 		case eDescriptorCampo::eDescriptorCampo_U:
 		{
 			uValue value;
+			value.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
 			unsigned INT64 valor = strtoull(cadena, &nuevaCadena, 0);
 			
 			if (descCampo->modificador < 9)
@@ -55,6 +56,7 @@ iFeaturePtr FeatureFactory_Nuevo(const sDescriptorCampoPtr descCampo, const char
 		case eDescriptorCampo::eDescriptorCampo_I:
 		{
 			uValue value;
+			value.primitivo.numero.entero.enteroConSigno.entero64ConSigno = 0;
 			INT64 valor = strtoll(cadena, &nuevaCadena, 0);
 			
 			if (descCampo->modificador < 9)

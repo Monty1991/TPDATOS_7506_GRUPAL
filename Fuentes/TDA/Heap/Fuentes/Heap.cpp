@@ -80,7 +80,7 @@ void Heap::OrdenarAscendente(size_t obj)
 		return;
 
 	size_t padre = this->Padre(obj);
-	if (this->func(this->tabla[padre]->valor, this->tabla[obj]->valor) < 1)
+	if (this->func(this->tabla[padre]->valor, this->tabla[obj]->valor) > -1)
 		return;
 
 	this->Intercambiar(padre, obj);
@@ -135,10 +135,10 @@ size_t Heap::HijoDer(size_t obj)
 int Heap::func(double x, double y)
 {
 	if (x < y)
-		return this->tipo == eHeap::eHeap_Minimo? -1 : 1;
+		return this->tipo == eHeap::eHeap_Minimo? 1 : -1;
 
 	if (x > y)
-		return this->tipo == eHeap::eHeap_Minimo? 1 : -1;
+		return this->tipo == eHeap::eHeap_Minimo? -1 : 1;
 
 	return 0;
 }

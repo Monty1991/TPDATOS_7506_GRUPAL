@@ -12,6 +12,7 @@
 #include "../../../Utils/EspacioMetrico/EspacioMetricoFactory.h"
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../Heap/HeapFactory.h"
+#include "../../../Utils/StringUtils/Headers/StringUtils.h"
 #include <string.h>
 
 VpTree_ABM::VpTree_ABM(const char *archivo, size_t nroCampoClave, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia): nroCampoClave(nroCampoClave)
@@ -440,7 +441,16 @@ bool VpTree_ABM::CompararClaves(iFeaturePtr clave1, iFeaturePtr clave2)
 		Throw(ExceptionType_InvalidArg, "clave1->Tipo != clave2->Tipo");
 
 	if (clave1->ObtenerTipo() & Mascara_Numero)
-		return (clave1->AsNumber().entero.enteroSinSigno.entero32SinSigno == clave2->AsNumber().entero.enteroSinSigno.entero32SinSigno);
+	{
+		size_t valorClave1 = clave1->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+		size_t valorClave2 = clave2->AsNumber().entero.enteroSinSigno.entero32SinSigno;
+
+		char msg[200];
+		StringUtils_Concatenar(msg, "clave1 = %lu, clave2 = %lu\n", valorClave1, valorClave2);
+		Sistema_Log(msg);
+	
+		return (valorClave1 == valorClave2);
+	}
 	else
 	{
 		if (clave1->AsCadenaANSI()->largo != clave2->AsCadenaANSI()->largo)
