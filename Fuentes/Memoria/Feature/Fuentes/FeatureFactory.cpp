@@ -1,5 +1,7 @@
 #include "../FeatureFactory.h"
 #include "../Headers/Feature.h"
+#include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
+#include "../../../Utils/StringUtils/Headers/StringUtils.h"
 #include "../../../Exceptions/ExceptionFactory.h"
 #include <stdlib.h>
 
@@ -144,4 +146,81 @@ iFeaturePtr FeatureFactory_Nuevo(const sDescriptorCampoPtr descCampo, const char
 		*cadenaSiguiente = nuevaCadena;
 
 	return feature;
+}
+
+size_t FeatureFactory_CalcularEspacioSerializacion(const iFeaturePtr feature)
+{
+	if (!feature)
+		Throw(ExceptionType_InvalidArg, "feature == NULL");
+
+	eValueType tipo = feature->ObtenerTipo();
+
+	size_t espacio = 0;
+	Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1););
+
+	if (tipo & Mascara_Numero)
+		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(tipo););
+	else if (tipo & Mascara_Unicode)
+		Sistema_Execute(espacio += StringUtils_CalcularEspacioSerializacion(feature->AsCadenaUNICODE()););
+	else
+		Sistema_Execute(espacio += StringUtils_CalcularEspacioSerializacion(feature->AsCadenaANSI()););
+
+	return espacio;
+}
+
+size_t FeatureFactory_Serializar(char *buffer, const iFeaturePtr feature)
+{
+	if (!feature)
+		Throw(ExceptionType_InvalidArg, "feature == NULL");
+
+	eValueType tipo = feature->ObtenerTipo();
+
+	size_t escrito = 0;
+	uNumber number;
+	number.entero.enteroSinSigno.entero8SinSigno = tipo;
+	Sistema_Execute(escrito += NumberUtils_Serializar(buffer + escrito, number, eValueType::eValueType_U1););
+
+	if (tipo & Mascara_Numero)
+		Sistema_Execute(escrito += NumberUtils_Serializar(buffer + escrito, feature->AsNumber(), tipo););
+	else if (tipo & Mascara_Unicode)
+		Sistema_Execute(escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaUNICODE()););
+	else
+		Sistema_Execute(escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaANSI()););
+
+	return escrito;
+}
+
+size_t FeatureFactory_Hidratar(const char *buff, iFeaturePtr *feature)
+{
+	uNumber number;
+	number.entero.enteroSinSigno.entero64SinSigno = 0;
+	size_t leido = 0;
+	
+	Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &number, eValueType_U1););
+
+	eValueType tipo = (eValueType) number.entero.enteroSinSigno.entero8SinSigno;
+	uValue valor;
+	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
+
+	iFeaturePtr featureLeido = NULL;
+	if (tipo & Mascara_Numero)
+	{
+		Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &(valor.primitivo.numero), tipo););
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+	}
+	else if (tipo & Mascara_Unicode)
+	{
+		Sistema_Execute(leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.unicode)););
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+		delete [] valor.primitivo.cadena.unicode.cadena;
+	}
+	else
+	{
+		Sistema_Execute(leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.ansi)););
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+		delete [] valor.primitivo.cadena.ansi.cadena;
+	}
+	*feature = featureLeido;
+
+	return leido;
 }

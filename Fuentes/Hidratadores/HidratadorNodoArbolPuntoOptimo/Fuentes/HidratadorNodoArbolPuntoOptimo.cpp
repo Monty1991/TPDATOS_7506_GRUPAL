@@ -1,21 +1,17 @@
 #include "../Headers/HidratadorNodoArbolPuntoOptimo.h"
 #include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
-#include "../../HidratadorFeature/HidratadorFeatureFactory.h"
+#include "../../../Memoria/Feature/FeatureFactory.h"
 #include "../../HidratadorRegistro/HidratadorRegistroFactory.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/NodoArbolPuntoOptimoFactory.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorNodoArbolPuntoOptimo::HidratadorNodoArbolPuntoOptimo()
 {
-	this->hidratadorFeature = HidratadorFeatureFactory_Nuevo();
 	this->hidratadorRegistro = HidratadorRegistroFactory_Nuevo();
 }
 
 HidratadorNodoArbolPuntoOptimo::~HidratadorNodoArbolPuntoOptimo()
 {
-	if (this->hidratadorFeature)
-		this->hidratadorFeature->Dispose();
-
 	if (this->hidratadorRegistro)
 		this->hidratadorRegistro->Dispose();	
 }
@@ -37,7 +33,7 @@ size_t HidratadorNodoArbolPuntoOptimo::Hidratar(char *buff, iNodoPtr *nodo)
 	
 	if (tipo == eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Interno)
 	{
-		Sistema_Execute(leido += this->hidratadorFeature->Hidratar(buff + leido, &pivote););
+		Sistema_Execute(leido += FeatureFactory_Hidratar(buff + leido, &pivote););
 
 		Sistema_Execute(leido += NumberUtils_Hidratar(buff + leido, &numero, eValueType::eValueType_F32););
 		radio = numero.flotante.flotante32;

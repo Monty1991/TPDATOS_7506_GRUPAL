@@ -9,12 +9,10 @@
 #define HIDRATADORREGISTRO_H
 
 #include "iHidratadorRegistro.h"
-#include "../../HidratadorFeature/Headers/iHidratadorFeature.h"
 
 class HidratadorRegistro: public iHidratadorRegistro
 {
 	private:
-		iHidratadorFeaturePtr hidratadorFeature;
 
 		virtual ~HidratadorRegistro();
 	public:

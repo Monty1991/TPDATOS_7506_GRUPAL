@@ -9,13 +9,11 @@
 #define SERIALIZADORNODOARBOLPUNTOOPTIMO_H
 
 #include "../../SerializadorNodo/Headers/iSerializadorNodo.h"
-#include "../../SerializadorFeature/Headers/iSerializadorFeature.h"
 #include "../../SerializadorRegistro/Headers/iSerializadorRegistro.h"
 
 class SerializadorNodoArbolPuntoOptimo: public iSerializadorNodo
 {
 	private:
-		iSerializadorFeaturePtr serializadorFeature;
 		iSerializadorRegistroPtr serializadorRegistro;
 
 		virtual ~SerializadorNodoArbolPuntoOptimo();

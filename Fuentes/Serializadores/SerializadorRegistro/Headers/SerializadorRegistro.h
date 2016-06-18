@@ -9,12 +9,10 @@
 #define SERIALIZADORREGISTRO_H
 
 #include "iSerializadorRegistro.h"
-#include "../../SerializadorFeature/Headers/iSerializadorFeature.h"
 
 class SerializadorRegistro: public iSerializadorRegistro
 {
 	private:
-		iSerializadorFeaturePtr serializadorFeature;
 
 		virtual ~SerializadorRegistro();
 	public:

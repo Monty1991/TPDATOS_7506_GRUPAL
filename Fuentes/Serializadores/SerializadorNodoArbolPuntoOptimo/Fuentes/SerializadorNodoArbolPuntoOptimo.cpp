@@ -1,21 +1,17 @@
 #include "../Headers/SerializadorNodoArbolPuntoOptimo.h"
 #include "../../SerializadorRegistro/SerializadorRegistroFactory.h"
-#include "../../SerializadorFeature/SerializadorFeatureFactory.h"
+#include "../../../Memoria/Feature/FeatureFactory.h"
 #include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 #include "../../../Utils/NodoArbolPuntoOptimo/Headers/iNodoArbolPuntoOptimo.h"
 
 SerializadorNodoArbolPuntoOptimo::SerializadorNodoArbolPuntoOptimo()
 {
-	this->serializadorFeature = SerializadorFeatureFactory_Nuevo();
 	this->serializadorRegistro = SerializadorRegistroFactory_Nuevo();
 }
 
 SerializadorNodoArbolPuntoOptimo::~SerializadorNodoArbolPuntoOptimo()
 {
-	if (this->serializadorFeature)
-		this->serializadorFeature->Dispose();
-
 	if (this->serializadorRegistro)
 		this->serializadorRegistro->Dispose();	
 }
@@ -36,7 +32,7 @@ size_t SerializadorNodoArbolPuntoOptimo::CalcularEspacioSerializacion(iNodoPtr n
 
 		iFeaturePtr pivote = nodoArbolPuntoOptimoNodoInterno->ObtenerPivote();
 
-		Sistema_Execute(espacio += this->serializadorFeature->CalcularEspacio(pivote););
+		Sistema_Execute(espacio += FeatureFactory_CalcularEspacioSerializacion(pivote););
 		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_F32););
 		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U4););
 		Sistema_Execute(espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U4););
@@ -67,7 +63,7 @@ size_t SerializadorNodoArbolPuntoOptimo::Serializar(char *buff, iNodoPtr nodo)
 		iNodoArbolPuntoOptimoNodoInternoPtr nodoArbolPuntoOptimoNodoInterno = (iNodoArbolPuntoOptimoNodoInternoPtr)nodoArbolPuntoOptimoNodoHoja;
 
 		iFeaturePtr pivote = nodoArbolPuntoOptimoNodoInterno->ObtenerPivote();
-		Sistema_Execute(espacio += this->serializadorFeature->Serializar(buff + espacio, pivote););
+		Sistema_Execute(espacio += FeatureFactory_Serializar(buff + espacio, pivote););
 
 		number.flotante.flotante32 = nodoArbolPuntoOptimoNodoInterno->ObtenerRadio();
 		Sistema_Execute(espacio += NumberUtils_Serializar(buff + espacio, number, eValueType::eValueType_F32););

@@ -1,18 +1,15 @@
 #include "../Headers/HidratadorRegistro.h"
-#include "../../HidratadorFeature/HidratadorFeatureFactory.h"
 #include "../../../Utils/NumberUtils/Headers/NumberUtils.h"
+#include "../../../Memoria/Feature/FeatureFactory.h"
 #include "../../../Memoria/Registro/RegistroFactory.h"
 #include "../../../Sistema/Sistema/Headers/Sistema.h"
 
 HidratadorRegistro::HidratadorRegistro()
 {
-	this->hidratadorFeature = HidratadorFeatureFactory_Nuevo();
 }
 
 HidratadorRegistro::~HidratadorRegistro()
 {
-	if (this->hidratadorFeature)
-		this->hidratadorFeature->Dispose();
 }
 
 size_t HidratadorRegistro::Hidratar(char *buff, iRegistroPtr *registro)
@@ -29,7 +26,7 @@ size_t HidratadorRegistro::Hidratar(char *buff, iRegistroPtr *registro)
 	iFeaturePtr feature = NULL;
 	for (size_t i = 0; i < cantidadCampos; i++)
 	{
-		Sistema_Execute(cantidadLeida += this->hidratadorFeature->Hidratar(buff + cantidadLeida, &feature););
+		Sistema_Execute(cantidadLeida += FeatureFactory_Hidratar(buff + cantidadLeida, &feature););
 		Sistema_Execute(nuevoRegistro->SetFeature(i, feature););
 	}
 
