@@ -66,7 +66,7 @@ typedef enum eValueType
 	eValueType_U8 = Mascara_Numero | Mascara_64Bits,										//	Entero 8 bytes sin signo
 	eValueType_F32 = Mascara_Numero | Mascara_Flotante | Mascara_Signo | Mascara_32Bits,	//	Flotante IEEE754 32 bits
 	eValueType_F64 = Mascara_Numero | Mascara_Flotante | Mascara_Signo | Mascara_64Bits,	//	Flotante IEEE754 64 bits
-	eValueType_CA,																			//	Cadena ANSI
+	eValueType_CA = 0,																		//	Cadena ANSI
 	eValueType_CU = Mascara_Unicode,														//	Cadena UNICODE
 	eValueType_R = Mascara_Registro,														//	Registro
 } *eValueTypePtr;

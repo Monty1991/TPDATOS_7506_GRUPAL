@@ -158,7 +158,11 @@ size_t FeatureFactory_CalcularEspacioSerializacion(const iFeaturePtr feature)
 	size_t espacio = 0;
 	espacio += NumberUtils_CalcularEspacioSerializacion(eValueType::eValueType_U1);
 
-	if (tipo & Mascara_Numero)
+	if (tipo & Mascara_Registro)
+	{
+		Throw("Not implemented", "Registro type not supported.");
+	}
+	else if (tipo & Mascara_Numero)
 		espacio += NumberUtils_CalcularEspacioSerializacion(tipo);
 	else if (tipo & Mascara_Unicode)
 		espacio += StringUtils_CalcularEspacioSerializacion(feature->AsCadenaUNICODE());
@@ -180,15 +184,16 @@ size_t FeatureFactory_Serializar(char *buffer, const iFeaturePtr feature)
 	number.entero.enteroSinSigno.entero8SinSigno = tipo;
 	escrito += NumberUtils_Serializar(buffer + escrito, number, eValueType::eValueType_U1);
 
-	if (!(tipo & Mascara_Registro))
+	if (tipo & Mascara_Registro)
 	{
-		if (tipo & Mascara_Numero)
-			escrito += NumberUtils_Serializar(buffer + escrito, feature->AsNumber(), tipo);
-		else if (tipo & Mascara_Unicode)
-			escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaUNICODE());
-		else
-			escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaANSI());
+		Throw("Not implemented", "Registro type not supported.");
 	}
+	else if (tipo & Mascara_Numero)
+		escrito += NumberUtils_Serializar(buffer + escrito, feature->AsNumber(), tipo);
+	else if (tipo & Mascara_Unicode)
+		escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaUNICODE());
+	else
+		escrito += StringUtils_Serializar(buffer + escrito, feature->AsCadenaANSI());
 
 	return escrito;
 }
@@ -198,32 +203,34 @@ size_t FeatureFactory_Hidratar(const char *buff, iFeaturePtr *feature)
 	uValue valor;
 	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
 	size_t leido = 0;
-	
+
 	leido += NumberUtils_Hidratar(buff + leido, &valor.primitivo.numero, eValueType_U1);
 
 	eValueType tipo = (eValueType) valor.primitivo.numero.entero.enteroSinSigno.entero8SinSigno;
 
 	iFeaturePtr featureLeido = NULL;
 	valor.primitivo.numero.entero.enteroSinSigno.entero64SinSigno = 0;
-	if (!(tipo & Mascara_Registro))
+
+	if (tipo & Mascara_Registro)
 	{
-		if (tipo & Mascara_Numero)
-		{
-			leido += NumberUtils_Hidratar(buff + leido, &(valor.primitivo.numero), tipo);
-			featureLeido = FeatureFactory_Nuevo(valor, tipo);
-		}
-		else if (tipo & Mascara_Unicode)
-		{
-			leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.unicode));
-			featureLeido = FeatureFactory_Nuevo(valor, tipo);
-			delete [] valor.primitivo.cadena.unicode.cadena;
-		}
-		else
-		{
-			leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.ansi));
-			featureLeido = FeatureFactory_Nuevo(&valor.primitivo.cadena.ansi);
-			delete [] valor.primitivo.cadena.ansi.cadena;
-		}
+		Throw("Not implemented", "Registro type not supported.");
+	}
+	else if (tipo & Mascara_Numero)
+	{
+		leido += NumberUtils_Hidratar(buff + leido, &(valor.primitivo.numero), tipo);
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+	}
+	else if (tipo & Mascara_Unicode)
+	{
+		leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.unicode));
+		featureLeido = FeatureFactory_Nuevo(valor, tipo);
+		delete [] valor.primitivo.cadena.unicode.cadena;
+	}
+	else
+	{
+		leido += StringUtils_Hidratar(buff + leido, &(valor.primitivo.cadena.ansi));
+		featureLeido = FeatureFactory_Nuevo(&valor.primitivo.cadena.ansi);
+		delete [] valor.primitivo.cadena.ansi.cadena;
 	}
 	*feature = featureLeido;
 
