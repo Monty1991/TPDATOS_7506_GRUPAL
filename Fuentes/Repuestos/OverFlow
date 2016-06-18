@@ -1,0 +1,68 @@
+void VpTree_ABM::ResolverOverflow(size_t _nroNodoHijo,
+		iNodoArbolPuntoOptimoNodoHojaPtr _hijo) {
+
+	const unsigned IZQ = 0;
+	const unsigned DER = 1;
+
+	unsigned hijoActual = 0;
+	size_t nrosNodosHijos[2] = { 0, 0 };
+	iNodoArbolPuntoOptimoPtr fusion = NULL;
+	iNodoArbolPuntoOptimoNodoInternoPtr padre = NULL;
+	iNodoArbolPuntoOptimoNodoHojaPtr hijos[2] = { NULL, NULL };
+
+	nrosNodosHijos[IZQ] = archivo->NuevoNodo(1, (iNodoPtr *) hijos,
+			eNodoArbolPuntoOptimo_Hoja);
+	nrosNodosHijos[DER] = archivo->NuevoNodo(nrosNodosHijos[IZQ] + 1,
+			(iNodoPtr *) (hijos + 1), eNodoArbolPuntoOptimo_Hoja);
+
+	iFeaturePtr pivote = GenerarPivote(_hijo);
+	double radio = Repartir(_hijo, pivote, hijos[IZQ], hijos[DER]);
+
+	padre =
+			(iNodoArbolPuntoOptimoNodoInternoPtr) NodoArbolPuntoOptimoFactory_Nuevo(
+					eNodoArbolPuntoOptimo_Interno);
+	padre->EstablecerRadio(radio);
+	padre->EstablecerPivote(pivote);
+	padre->EstablecerHijoIzquierdo(nrosNodosHijos[IZQ]);
+	padre->EstablecerHijoDerecho(nrosNodosHijos[DER]);
+
+	if (archivo->DeterminarPorcentajeCarga(hijos[IZQ])
+			< archivo->DeterminarPorcentajeCarga(hijos[DER]))
+		hijoActual = IZQ;
+	else
+		hijoActual = DER;
+
+	while (1) {
+
+		padre->AgregarRegistro(hijos[hijoActual]->QuitarRegistro());
+
+		if (archivo->DeterminarEstadoNodo(padre) != eEstadoCargaNodo_Underflow)
+			break;
+
+		if (!hijos[hijoActual]->ObtenerCantidadRegistros())
+			hijoActual = DER - hijoActual;
+	}
+
+	for (size_t i = 0; i < 2; i++)
+		if (archivo->DeterminarEstadoNodo(hijos[i])
+				== eEstadoCargaNodo_Underflow)
+			fusion = Fusionar(padre, nrosNodosHijos[i], hijos[i]);
+		else if (archivo->DeterminarEstadoNodo(hijos[i])
+				== eEstadoCargaNodo_Overflow)
+			ResolverOverflow(nrosNodosHijos[i], hijos[i]);
+		else
+			Escribir(nrosNodosHijos[i], hijos[i]);
+
+	if (!fusion)
+		Escribir(_nroNodoHijo, padre);
+	else {
+
+		Escribir(_nroNodoHijo, fusion);
+		fusion->Dispose();
+	}
+
+	padre->Dispose();
+	pivote->Dispose();
+	hijos[IZQ]->Dispose();
+	hijos[DER]->Dispose();
+}
