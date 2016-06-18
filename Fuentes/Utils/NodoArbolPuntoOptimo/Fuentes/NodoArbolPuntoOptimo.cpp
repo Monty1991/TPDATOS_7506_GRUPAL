@@ -2,11 +2,11 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../StringUtils/Headers/StringUtils.h"
 
-NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros): Object(), cantidadRegistros(cantidadRegistros), listaRegistros(NULL), finalLista(NULL)
+NodoArbolPuntoOptimoNodoHoja::NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros): Object(), cantidadRegistros(cantidadRegistros)
 {
 	this->tamanioTablaRegistros = 16;
 	// con esto nos aseguramos de que la tabla sea potencia de 2
-	while (this->tamanioTablaRegistros < cantidadRegistros)
+	while (this->tamanioTablaRegistros < this->cantidadRegistros)
 		this->tamanioTablaRegistros *= 2;
 
 	this->tablaRegistros = new iRegistroPtr[this->tamanioTablaRegistros];
@@ -113,33 +113,32 @@ iRegistroPtr NodoArbolPuntoOptimoNodoHoja::QuitarRegistro()
 
 size_t NodoArbolPuntoOptimoNodoHoja::BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave)
 {
-	for (size_t i = 0; i < this->ObtenerCantidadRegistros(); i++)
+
+	for (size_t i = 0; i < this->cantidadRegistros; i++)
 	{
-		iRegistroPtr registro = this->tablaRegistros[i];
-
 		iFeaturePtr key = NULL;
-		Sistema_Execute(key = registro->GetFeature(nroCampoClave););
+		Sistema_Execute(key = this->tablaRegistros[i]->GetFeature(nroCampoClave););
 
-		bool resultado;
+		bool resultado = false;
 		Sistema_Execute(resultado = clave->Comparar(key););
 
 		if (resultado)
 			return i;
 	}
 
-	return this->ObtenerCantidadRegistros();
+	return this->cantidadRegistros;
 }
 
 void NodoArbolPuntoOptimoNodoHoja::Iterar(IteratorFunction iterador)
 {
-	iLinkedListPtr listItem = this->listaRegistros;
+/*	iLinkedListPtr listItem = this->listaRegistros;
 	while (listItem)
 	{
 		if (!iterador((iRegistroPtr)listItem->Value()));
 			break;
 
 		listItem = listItem->Next();
-	}
+	}*/
 }
 
 void NodoArbolPuntoOptimoNodoHoja::RedimensionarTabla(size_t nuevoTamanio)
@@ -278,7 +277,7 @@ iRegistroPtr NodoArbolPuntoOptimoNodoInterno::QuitarRegistro()
 
 size_t NodoArbolPuntoOptimoNodoInterno::BuscarRegistro(iFeaturePtr clave, size_t nroCampoClave)
 {
-	return this->BuscarRegistro(clave, nroCampoClave);
+	return this->nodoHoja->BuscarRegistro(clave, nroCampoClave);
 }
 
 void NodoArbolPuntoOptimoNodoInterno::Iterar(IteratorFunction iterador)

@@ -7,8 +7,12 @@
 #include "../../../Exceptions/ExceptionFactory.h"
 #include "../../../Utils/Nodo/NodoFactory.h"
 
-ArchivoArbol::ArchivoArbol(const char *nombreArchivo, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia, eTipoArbol tipoArbol): tamanioNodo(tamanioNodo), cargaMinima(cargaMinima), tolerancia(tolerancia), tipoArbol(tipoArbol)
+ArchivoArbol::ArchivoArbol(const char *nombreArchivo, size_t tamanioNodo, size_t cargaMinima, size_t tolerancia, eTipoArbol tipoArbol): tipoArbol(tipoArbol)
 {
+	this->tamanioNodo = tamanioNodo;
+	this->tolerancia = tolerancia;
+	this->cargaMinima = cargaMinima;
+
 	this->archivoBloque = ArchivoBloqueFactory_Nuevo(nombreArchivo, this->tamanioNodo);
 	this->serializadorNodo = SerializadorNodoFactory_Nuevo(this->tipoArbol);
 	this->hidratadorNodo = HidratadorNodoFactory_Nuevo(this->tipoArbol);
@@ -32,7 +36,6 @@ ArchivoArbol::~ArchivoArbol()
 	if (this->serializadorNodo)
 		this->serializadorNodo->Dispose();
 }
-
 
 iNodoPtr ArchivoArbol::LeerNodo(size_t nroNodo)
 {
@@ -129,6 +132,7 @@ iBloquePtr ArchivoArbol::SerializarNodo(iNodoPtr nodo)
 		buffer[i] = 0;
 
 	this->serializadorNodo->Serializar(buffer, nodo);
+
 	return BloqueFactory_Nuevo(buffer, this->tamanioNodo);
 }
 

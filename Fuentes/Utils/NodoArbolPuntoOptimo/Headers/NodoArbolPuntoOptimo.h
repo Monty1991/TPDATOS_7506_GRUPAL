@@ -15,12 +15,9 @@
 class NodoArbolPuntoOptimoNodoHoja: public iNodoArbolPuntoOptimoNodoHoja, public Object
 {
 	private:
-		iLinkedListPtr listaRegistros;
-		iLinkedListPtr finalLista;
-	
+		iRegistroPtr *tablaRegistros;
 		size_t tamanioTablaRegistros;
 		size_t cantidadRegistros;
-		iRegistroPtr *tablaRegistros;
 
 	public:
 		NodoArbolPuntoOptimoNodoHoja(iRegistroPtr *listaRegistros, size_t cantidadRegistros);

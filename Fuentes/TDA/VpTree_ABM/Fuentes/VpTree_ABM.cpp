@@ -24,7 +24,7 @@ VpTree_ABM::VpTree_ABM(const char *archivo, size_t nroCampoClave, size_t tamanio
 	if (this->raiz == NULL)
 	{
 		this->raiz = NodoArbolPuntoOptimoFactory_Nuevo(eNodoArbolPuntoOptimo::eNodoArbolPuntoOptimo_Hoja);
-		this->Escribir(0, raiz);
+		this->Escribir(0, this->raiz);
 	}
 }
 
@@ -160,7 +160,7 @@ eResultadoABM VpTree_ABM::Alta(iRegistroPtr registro, size_t nroNodo, iNodoArbol
 eResultadoABM VpTree_ABM::Baja(iFeaturePtr clave, size_t nroNodo, iNodoArbolPuntoOptimoPtr nodo, size_t nroNodoHijo, iNodoArbolPuntoOptimoPtr hijo)
 {
 	size_t posicionRegistro = 0;
-	Sistema_Execute(posicionRegistro = nodo->BuscarRegistro(clave, this->nroCampoClave););
+	Sistema_Execute(posicionRegistro = hijo->BuscarRegistro(clave, this->nroCampoClave););
 
 	if (posicionRegistro >= hijo->ObtenerCantidadRegistros())
 	{
