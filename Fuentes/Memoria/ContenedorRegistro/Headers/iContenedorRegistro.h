@@ -19,6 +19,7 @@ typedef class iContenedorRegistro
 		virtual iRegistroPtr ObtenerRegistro(size_t pos) = 0;
 
 		virtual void AgregarRegistro(iRegistroPtr reg) = 0;
+		virtual iRegistroPtr QuitarRegistro(iFeaturePtr clave, size_t nroCampoClave) = 0;
 		virtual iRegistroPtr QuitarRegistro(size_t pos) = 0;
 		virtual iRegistroPtr QuitarRegistro() = 0;
 

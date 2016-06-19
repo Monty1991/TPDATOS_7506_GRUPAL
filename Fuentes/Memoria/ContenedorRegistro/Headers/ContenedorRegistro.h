@@ -27,6 +27,7 @@ class ContenedorRegistro: public iContenedorRegistro
 		virtual iRegistroPtr ObtenerRegistro(size_t pos);
 
 		virtual void AgregarRegistro(iRegistroPtr reg);
+		virtual iRegistroPtr QuitarRegistro(iFeaturePtr clave, size_t nroCampoClave);
 		virtual iRegistroPtr QuitarRegistro(size_t pos);
 		virtual iRegistroPtr QuitarRegistro();
 

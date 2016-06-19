@@ -130,7 +130,7 @@ eResultadoABM VpTree_ABM::Alta(iRegistroPtr registro, size_t nroNodo, iNodoArbol
 		iNodoPtr hijo = NULL;
 
 		interno->QuitarRegistro(nodo->ObtenerCantidadRegistros() - 1);
-		Sistema_Execute(pivote = interno->ObtenerPivote(););
+		pivote = interno->ObtenerPivote();
 		Sistema_Execute(clave = registro->GetFeature(this->nroCampoClave););
 
 		if (Distancia(clave, pivote) < interno->ObtenerRadio())

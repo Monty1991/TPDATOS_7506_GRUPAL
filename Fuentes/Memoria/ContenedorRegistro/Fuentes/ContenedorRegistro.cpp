@@ -61,6 +61,15 @@ void ContenedorRegistro::AgregarRegistro(iRegistroPtr reg)
 		this->RedimensionarTabla(this->tamanioTablaRegistros * 2);
 }
 
+iRegistroPtr ContenedorRegistro::QuitarRegistro(iFeaturePtr clave, size_t nroCampoClave)
+{
+	size_t posicion = this->BuscarRegistro(clave, nroCampoClave);
+	if (posicion < this->cantidadRegistros)
+		return this->QuitarRegistro(posicion);
+
+	return NULL;
+}
+
 iRegistroPtr ContenedorRegistro::QuitarRegistro(size_t pos)
 {
 	iRegistroPtr reg = NULL;
